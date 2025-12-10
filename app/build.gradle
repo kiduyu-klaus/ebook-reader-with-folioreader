@@ -5,13 +5,13 @@ plugins {
 android {
     namespace 'com.kiduyu.klaus.ebookfinaldownload'
     compileSdk {
-        version = release(36)
+        version = release(34)
     }
 
     defaultConfig {
         applicationId "com.kiduyu.klaus.ebookfinaldownload"
-        minSdk 21
-        targetSdk 36
+        minSdk 23
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -33,7 +33,15 @@ android {
 dependencies {
     implementation libs.appcompat
     implementation libs.material
+    implementation libs.activity
+    implementation project(':folioreader')
+    implementation libs.constraintlayout
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
+
+    implementation "com.fasterxml.jackson.core:jackson-core:$versions.jackson"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:$versions.jackson"
+    implementation "com.fasterxml.jackson.core:jackson-databind:$versions.jackson"
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:$versions.jackson"
 }
