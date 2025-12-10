@@ -16,6 +16,7 @@ import com.folioreader.ui.base.OnSaveHighlight;
 import com.folioreader.util.AppUtil;
 import com.folioreader.util.OnHighlightListener;
 import com.folioreader.util.ReadLocatorListener;
+import com.kiduyu.klaus.ebookfinaldownload.utils.DownloadEpub;
 import com.kiduyu.klaus.ebookfinaldownload.utils.FileAccessPermissionHelper;
 
 import java.io.BufferedReader;
@@ -30,7 +31,8 @@ public class MainActivity extends AppCompatActivity
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private FolioReader folioReader;
-    ProgressDialog progressDialog;
+    //ProgressDialog progressDialog;
+    DownloadEpub downloadEpub = new DownloadEpub(this);
     private FileAccessPermissionHelper permissionHelper;
 
     @Override
@@ -44,6 +46,29 @@ public class MainActivity extends AppCompatActivity
                 .setOnClosedListener(this);
 
         getHighlightsAndSave();
+        downloadEpub.checkAndRequestPermissions();
+
+        // Initialize FileAccessPermissionHelper
+        permissionHelper = new FileAccessPermissionHelper(this) {
+            @Override
+            protected void onPermissionGranted() {
+                Toast.makeText(MainActivity.this, "Storage access granted", Toast.LENGTH_SHORT).show();
+                // Continue with your file operations
+            }
+
+            @Override
+            protected void onPermissionDenied() {
+                Toast.makeText(MainActivity.this, "Storage access denied. Some features may not work.", Toast.LENGTH_LONG).show();
+            }
+        };
+
+        // Check and request regular permissions first
+
+
+        // Then check for Manage All Files permission (Android 11+)
+        if (!permissionHelper.hasManageAllFilesPermission()) {
+            permissionHelper.requestManageAllFilesPermission();
+        }
 
         findViewById(R.id.btn_raw).setOnClickListener(new View.OnClickListener() {
             @Override

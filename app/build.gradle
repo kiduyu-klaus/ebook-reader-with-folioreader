@@ -5,13 +5,13 @@ plugins {
 android {
     namespace 'com.kiduyu.klaus.ebookfinaldownload'
     compileSdk {
-        version = release(34)
+        version = release(36)
     }
 
     defaultConfig {
         applicationId "com.kiduyu.klaus.ebookfinaldownload"
         minSdk 23
-        targetSdk 34
+        targetSdk 36
         versionCode 1
         versionName "1.0"
 
@@ -40,8 +40,14 @@ dependencies {
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
 
-    implementation "com.fasterxml.jackson.core:jackson-core:$versions.jackson"
-    implementation "com.fasterxml.jackson.core:jackson-annotations:$versions.jackson"
-    implementation "com.fasterxml.jackson.core:jackson-databind:$versions.jackson"
-    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:$versions.jackson"
+    implementation libs.jackson.core
+    implementation libs.jackson.annotations
+    implementation libs.jackson.databind
+    implementation libs.jackson.module.kotlin
+
+    // Add these lines for OkHttp and core-progress
+    implementation libs.okhttp
+    implementation libs.coreprogress
+
+    implementation 'org.jsoup:jsoup:1.21.2'
 }
