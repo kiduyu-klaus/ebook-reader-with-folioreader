@@ -25,7 +25,6 @@ import java.util.Locale;
 
 public class BookListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private BookListAdapter bookAdapter;
     private List<BookItem> bookList;
     private TextView tvEmptyState;
 
@@ -83,7 +82,7 @@ public class BookListActivity extends AppCompatActivity {
     }
 
     private void setupAdapter() {
-        bookAdapter = new BookListAdapter(bookList, new BookListAdapter.OnBookClickListener() {
+        BookListAdapter bookAdapter = new BookListAdapter(bookList, new BookListAdapter.OnBookClickListener() {
             @Override
             public void onBookClick(BookItem book) {
                 openBook(book);

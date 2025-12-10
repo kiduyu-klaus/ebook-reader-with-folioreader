@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -48,16 +49,39 @@ public class ReadBook extends AppCompatActivity implements OnHighlightListener, 
 
 //storage/emulated/0/Android/data/com.kiduyu.klaus.ebookfinaldownload/files
 
+        // Check if opening from download or from book list
         String downloadUrl = getIntent().getStringExtra("DOWNLOAD_URL");
+        String epubPath = getIntent().getStringExtra("EPUB_PATH");
         String bookTitle = getIntent().getStringExtra("BOOK_TITLE");
-        String bookAuthor = getIntent().getStringExtra("BOOK_AUTHOR");
 
-        // Show progress dialog
-        progressDialog = new ProgressDialog(this);
-        progressDialog.show("Downloading book...");
+        boolean isFromDownload = false;
+        if (downloadUrl != null && !downloadUrl.isEmpty()) {
+            // Opening from download
+            isFromDownload = true;
+            String bookAuthor = getIntent().getStringExtra("BOOK_AUTHOR");
 
-        // Download and open the book
-        downloadAndOpenBook(downloadUrl, bookTitle);
+            // Show progress dialog
+            progressDialog = new ProgressDialog(this);
+            progressDialog.show("Downloading book...");
+
+            // Download and open the book
+            downloadAndOpenBook(downloadUrl, bookTitle);
+        } else if (epubPath != null && !epubPath.isEmpty()) {
+            // Opening from book list
+            isFromDownload = false;
+            openBook(epubPath);
+        } else {
+            Toast.makeText(this, "No book to open", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                navigateToBookList();
+            }
+        });
+
     }
 
     private void downloadAndOpenBook(String url, String bookTitle) {
@@ -204,12 +228,7 @@ public class ReadBook extends AppCompatActivity implements OnHighlightListener, 
         navigateToBookList();
 
     }
-    @Override
-    public void onBackPressed() {
-        // Navigate to BookListActivity when back is pressed
-        super.onBackPressed();
-        navigateToBookList();
-    }
+
     private void navigateToBookList() {
         Intent intent = new Intent(this, BookListActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
