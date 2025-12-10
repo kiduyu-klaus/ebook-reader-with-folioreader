@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kiduyu.klaus.ebookfinaldownload.R;
 import com.kiduyu.klaus.ebookfinaldownload.models.BookItem;
 
+import java.io.File;
 import java.util.List;
 public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookViewHolder> {
 

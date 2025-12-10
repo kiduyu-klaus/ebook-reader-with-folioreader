@@ -151,7 +151,8 @@ public class SearchBook extends AppCompatActivity {
             }
         });
 
-    } hide keyboard when search button is clicked
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void startSearch(String searchQuery, Integer firstNBooks) {
         searchButton.setEnabled(false);
