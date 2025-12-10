@@ -5,6 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,6 +51,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
     }
 
     static class BookViewHolder extends RecyclerView.ViewHolder {
+        private ImageView ivBookCover;
         private TextView tvBookTitle;
         private TextView tvBookSize;
         private TextView tvBookDate;
@@ -56,6 +59,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
 
         public BookViewHolder(@NonNull View itemView) {
             super(itemView);
+            ivBookCover = itemView.findViewById(R.id.ivBookCover);
             tvBookTitle = itemView.findViewById(R.id.tvBookTitle);
             tvBookSize = itemView.findViewById(R.id.tvBookSize);
             tvBookDate = itemView.findViewById(R.id.tvBookDate);
@@ -66,6 +70,30 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
             tvBookTitle.setText(book.getTitle());
             tvBookSize.setText("Size: " + book.getSize());
             tvBookDate.setText("Date: " + book.getDate());
+
+            // Load cover image using Glide
+            if (book.getCoverImagePath() != null && !book.getCoverImagePath().isEmpty()) {
+                File coverFile = new File(book.getCoverImagePath());
+                if (coverFile.exists()) {
+                    Glide.with(itemView.getContext())
+                            .load(coverFile)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .placeholder(R.drawable.ic_launcher_background)
+                            .error(R.drawable.ic_launcher_background)
+                            .centerCrop()
+                            .into(ivBookCover);
+                } else {
+                    // Fallback to default image
+                    Glide.with(itemView.getContext())
+                            .load(R.drawable.ic_launcher_background)
+                            .into(ivBookCover);
+                }
+            } else {
+                // No cover image, use default
+                Glide.with(itemView.getContext())
+                        .load(R.drawable.ic_launcher_background)
+                        .into(ivBookCover);
+            }
 
             itemView.setOnClickListener(v -> {
                 if (listener != null) {

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kiduyu.klaus.ebookfinaldownload.adapters.BookAdapter;
 import com.kiduyu.klaus.ebookfinaldownload.adapters.BookListAdapter;
 import com.kiduyu.klaus.ebookfinaldownload.models.BookItem;
+import com.kiduyu.klaus.ebookfinaldownload.utils.EpubCoverExtractor;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -55,20 +56,39 @@ public class BookListActivity extends AppCompatActivity {
             File[] files = booksDir.listFiles((dir, name) -> name.toLowerCase().endsWith(".epub"));
 
             if (files != null && files.length > 0) {
-                for (File file : files) {
-                    BookItem bookItem = new BookItem();
-                    bookItem.setFilePath(file.getAbsolutePath());
-                    bookItem.setTitle(file.getName().replace(".epub", ""));
-                    bookItem.setSize(formatFileSize(file.length()));
-                    bookItem.setDate(formatDate(file.lastModified()));
-                    bookList.add(bookItem);
-                }
+                // Load books in background thread
+                new Thread(() -> {
+                    List<BookItem> tempList = new ArrayList<>();
 
-                // Show RecyclerView, hide empty state
-                recyclerView.setVisibility(View.VISIBLE);
-                tvEmptyState.setVisibility(View.GONE);
+                    for (File file : files) {
+                        BookItem bookItem = new BookItem();
+                        bookItem.setFilePath(file.getAbsolutePath());
+                        bookItem.setTitle(file.getName().replace(".epub", ""));
+                        bookItem.setSize(formatFileSize(file.length()));
+                        bookItem.setDate(formatDate(file.lastModified()));
 
-                setupAdapter();
+                        // Extract cover image (this might take time)
+                        String coverPath = EpubCoverExtractor.extractCoverImage(
+                                BookListActivity.this,
+                                file.getAbsolutePath()
+                        );
+                        bookItem.setCoverImagePath(coverPath);
+
+                        tempList.add(bookItem);
+                    }
+
+                    // Update UI on main thread
+                    runOnUiThread(() -> {
+                        bookList.clear();
+                        bookList.addAll(tempList);
+
+                        // Show RecyclerView, hide empty state
+                        recyclerView.setVisibility(View.VISIBLE);
+                        tvEmptyState.setVisibility(View.GONE);
+
+                        setupAdapter();
+                    });
+                }).start();
             } else {
                 // Show empty state
                 recyclerView.setVisibility(View.GONE);

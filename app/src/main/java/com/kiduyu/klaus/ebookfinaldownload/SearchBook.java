@@ -1,5 +1,6 @@
 package com.kiduyu.klaus.ebookfinaldownload;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -15,6 +16,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -120,6 +122,11 @@ public class SearchBook extends AppCompatActivity {
 
     private void setupListeners() {
         searchButton.setOnClickListener(v -> {
+            // Hide keyboard when Search is clicked
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(searchInput.getWindowToken(), 0);
+            }
             String query = searchInput.getText().toString().trim();
             //searchInput.setText();
             String numBooksStr = numBooksInput.getText().toString().trim();
@@ -144,7 +151,7 @@ public class SearchBook extends AppCompatActivity {
             }
         });
 
-    }
+    } hide keyboard when search button is clicked
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void startSearch(String searchQuery, Integer firstNBooks) {
         searchButton.setEnabled(false);

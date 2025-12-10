@@ -50,4 +50,7 @@ dependencies {
     implementation libs.coreprogress
 
     implementation 'org.jsoup:jsoup:1.21.2'
+
+    implementation libs.glide
+    annotationProcessor libs.compiler
 }
