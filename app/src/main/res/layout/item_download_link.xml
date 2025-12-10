@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:background="?attr/selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- Format Badge -->
+        <TextView
+            android:id="@+id/formatBadge"
+            android:layout_width="50dp"
+            android:layout_height="24dp"
+            android:text="EPUB"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:background="@drawable/format_badge_background"
+            android:gravity="center"
+            android:layout_marginEnd="12dp" />
+
+        <!-- File Info -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/fileName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="the-alchemist.epub"
+                android:textSize="12sp"
+                android:textColor="#212121"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
+            <TextView
+                android:id="@+id/fileId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ID: 12345"
+                android:textSize="11sp"
+                android:textColor="#757575"
+                android:layout_marginTop="2dp" />
+
+        </LinearLayout>
+
+        <!-- Copy Button -->
+        <ImageButton
+            android:id="@+id/copyButton"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/file_open"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Copy download info"
+            android:layout_marginStart="8dp" />
+
+    </LinearLayout>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="#F0F0F0" />
+
+</LinearLayout>

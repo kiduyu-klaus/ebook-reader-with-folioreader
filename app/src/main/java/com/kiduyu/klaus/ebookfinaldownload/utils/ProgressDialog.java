@@ -32,4 +32,7 @@ public class ProgressDialog {
     }
 
 
+    public boolean isShowing() {
+        return dialog != null && dialog.isShowing();
+    }
 }
