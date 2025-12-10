@@ -1,5 +1,6 @@
 package com.kiduyu.klaus.ebookfinaldownload;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -200,9 +201,21 @@ public class ReadBook extends AppCompatActivity implements OnHighlightListener, 
     }
     @Override
     public void onFolioReaderClosed() {
+        navigateToBookList();
 
     }
-
+    @Override
+    public void onBackPressed() {
+        // Navigate to BookListActivity when back is pressed
+        super.onBackPressed();
+        navigateToBookList();
+    }
+    private void navigateToBookList() {
+        Intent intent = new Intent(this, BookListActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+        finish();
+    }
     @Override
     public void onHighlight(HighLight highlight, HighLight.HighLightAction type) {
 
