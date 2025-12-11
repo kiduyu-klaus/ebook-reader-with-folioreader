@@ -7,16 +7,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp">
+        android:orientation="vertical">
 
         <!-- Welcome Card -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="0dp"
+            app:shapeAppearanceOverlay="@style/Shape_No_Corners"
+
             app:strokeWidth="0dp">
 
             <LinearLayout
@@ -24,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/card_gradient"
                 android:orientation="vertical"
-                android:padding="24dp">
+                android:padding="42dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -52,6 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:text="Quick Actions"
+            android:layout_margin="10dp"
             android:textColor="#212121"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -59,6 +59,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:orientation="horizontal"
             android:weightSum="2">
 
@@ -167,6 +168,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:layout_margin="10dp"
             android:orientation="horizontal"
             android:weightSum="2">
 
@@ -257,6 +259,7 @@
             android:layout_marginTop="32dp"
             android:layout_marginBottom="16dp"
             android:text="Library Stats"
+            android:layout_margin="10dp"
             android:textColor="#212121"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -265,6 +268,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="16dp"
+            android:layout_margin="10dp"
             app:cardElevation="2dp"
             app:strokeColor="#E0E0E0"
             app:strokeWidth="1dp">

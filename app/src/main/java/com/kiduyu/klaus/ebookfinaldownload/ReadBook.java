@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
 
 import com.folioreader.Config;
 import com.folioreader.FolioReader;
@@ -19,6 +20,7 @@ import com.folioreader.model.locators.ReadLocator;
 import com.folioreader.util.AppUtil;
 import com.folioreader.util.OnHighlightListener;
 import com.folioreader.util.ReadLocatorListener;
+import com.kiduyu.klaus.ebookfinaldownload.fragments.MyBooksFragment;
 import com.kiduyu.klaus.ebookfinaldownload.utils.ProgressDialog;
 
 import java.io.File;
@@ -230,10 +232,12 @@ public class ReadBook extends AppCompatActivity implements OnHighlightListener, 
     }
 
     private void navigateToBookList() {
-        Intent intent = new Intent(this, BookListActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("open_fragment", "my_books");
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
         finish();
+
     }
     @Override
     public void onHighlight(HighLight highlight, HighLight.HighLightAction type) {

@@ -1,6 +1,5 @@
 package com.kiduyu.klaus.ebookfinaldownload.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +13,9 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.kiduyu.klaus.ebookfinaldownload.BookListActivity;
+import com.google.android.material.navigation.NavigationView;
+import com.kiduyu.klaus.ebookfinaldownload.MainActivity;
 import com.kiduyu.klaus.ebookfinaldownload.R;
-import com.kiduyu.klaus.ebookfinaldownload.SearchBook;
 
 import java.io.File;
 
@@ -25,6 +24,8 @@ public class HomeFragment extends Fragment {
     private MaterialCardView cardSearch;
     private MaterialCardView cardMyBooks;
     private MaterialCardView cardRaw;
+
+    private NavigationView navigationView;
     private MaterialCardView cardAssets;
     private TextView tvTotalBooks;
     private TextView tvReadingNow;
@@ -57,19 +58,21 @@ public class HomeFragment extends Fragment {
         tvReadingNow = view.findViewById(R.id.tv_reading_now);
         tvCompleted = view.findViewById(R.id.tv_completed);
         fabAdd = view.findViewById(R.id.fab_add);
+        navigationView = getActivity().findViewById(R.id.nav_view);
     }
 
     private void setupClickListeners() {
         cardSearch.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), SearchBook.class);
-            startActivity(intent);
+            if (getActivity() != null) {
+                ((MainActivity) getActivity()).loadFragment(new SearchFragment());
+                navigationView.setCheckedItem(R.id.nav_search);
+            }
         });
 
         cardMyBooks.setOnClickListener(v -> {
-            // Navigate to MyBooksFragment
             if (getActivity() != null) {
-                ((com.kiduyu.klaus.ebookfinaldownload.MainActivity) getActivity())
-                        .loadFragment(new MyBooksFragment());
+                ((MainActivity) getActivity()).loadFragment(new MyBooksFragment());
+                navigationView.setCheckedItem(R.id.nav_my_books);
             }
         });
 
@@ -82,8 +85,9 @@ public class HomeFragment extends Fragment {
         });
 
         fabAdd.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), SearchBook.class);
-            startActivity(intent);
+            if (getActivity() != null) {
+                ((MainActivity) getActivity()).loadFragment(new SearchFragment());
+            }
         });
     }
 
