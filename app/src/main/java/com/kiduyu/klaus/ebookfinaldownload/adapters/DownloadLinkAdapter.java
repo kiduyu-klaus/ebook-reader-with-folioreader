@@ -1,6 +1,7 @@
 package com.kiduyu.klaus.ebookfinaldownload.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kiduyu.klaus.ebookfinaldownload.R;
+import com.kiduyu.klaus.ebookfinaldownload.ReadBook;
 import com.kiduyu.klaus.ebookfinaldownload.models.DownloadLink;
 
 import java.util.List;
@@ -45,9 +47,12 @@ public class DownloadLinkAdapter extends RecyclerView.Adapter<DownloadLinkAdapte
         // Copy button click
         holder.readButton.setOnClickListener(v -> {
             String copyText = link.getDownlink();
+            Intent intent = new Intent(context, ReadBook.class);
+            intent.putExtra("DOWNLOAD_URL", copyText);
+            context.startActivity(intent);
 
 
-            Toast.makeText(context, "Download info copied!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Copied: " + copyText, Toast.LENGTH_SHORT).show();
         });
     }
 

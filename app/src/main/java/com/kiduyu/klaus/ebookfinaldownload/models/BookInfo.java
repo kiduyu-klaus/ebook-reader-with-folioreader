@@ -83,5 +83,11 @@ public class BookInfo {
     public void addDownloadLink(DownloadLink link) {
         this.downloadLinks.add(link);
     }
-}
 
+    public void addDownloadLink(String url) {
+        DownloadLink link = new DownloadLink();
+        link.setDownlink(url);
+
+        this.downloadLinks.add(link);
+    }
+}

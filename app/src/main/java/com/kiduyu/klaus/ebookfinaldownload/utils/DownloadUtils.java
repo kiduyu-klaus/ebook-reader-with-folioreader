@@ -4,6 +4,10 @@ package com.kiduyu.klaus.ebookfinaldownload.utils;
 
 
 
+import android.content.Context;
+import android.util.Log;
+
+import com.kiduyu.klaus.ebookfinaldownload.MainActivity;
 import com.kiduyu.klaus.ebookfinaldownload.models.BookInfo;
 import com.kiduyu.klaus.ebookfinaldownload.models.DownloadLink;
 
@@ -18,7 +22,7 @@ import org.jsoup.select.Elements;
 import okhttp3.*;
 
 public class DownloadUtils {
-
+    private static final String TAG = "DownloadUtils";
     private static final String FETCH_URL = "https://oceanofpdf.com/Fetching_Resource.php";
     private static final int CHUNK_SIZE = 65536; // 64KB
     private static final String[] USER_AGENTS = {
@@ -32,6 +36,10 @@ public class DownloadUtils {
 
     private static final Random random = new Random();
     private static final ExecutorService chunkExecutor = Executors.newFixedThreadPool(4);
+    Context context;
+    public DownloadUtils(Context context) {
+        this.context=context;
+    }
 
     /**
      * Get a random user agent string
@@ -48,7 +56,7 @@ public class DownloadUtils {
      * Get download forms from a book page
      * Returns list of form data (id and filename) for downloading
      */
-    public static String fetchAndDownload(List<DownloadLink>  payload, OkHttpClient client,
+    public  String fetchAndDownload(List<DownloadLink>  payload, OkHttpClient client,
                                           BookInfo bookInfo, int maxRetries) {
         DownloadLink epubLink = null;
         for (DownloadLink link : payload) {
@@ -134,6 +142,7 @@ public class DownloadUtils {
             // Step 4: Validate content-disposition
             String contentDisposition = headResponse.header("content-disposition", "");
             if (contentDisposition.contains("attachment") && contentDisposition.contains("filename=")) {
+                bookInfo.getDownloadLinks().get(0).setDownlink(redirectUrl);
                 return redirectUrl;
             } else {
                 System.out.println("❌ No valid downloadable attachment in headers.");
@@ -172,6 +181,141 @@ public class DownloadUtils {
     }
 
 
+    public boolean isEnglish(Element postmetainfo) {
+        Elements strongTags = postmetainfo.select("strong");
+        for (Element strong : strongTags) {
+            if (strong.text().contains("Language:")) {
+                String language = strong.nextSibling() != null ?
+                        Objects.requireNonNull(strong.nextSibling()).toString().trim().toLowerCase() : "";
+                return language.equals("english");
+            }
+        }
+        return true;
+    }
+
+    public int getLastPage(String url,OkHttpClient client) throws Exception {
+        Document doc = fetchPage(url, client);
+        if (doc == null) return 1;
+
+        Element pagination = doc.selectFirst("div.archive-pagination.pagination");
+        if (pagination == null) return 1;
+
+        int maxPage = 1;
+        Elements links = pagination.select("a[href]");
+        for (Element link : links) {
+            link.select("span").remove();
+            String text = link.text().trim();
+            try {
+                int pageNum = Integer.parseInt(text);
+                maxPage = Math.max(maxPage, pageNum);
+            } catch (NumberFormatException ignored) {}
+        }
+
+        Thread.sleep(3000);
+        return maxPage;
+    }
+
+    public Document fetchPage(String url, OkHttpClient client) {
+        try {
+            Request request = new Request.Builder()
+                    .url(url)
+                    .header("User-Agent", getRandomUserAgent())
+                    .header("Accept-Language", "en-US,en;q=0.9")
+                    .header("Referer", "https://www.google.com/")
+                    .build();
+
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful() && response.body() != null) {
+                String html = response.body().string();
+                return Jsoup.parse(html);
+            }
+        } catch (IOException e) {
+            Log.d(TAG, "[!] Failed to fetch " + url + ": " + e.getMessage() + "\n");
+        }
+        return null;
+    }
+
+
+    public BookInfo getBookInfo(String bookUrl,OkHttpClient client) {
+        try {
+            Request request = new Request.Builder()
+                    .url(bookUrl)
+                    .header("User-Agent", getRandomUserAgent())
+                    .header("Accept-Language", "en-US,en;q=0.9")
+                    .header("Referer", "https://www.google.com/")
+                    .build();
+
+            Response response = client.newCall(request).execute();
+
+            if (!response.isSuccessful() || response.body() == null) {
+                return null;
+            }
+
+            String html = response.body().string();
+            Document doc = Jsoup.parse(html);
+
+            BookInfo info = new BookInfo();
+            info.setBookUrl(bookUrl);
+            info.setDownlink(bookUrl);
+
+            // Extract book details
+            Element entryContent = doc.selectFirst("div.entry-content");
+            if (entryContent != null) {
+                Element ulTag = entryContent.selectFirst("ul");
+                if (ulTag != null) {
+                    Elements liElements = ulTag.select("li");
+                    for (Element li : liElements) {
+                        Element strong = li.selectFirst("strong");
+                        if (strong != null) {
+                            String text = strong.text().trim();
+                            String value = li.text().replace(text, "").trim();
+
+                            if (text.contains("Full Book Name")) {
+                                info.setTitle(value);
+                            } else if (text.contains("Author")) {
+                                info.setAuthor(value);
+                            } else if (text.contains("Language")) {
+                                info.setLanguage(value);
+                            } else if (text.contains("PDF File Size")) {
+                                info.setPdfSize(value);
+                            } else if (text.contains("EPUB File Size")) {
+                                info.setEpubSize(value);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Extract download forms
+            Elements forms = doc.select("form[action=https://oceanofpdf.com/Fetching_Resource.php]");
+            for (Element form : forms) {
+                Element idInput = form.selectFirst("input[name=id]");
+                Element filenameInput = form.selectFirst("input[name=filename]");
+
+                if (idInput != null && filenameInput != null) {
+                    String filename = filenameInput.attr("value");
+                    String fileExt = filename.substring(filename.lastIndexOf(".") + 1).toLowerCase();
+
+                    if (fileExt.equals("epub")){
+
+                        DownloadLink link = new DownloadLink();
+                        link.setId(idInput.attr("value"));
+                        link.setFilename(filename);
+                        link.setFormat(fileExt);
+
+                        info.addDownloadLink(link);
+                    }
+                }
+            }
+
+            Thread.sleep(1500);
+            return info;
+
+        } catch (Exception e) {
+            Log.d(TAG, "Error extracting book info: " + e.getMessage());
+            return null;
+        }
+    }
 
 
     /**

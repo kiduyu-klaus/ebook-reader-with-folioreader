@@ -1,17 +1,14 @@
 package com.kiduyu.klaus.ebookfinaldownload;
 
+import static com.kiduyu.klaus.ebookfinaldownload.utils.DownloadUtils.getRandomUserAgent;
+
 import android.content.Context;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import android.Manifest;
-import android.content.pm.PackageManager;
+
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -24,11 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,8 +42,6 @@ import org.jsoup.select.Elements;
 import okhttp3.*;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class SearchBook extends AppCompatActivity {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -81,24 +72,16 @@ public class SearchBook extends AppCompatActivity {
     private AtomicInteger booksFound;
     private static final String FETCH_URL = "https://oceanofpdf.com/Fetching_Resource.php";
     private static final int CHUNK_SIZE = 65536; // 64KB
-    private static final String[] USER_AGENTS = {
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0",
-            "Mozilla/5.0 (Android 13; Mobile; rv:109.0) Gecko/120.0 Firefox/120.0",
-            "Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.144 Mobile Safari/537.36"
-    };
+
 
     private static final Random random = new Random();
     private static final ExecutorService chunkExecutor = Executors.newFixedThreadPool(4);
     DownloadEpub downloadEpub = new DownloadEpub(this);
+
+    DownloadUtils downloadutils = new DownloadUtils(this);
     /**
      * Get a random user agent string
      */
-    public static String getRandomUserAgent() {
-        return USER_AGENTS[random.nextInt(USER_AGENTS.length)];
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,15 +93,14 @@ public class SearchBook extends AppCompatActivity {
         initializeExecutors();
         setupRecyclerView();
         setupListeners();
-        checkAndRequestPermissions();
+        downloadEpub.checkAndRequestPermissions();
 
         this.mainHandler = new Handler(Looper.getMainLooper());
         this.booksFound = new AtomicInteger(0);
+
     }
 
-    private void checkAndRequestPermissions() {
-        downloadEpub.checkAndRequestPermissions();
-    }
+
 
     private void setupListeners() {
         searchButton.setOnClickListener(v -> {
@@ -127,6 +109,8 @@ public class SearchBook extends AppCompatActivity {
             if (imm != null) {
                 imm.hideSoftInputFromWindow(searchInput.getWindowToken(), 0);
             }
+            booksFound.set(0);
+
             String query = searchInput.getText().toString().trim();
             //searchInput.setText();
             String numBooksStr = numBooksInput.getText().toString().trim();
@@ -197,7 +181,7 @@ public class SearchBook extends AppCompatActivity {
         }
         String fullUrl = BASE_URL + encodedQuery;
 
-        int lastPage = getLastPage(fullUrl);
+        int lastPage = downloadutils.getLastPage(fullUrl,client);
         updateStatus("Detected " + lastPage + " pages");
 
         int start = (startPage != null) ? startPage : 1;
@@ -253,13 +237,16 @@ public class SearchBook extends AppCompatActivity {
     private void processBookInfo(BookTask task) {
         try {
             String downloadDir = "";
-            BookInfo bookInfo = getBookInfo(task.bookUrl);
-            List<DownloadLink>  downloadLink=bookInfo.getDownloadLinks();
-            String result = DownloadUtils.fetchAndDownload(downloadLink, client, bookInfo, 3);
+            BookInfo bookInfo = downloadutils.getBookInfo(task.bookUrl,client);
+            List<DownloadLink> downloadLink=bookInfo.getDownloadLinks();
+            DownloadLink link = new DownloadLink();
+
+            String result = downloadutils.fetchAndDownload(downloadLink, client, bookInfo, 3);
             if (result != null) {
                 Log.e("TAG", "downloadLink: "+downloadLink);
                 Log.e("TAG", "processBookInfo: "+result);
                 bookInfo.setDownlink(result);
+                downloadLink.get(0).setDownlink(result);
 
             }
 
@@ -279,85 +266,6 @@ public class SearchBook extends AppCompatActivity {
             updateStatus("Error processing book: " + e.getMessage());
         }
     }
-
-    private BookInfo getBookInfo(String bookUrl) {
-        try {
-            Request request = new Request.Builder()
-                    .url(bookUrl)
-                    .header("User-Agent", getRandomUserAgent())
-                    .header("Accept-Language", "en-US,en;q=0.9")
-                    .header("Referer", "https://www.google.com/")
-                    .build();
-
-            Response response = client.newCall(request).execute();
-
-            if (!response.isSuccessful() || response.body() == null) {
-                return null;
-            }
-
-            String html = response.body().string();
-            Document doc = Jsoup.parse(html);
-
-            BookInfo info = new BookInfo();
-            info.setBookUrl(bookUrl);
-            info.setDownlink(bookUrl);
-
-            // Extract book details
-            Element entryContent = doc.selectFirst("div.entry-content");
-            if (entryContent != null) {
-                Element ulTag = entryContent.selectFirst("ul");
-                if (ulTag != null) {
-                    Elements liElements = ulTag.select("li");
-                    for (Element li : liElements) {
-                        Element strong = li.selectFirst("strong");
-                        if (strong != null) {
-                            String text = strong.text().trim();
-                            String value = li.text().replace(text, "").trim();
-
-                            if (text.contains("Full Book Name")) {
-                                info.setTitle(value);
-                            } else if (text.contains("Author")) {
-                                info.setAuthor(value);
-                            } else if (text.contains("Language")) {
-                                info.setLanguage(value);
-                            } else if (text.contains("PDF File Size")) {
-                                info.setPdfSize(value);
-                            } else if (text.contains("EPUB File Size")) {
-                                info.setEpubSize(value);
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Extract download forms
-            Elements forms = doc.select("form[action=https://oceanofpdf.com/Fetching_Resource.php]");
-            for (Element form : forms) {
-                Element idInput = form.selectFirst("input[name=id]");
-                Element filenameInput = form.selectFirst("input[name=filename]");
-
-                if (idInput != null && filenameInput != null) {
-                    String filename = filenameInput.attr("value");
-                    String fileExt = filename.substring(filename.lastIndexOf(".") + 1).toLowerCase();
-
-                    DownloadLink link = new DownloadLink();
-                    link.setId(idInput.attr("value"));
-                    link.setFilename(filename);
-                    link.setFormat(fileExt);
-
-                    info.addDownloadLink(link);
-                }
-            }
-
-            Thread.sleep(1500);
-            return info;
-
-        } catch (Exception e) {
-            updateStatus("Error extracting book info: " + e.getMessage());
-            return null;
-        }
-    }
-
 
     private void initializeExecutors() {
         this.client = new OkHttpClient.Builder()
@@ -392,7 +300,7 @@ public class SearchBook extends AppCompatActivity {
                            boolean firstOnly, Integer firstNBooks) throws Exception {
         String pageUrl = "https://oceanofpdf.com/page/" + page + "/?s=" + encodedQuery;
 
-        Document doc = fetchPage(pageUrl);
+        Document doc = downloadutils.fetchPage(pageUrl,client);
         if (doc == null) return;
 
         Elements articles = doc.select("article");
@@ -420,7 +328,7 @@ public class SearchBook extends AppCompatActivity {
             if (postmetainfo == null) continue;
 
             // Language filtering
-            if (!isEnglish(postmetainfo)) {
+            if (!downloadutils.isEnglish(postmetainfo)) {
                 continue;
             }
 
@@ -431,59 +339,6 @@ public class SearchBook extends AppCompatActivity {
         }
 
         Thread.sleep(2000); // Rate limiting
-    }
-    private boolean isEnglish(Element postmetainfo) {
-        Elements strongTags = postmetainfo.select("strong");
-        for (Element strong : strongTags) {
-            if (strong.text().contains("Language:")) {
-                String language = strong.nextSibling() != null ?
-                        Objects.requireNonNull(strong.nextSibling()).toString().trim().toLowerCase() : "";
-                return language.equals("english");
-            }
-        }
-        return true;
-    }
-
-    private int getLastPage(String url) throws Exception {
-        Document doc = fetchPage(url);
-        if (doc == null) return 1;
-
-        Element pagination = doc.selectFirst("div.archive-pagination.pagination");
-        if (pagination == null) return 1;
-
-        int maxPage = 1;
-        Elements links = pagination.select("a[href]");
-        for (Element link : links) {
-            link.select("span").remove();
-            String text = link.text().trim();
-            try {
-                int pageNum = Integer.parseInt(text);
-                maxPage = Math.max(maxPage, pageNum);
-            } catch (NumberFormatException ignored) {}
-        }
-
-        Thread.sleep(3000);
-        return maxPage;
-    }
-
-    private Document fetchPage(String url) {
-        try {
-            Request request = new Request.Builder()
-                    .url(url)
-                    .header("User-Agent", getRandomUserAgent())
-                    .header("Accept-Language", "en-US,en;q=0.9")
-                    .header("Referer", "https://www.google.com/")
-                    .build();
-
-            Response response = client.newCall(request).execute();
-            if (response.isSuccessful() && response.body() != null) {
-                String html = response.body().string();
-                return Jsoup.parse(html);
-            }
-        } catch (IOException e) {
-            updateStatus("[!] Failed to fetch " + url + ": " + e.getMessage() + "\n");
-        }
-        return null;
     }
 
     private void updateStatus(String message) {
