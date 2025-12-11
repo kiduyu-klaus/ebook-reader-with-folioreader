@@ -86,7 +86,6 @@
                                 android:inputType="text"
                                 android:maxLines="2"
                                 android:text="Sisters of the moon by nina croft"
-                                android:textColor="@color/black"
                                 android:textSize="16sp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -108,7 +107,6 @@
                                 android:layout_height="wrap_content"
                                 android:inputType="number"
                                 android:text="3"
-                                android:textColor="@color/black"
                                 android:textSize="16sp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -139,7 +137,7 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:navigationIcon="@android:drawable/ic_menu_revert"
-                app:title="Search"
+                app:title=""
                 app:titleTextColor="@android:color/white" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -183,7 +181,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Books Found: 0"
-                            android:textColor="#212121"
                             android:textSize="16sp"
                             android:textStyle="bold" />
 
@@ -193,7 +190,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="Ready to search..."
-                            android:textColor="#757575"
                             android:textSize="13sp"
                             android:maxLines="2"
                             android:ellipsize="end" />
