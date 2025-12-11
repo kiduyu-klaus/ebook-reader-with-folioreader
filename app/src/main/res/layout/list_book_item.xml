@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="4dp">
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp"
+    app:strokeColor="#E0E0E0"
+    app:strokeWidth="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,62 +15,127 @@
         android:orientation="horizontal"
         android:padding="16dp">
 
-        <ImageView
-            android:id="@+id/ivBookCover"
-            android:layout_width="60dp"
-            android:layout_height="80dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_background"
-            android:contentDescription="Book Cover" />
+        <!-- Book Cover with Shadow -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="80dp"
+            android:layout_height="110dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp">
 
+            <ImageView
+                android:id="@+id/ivBookCover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="Book Cover"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_launcher_background" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Book Info -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginStart="16dp"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tvBookTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Book Title"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-medium"
                 android:maxLines="2"
-                android:ellipsize="end" />
+                android:text="Book Title"
+                android:textColor="#212121"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tvBookSize"
+            <!-- Info Chips -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Size: 0 MB"
-                android:textSize="12sp"
-                android:textColor="@android:color/darker_gray" />
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tvBookDate"
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipSize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="0 MB"
+                    android:textSize="11sp"
+                    app:chipBackgroundColor="#E3F2FD"
+                    app:chipCornerRadius="8dp"
+                    app:chipIcon="@android:drawable/stat_sys_download"
+                    app:chipIconSize="14dp"
+                    app:chipIconTint="#2196F3"
+                    app:chipMinHeight="28dp"
+                    app:chipStrokeWidth="0dp"
+                    app:textEndPadding="8dp"
+                    app:textStartPadding="4dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Jan 1, 2024"
+                    android:textSize="11sp"
+                    app:chipBackgroundColor="#F3E5F5"
+                    app:chipCornerRadius="8dp"
+                    app:chipIcon="@android:drawable/ic_menu_my_calendar"
+                    app:chipIconSize="14dp"
+                    app:chipIconTint="#9C27B0"
+                    app:chipMinHeight="28dp"
+                    app:chipStrokeWidth="0dp"
+                    app:textEndPadding="8dp"
+                    app:textStartPadding="4dp" />
+
+            </LinearLayout>
+
+            <!-- Action Buttons -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="Date: N/A"
-                android:textSize="12sp"
-                android:textColor="@android:color/darker_gray" />
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnOpenBook"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:text="Read"
+                    android:textSize="13sp"
+                    app:cornerRadius="10dp"
+                    app:icon="@android:drawable/ic_menu_view"
+                    app:iconSize="16dp"
+                    app:iconGravity="textStart"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnDeleteBook"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:insetLeft="0dp"
+                    android:insetTop="0dp"
+                    android:insetRight="0dp"
+                    android:insetBottom="0dp"
+                    android:padding="0dp"
+                    app:cornerRadius="10dp"
+                    app:icon="@android:drawable/ic_menu_delete"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconSize="20dp"
+                    app:iconTint="#F44336"
+                    style="@style/Widget.MaterialComponents.Button.TextButton" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/btnDeleteBook"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_menu_delete"
-            android:contentDescription="Delete Book"
-            android:padding="8dp" />
-
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

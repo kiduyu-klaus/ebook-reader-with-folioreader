@@ -27,11 +27,7 @@
         <activity
             android:name=".BookListActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".SearchBook"
@@ -40,7 +36,13 @@
             android:name=".ReadBook"
             android:exported="false" />
         <activity
-            android:name=".MainActivity">
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
         </activity>
     </application>

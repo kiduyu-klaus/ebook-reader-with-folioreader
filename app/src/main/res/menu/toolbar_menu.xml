@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="Search"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_filter"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        android:title="Filter">
+        <menu>
+            <item
+                android:id="@+id/filter_all"
+                android:title="All Books" />
+            <item
+                android:id="@+id/filter_epub"
+                android:title="EPUB Only" />
+            <item
+                android:id="@+id/filter_pdf"
+                android:title="PDF Only" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/action_sort"
+        android:icon="@android:drawable/ic_menu_sort_alphabetically"
+        android:title="Sort By">
+        <menu>
+            <item
+                android:id="@+id/sort_name"
+                android:title="Name" />
+            <item
+                android:id="@+id/sort_date"
+                android:title="Date Added" />
+            <item
+                android:id="@+id/sort_size"
+                android:title="Size" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/action_refresh"
+        android:icon="@android:drawable/ic_menu_rotate"
+        android:title="Refresh"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="Settings"
+        app:showAsAction="never" />
+
+</menu>

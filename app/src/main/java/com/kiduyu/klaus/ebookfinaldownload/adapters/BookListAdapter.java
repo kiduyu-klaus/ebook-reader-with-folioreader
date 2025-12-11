@@ -12,6 +12,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.Chip;
 import com.kiduyu.klaus.ebookfinaldownload.R;
 import com.kiduyu.klaus.ebookfinaldownload.models.BookItem;
 
@@ -55,23 +57,25 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
     static class BookViewHolder extends RecyclerView.ViewHolder {
         private ImageView ivBookCover;
         private TextView tvBookTitle;
-        private TextView tvBookSize;
-        private TextView tvBookDate;
-        private ImageButton btnDeleteBook;
+        private Chip tvBookSize;
+        private Chip tvBookDate;
 
+        private MaterialButton btnDeleteBook;
+        private MaterialButton readBook;
         public BookViewHolder(@NonNull View itemView) {
             super(itemView);
             ivBookCover = itemView.findViewById(R.id.ivBookCover);
             tvBookTitle = itemView.findViewById(R.id.tvBookTitle);
-            tvBookSize = itemView.findViewById(R.id.tvBookSize);
-            tvBookDate = itemView.findViewById(R.id.tvBookDate);
+            tvBookSize = itemView.findViewById(R.id.chipSize);
+            tvBookDate = itemView.findViewById(R.id.chipDate);
             btnDeleteBook = itemView.findViewById(R.id.btnDeleteBook);
+            readBook = itemView.findViewById(R.id.btnOpenBook);
         }
 
         public void bind(BookItem book, OnBookClickListener listener) {
             tvBookTitle.setText(book.getTitle());
-            tvBookSize.setText("Size: " + book.getSize());
-            tvBookDate.setText("Date: " + book.getDate());
+            tvBookSize.setText(book.getSize());
+            tvBookDate.setText(book.getDate());
 
             // Load cover image using Glide
             if (book.getCoverImagePath() != null && !book.getCoverImagePath().isEmpty()) {
@@ -106,6 +110,12 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
             btnDeleteBook.setOnClickListener(v -> {
                 if (listener != null) {
                     listener.onDeleteClick(book);
+                }
+            });
+
+            readBook.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onBookClick(book);
                 }
             });
         }
