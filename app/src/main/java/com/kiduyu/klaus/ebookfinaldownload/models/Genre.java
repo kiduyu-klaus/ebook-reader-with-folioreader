@@ -1,6 +1,8 @@
 package com.kiduyu.klaus.ebookfinaldownload.models;
 
-public class Genre {
+import java.io.Serializable;
+
+public class Genre implements Serializable {
     private String name;
     private String url;
     private int bookCount;

@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,7 +35,6 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
-import com.kiduyu.klaus.ebookfinaldownload.R;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -104,14 +102,21 @@ public class CategoriesFragment extends Fragment {
         allGenres = new ArrayList<>();
         filteredGenres = new ArrayList<>();
         genreAdapter = new GenreAdapter(getContext(), filteredGenres, genre -> {
-            // Handle genre click - navigate to books in that genre
-            if (getActivity() != null) {
-                Toast.makeText(getContext(), "Selected: " + genre.getName(), Toast.LENGTH_SHORT).show();
-                // TODO: Navigate to search fragment with genre query
-            }
+            // Handle genre click - navigate to GenreBooksFragment
+            navigateToGenreBooks(genre);
         });
         genresRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         genresRecyclerView.setAdapter(genreAdapter);
+    }
+
+    private void navigateToGenreBooks(Genre genre) {
+        Fragment genreBooksFragment = GenreBooksFragment.newInstance(genre);
+        if (getActivity() != null) {
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.content_frame, genreBooksFragment)
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 
     private void setupSearchFilter() {
@@ -270,8 +275,10 @@ public class CategoriesFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         if (client != null) {
-            client.dispatcher().executorService().shutdown();
-            client.connectionPool().evictAll();
+            new Thread(() -> {
+                client.dispatcher().executorService().shutdown();
+                client.connectionPool().evictAll();
+            }).start();
         }
     }
 }
