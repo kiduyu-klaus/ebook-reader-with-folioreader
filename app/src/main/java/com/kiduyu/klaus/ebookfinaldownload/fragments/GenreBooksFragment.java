@@ -21,6 +21,7 @@ import com.google.android.material.button.MaterialButton;
 import com.kiduyu.klaus.ebookfinaldownload.R;
 import com.kiduyu.klaus.ebookfinaldownload.adapters.BookAdapter;
 import com.kiduyu.klaus.ebookfinaldownload.models.BookInfo;
+import com.kiduyu.klaus.ebookfinaldownload.models.DownloadLink;
 import com.kiduyu.klaus.ebookfinaldownload.models.Genre;
 import com.kiduyu.klaus.ebookfinaldownload.utils.DownloadUtils;
 
@@ -29,7 +30,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.ConnectionPool;
@@ -39,13 +45,14 @@ public class GenreBooksFragment extends Fragment {
 
     private static final String ARG_GENRE = "genre";
     private static final String TAG = "GenreBooksFragment";
-    private static final int DEFAULT_TIMEOUT = 15000;
-    private static final int MAX_PAGES = 20; // Maximum pages available on website
+    private static final int DEFAULT_TIMEOUT = 10000; // Reduced timeout
+    private static final int MAX_PAGES = 20;
 
     private Genre genre;
     private OkHttpClient client;
     private Handler mainHandler;
     private DownloadUtils downloadUtils;
+    private ExecutorService executorService;
 
     // UI Elements
     private RecyclerView booksRecyclerView;
@@ -57,6 +64,9 @@ public class GenreBooksFragment extends Fragment {
     private MaterialButton nextButton;
     private TextView pageInfoText;
 
+
+    private DownloadUtils downloadutils;
+
     // Adapter
     private BookAdapter bookAdapter;
     private List<BookInfo> booksList;
@@ -65,6 +75,12 @@ public class GenreBooksFragment extends Fragment {
     private int currentPage = 1;
     private boolean isLoading = false;
     private boolean hasMorePages = true;
+
+    // Cache for loaded pages
+    private Map<Integer, List<BookInfo>> pageCache = new HashMap<>();
+
+    // Prefetch state
+    private Future<?> prefetchFuture;
 
     public GenreBooksFragment() {
         // Required empty public constructor
@@ -84,6 +100,7 @@ public class GenreBooksFragment extends Fragment {
         if (getArguments() != null) {
             genre = (Genre) getArguments().getSerializable(ARG_GENRE);
         }
+        executorService = Executors.newFixedThreadPool(3); // For parallel fetching
     }
 
     @Override
@@ -95,6 +112,7 @@ public class GenreBooksFragment extends Fragment {
         initializeClient();
         setupRecyclerView();
         setupPaginationButtons();
+        downloadutils = new DownloadUtils(getContext());
 
         this.mainHandler = new Handler(Looper.getMainLooper());
         this.downloadUtils = new DownloadUtils(getContext());
@@ -124,7 +142,7 @@ public class GenreBooksFragment extends Fragment {
                 .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS)
                 .readTimeout(DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS)
                 .followRedirects(true)
-                .connectionPool(new ConnectionPool(10, 5, TimeUnit.MINUTES))
+                .connectionPool(new ConnectionPool(20, 5, TimeUnit.MINUTES)) // Increased pool
                 .build();
     }
 
@@ -154,16 +172,23 @@ public class GenreBooksFragment extends Fragment {
     private void loadBooksForPage(int page) {
         if (isLoading) return;
 
+        // Check cache first
+        if (pageCache.containsKey(page)) {
+            Log.d(TAG, "Loading page " + page + " from cache");
+            displayCachedPage(page);
+            prefetchAdjacentPages(page);
+            return;
+        }
+
         isLoading = true;
         progressBar.setVisibility(View.VISIBLE);
-        statusText.setText("Loading page " + page + " for: " + genre.getName());
+        statusText.setText("Loading page " + page + "...");
         booksRecyclerView.setVisibility(View.GONE);
         emptyStateLayout.setVisibility(View.GONE);
 
-        // Update pagination controls
         updatePaginationControls();
 
-        new Thread(() -> {
+        executorService.execute(() -> {
             try {
                 List<BookInfo> books = fetchBooksFromGenre(genre.getUrl(), page);
 
@@ -172,9 +197,8 @@ public class GenreBooksFragment extends Fragment {
                         updateStatus("No English books found in this genre");
                         showEmptyState();
                     } else {
-                        // No more pages available
                         hasMorePages = false;
-                        currentPage--; // Go back to previous page
+                        currentPage--;
                         updateStatus("No more books available");
                         if (getActivity() != null) {
                             getActivity().runOnUiThread(() -> {
@@ -187,37 +211,40 @@ public class GenreBooksFragment extends Fragment {
                     return;
                 }
 
-                // Update UI on main thread
+                // Cache the page
+                pageCache.put(page, books);
+
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
                         booksList.clear();
                         booksList.addAll(books);
                         bookAdapter.notifyDataSetChanged();
 
-                        // Scroll to top
                         booksRecyclerView.scrollToPosition(0);
 
                         progressBar.setVisibility(View.GONE);
                         booksRecyclerView.setVisibility(View.VISIBLE);
                         paginationLayout.setVisibility(View.VISIBLE);
 
-                        statusText.setText(books.size() + " English books found on page " + page);
+                        statusText.setText(books.size() + " books on page " + page);
                         isLoading = false;
 
-                        // Update pagination controls
                         updatePaginationControls();
+
+                        // Prefetch adjacent pages
+                        prefetchAdjacentPages(page);
 
                         Log.d(TAG, "Loaded " + books.size() + " books for page " + page);
                     });
                 }
 
             } catch (Exception e) {
-                Log.e(TAG, "Error loading books for page " + page + ": " + e.getMessage(), e);
+                Log.e(TAG, "Error loading page " + page + ": " + e.getMessage(), e);
                 updateStatus("Error: " + e.getMessage());
                 if (page == 1) {
                     showEmptyState();
                 } else {
-                    currentPage--; // Go back to previous page
+                    currentPage--;
                     if (getActivity() != null) {
                         getActivity().runOnUiThread(() -> {
                             progressBar.setVisibility(View.GONE);
@@ -227,7 +254,63 @@ public class GenreBooksFragment extends Fragment {
                 }
                 isLoading = false;
             }
-        }).start();
+        });
+    }
+
+    private void displayCachedPage(int page) {
+        List<BookInfo> cachedBooks = pageCache.get(page);
+        if (cachedBooks != null) {
+            booksList.clear();
+            booksList.addAll(cachedBooks);
+            bookAdapter.notifyDataSetChanged();
+
+            booksRecyclerView.scrollToPosition(0);
+            booksRecyclerView.setVisibility(View.VISIBLE);
+            paginationLayout.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+
+            statusText.setText(cachedBooks.size() + " books on page " + page);
+            updatePaginationControls();
+        }
+    }
+
+    private void prefetchAdjacentPages(int currentPage) {
+        // Cancel any existing prefetch
+        if (prefetchFuture != null && !prefetchFuture.isDone()) {
+            prefetchFuture.cancel(true);
+        }
+
+        prefetchFuture = executorService.submit(() -> {
+            // Prefetch next page
+            int nextPage = currentPage + 1;
+            if (nextPage <= MAX_PAGES && !pageCache.containsKey(nextPage)) {
+                try {
+                    Log.d(TAG, "Prefetching page " + nextPage);
+                    List<BookInfo> books = fetchBooksFromGenre(genre.getUrl(), nextPage);
+                    if (!books.isEmpty()) {
+                        pageCache.put(nextPage, books);
+                        Log.d(TAG, "Prefetched page " + nextPage + " with " + books.size() + " books");
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "Prefetch failed for page " + nextPage, e);
+                }
+            }
+
+            // Prefetch previous page
+            int prevPage = currentPage - 1;
+            if (prevPage > 0 && !pageCache.containsKey(prevPage)) {
+                try {
+                    Log.d(TAG, "Prefetching page " + prevPage);
+                    List<BookInfo> books = fetchBooksFromGenre(genre.getUrl(), prevPage);
+                    if (!books.isEmpty()) {
+                        pageCache.put(prevPage, books);
+                        Log.d(TAG, "Prefetched page " + prevPage + " with " + books.size() + " books");
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "Prefetch failed for page " + prevPage, e);
+                }
+            }
+        });
     }
 
     private List<BookInfo> fetchBooksFromGenre(String genreUrl, int page) throws Exception {
@@ -247,6 +330,8 @@ public class GenreBooksFragment extends Fragment {
             return books;
         }
 
+        // Collect all book URLs first
+        List<String> bookUrls = new ArrayList<>();
         for (Element article : articles) {
             Element header = article.selectFirst("header.entry-header");
             if (header == null) continue;
@@ -257,30 +342,50 @@ public class GenreBooksFragment extends Fragment {
             Element postmetainfo = article.selectFirst("div.postmetainfo");
             if (postmetainfo == null) continue;
 
-            // Filter for English language only
             if (!downloadUtils.isEnglish(postmetainfo)) {
                 continue;
             }
 
-            String bookUrl = aTag.attr("href");
-            String bookTitle = aTag.text();
+            bookUrls.add(aTag.attr("href"));
+        }
 
+        // Fetch book info in parallel
+        List<Future<BookInfo>> futures = new ArrayList<>();
+        for (String bookUrl : bookUrls) {
+            futures.add(executorService.submit(() -> {
+                try {
+                    return downloadUtils.getBookInfo(bookUrl, client);
+                } catch (Exception e) {
+                    Log.e(TAG, "Error fetching book info for: " + bookUrl, e);
+                    return null;
+                }
+            }));
+        }
+
+        // Collect results
+        for (Future<BookInfo> future : futures) {
             try {
-                BookInfo bookInfo = downloadUtils.getBookInfo(bookUrl, client);
+                BookInfo bookInfo = future.get(15, TimeUnit.SECONDS);
+                List<DownloadLink> downloadLink = bookInfo.getDownloadLinks();
+
+                String result = downloadutils.fetchAndDownload(downloadLink, client, bookInfo, 3);
+                if (result != null) {
+                    Log.e(TAG, "downloadLink: " + downloadLink);
+                    Log.e(TAG, "processBookInfo: " + result);
+                    bookInfo.setDownlink(result);
+                    downloadLink.get(0).setDownlink(result);
+                }
                 if (bookInfo != null) {
                     books.add(bookInfo);
                 }
             } catch (Exception e) {
-                Log.e(TAG, "Error fetching book info for: " + bookTitle, e);
+                Log.e(TAG, "Error getting book info from future", e);
             }
         }
 
-        // If we got books, assume there might be more pages
         if (!books.isEmpty()) {
             hasMorePages = true;
         }
-
-        Thread.sleep(2000); // Rate limiting
 
         return books;
     }
@@ -289,21 +394,18 @@ public class GenreBooksFragment extends Fragment {
         if (getActivity() == null) return;
 
         getActivity().runOnUiThread(() -> {
-            // Update page info
             String pageInfo = "Page " + currentPage;
             if (currentPage >= MAX_PAGES) {
                 pageInfo += " (Last)";
             }
             pageInfoText.setText(pageInfo);
 
-            // Update button states
             previousButton.setEnabled(currentPage > 1 && !isLoading);
             previousButton.setAlpha((currentPage > 1 && !isLoading) ? 1.0f : 0.5f);
 
             nextButton.setEnabled(hasMorePages && currentPage < MAX_PAGES && !isLoading);
             nextButton.setAlpha((hasMorePages && currentPage < MAX_PAGES && !isLoading) ? 1.0f : 0.5f);
 
-            // Show loading state
             if (isLoading) {
                 previousButton.setText("Loading...");
                 nextButton.setText("Loading...");
@@ -348,11 +450,25 @@ public class GenreBooksFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
+        // Cancel prefetch
+        if (prefetchFuture != null) {
+            prefetchFuture.cancel(true);
+        }
+
+        // Shutdown executor
+        if (executorService != null) {
+            executorService.shutdown();
+        }
+
         if (client != null) {
             new Thread(() -> {
                 client.dispatcher().executorService().shutdown();
                 client.connectionPool().evictAll();
             }).start();
         }
+
+        // Clear cache
+        pageCache.clear();
     }
 }

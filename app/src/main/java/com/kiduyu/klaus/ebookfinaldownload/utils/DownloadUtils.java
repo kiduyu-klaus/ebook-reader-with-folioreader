@@ -68,7 +68,7 @@ public class DownloadUtils {
 
         if (epubLink == null) {
             System.out.println("❌ No EPUB download link found for this book.");
-            epubLink = payload.get(0);;
+            return null;
         }
 
         System.out.println("\n[+] Requesting resource for " + epubLink.getFilename() + "...");
