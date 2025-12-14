@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+
+    <!-- Background circle -->
+    <path
+        android:fillColor="#F5F5F5"
+        android:pathData="M60,60m-55,0a55,55 0,1 1,110 0a55,55 0,1 1,-110 0" />
+
+    <!-- Empty bookshelf base -->
+    <path
+        android:fillColor="#BDBDBD"
+        android:pathData="M30,75 L90,75 L90,80 L30,80 Z" />
+
+    <!-- Bookshelf vertical support left -->
+    <path
+        android:fillColor="#9E9E9E"
+        android:pathData="M30,40 L35,40 L35,75 L30,75 Z" />
+
+    <!-- Bookshelf vertical support right -->
+    <path
+        android:fillColor="#9E9E9E"
+        android:pathData="M85,40 L90,40 L90,75 L85,75 Z" />
+
+    <!-- Empty shelf middle -->
+    <path
+        android:fillColor="#BDBDBD"
+        android:pathData="M30,55 L90,55 L90,58 L30,58 Z" />
+
+    <!-- Book outline 1 (empty/outline only) -->
+    <path
+        android:strokeColor="#E0E0E0"
+        android:strokeWidth="2"
+        android:fillColor="#00000000"
+        android:pathData="M40,60 L48,60 L48,73 L40,73 Z" />
+
+    <!-- Book outline 2 -->
+    <path
+        android:strokeColor="#E0E0E0"
+        android:strokeWidth="2"
+        android:fillColor="#00000000"
+        android:pathData="M52,60 L62,60 L62,73 L52,73 Z" />
+
+    <!-- Book outline 3 -->
+    <path
+        android:strokeColor="#E0E0E0"
+        android:strokeWidth="2"
+        android:fillColor="#00000000"
+        android:pathData="M66,60 L74,60 L74,73 L66,73 Z" />
+
+    <!-- Magnifying glass circle -->
+    <path
+        android:strokeColor="#9E9E9E"
+        android:strokeWidth="3"
+        android:fillColor="#00000000"
+        android:pathData="M60,35m-10,0a10,10 0,1 1,20 0a10,10 0,1 1,-20 0" />
+
+    <!-- Magnifying glass handle -->
+    <path
+        android:strokeColor="#9E9E9E"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:pathData="M67,42 L75,50" />
+
+    <!-- Question mark in magnifying glass -->
+    <path
+        android:fillColor="#BDBDBD"
+        android:pathData="M60,28 Q62,28 62,30 Q62,32 60,33 Q58,34 58,36 L58,37 L62,37 L62,36 Q62,33 65,31 Q67,29 67,26 Q67,23 65,21 Q63,19 60,19 Q57,19 55,21 Q53,23 53,26 L57,26 Q57,24 58,23 Q59,22 60,22 Q61,22 62,23 Q63,24 63,26 Q63,27 62,28 Q61,28 60,28 Z M58,39 L62,39 L62,43 L58,43 Z" />
+
+</vector>
