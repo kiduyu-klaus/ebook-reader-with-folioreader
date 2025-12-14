@@ -5,6 +5,7 @@ import java.util.List;
 
 public class BookInfo {
     private String bookUrl;
+    private String bookimg;
     private String title = "Unknown";
     private String author = "Unknown";
     private String language = "Unknown";
@@ -34,6 +35,14 @@ public class BookInfo {
 
     public String getAuthor() {
         return author;
+    }
+
+    public String getBookimg() {
+        return bookimg;
+    }
+
+    public void setBookimg(String bookimg) {
+        this.bookimg = bookimg;
     }
 
     public void setAuthor(String author) {
