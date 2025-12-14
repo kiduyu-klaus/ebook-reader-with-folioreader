@@ -1,29 +1,31 @@
 package com.kiduyu.klaus.ebookfinaldownload.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.kiduyu.klaus.ebookfinaldownload.R;
+import com.kiduyu.klaus.ebookfinaldownload.fragments.FavoritesFragment;
 import com.kiduyu.klaus.ebookfinaldownload.models.BookItem;
 
 import java.io.File;
 import java.util.List;
-public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookViewHolder> {
 
+public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookViewHolder> {
 
     private List<BookItem> bookList;
     private OnBookClickListener listener;
+    private Context context;
 
     public interface OnBookClickListener {
         void onBookClick(BookItem book);
@@ -38,7 +40,8 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
     @NonNull
     @Override
     public BookViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
+        context = parent.getContext();
+        View view = LayoutInflater.from(context)
                 .inflate(R.layout.list_book_item, parent, false);
         return new BookViewHolder(view);
     }
@@ -46,7 +49,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
     @Override
     public void onBindViewHolder(@NonNull BookViewHolder holder, int position) {
         BookItem book = bookList.get(position);
-        holder.bind(book, listener);
+        holder.bind(book, listener, context);
     }
 
     @Override
@@ -57,25 +60,31 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
     static class BookViewHolder extends RecyclerView.ViewHolder {
         private ImageView ivBookCover;
         private TextView tvBookTitle;
-        private Chip tvBookSize;
-        private Chip tvBookDate;
-
+        private Chip chipSize;
+        private Chip chipDate;
+        private MaterialButton btnOpenBook;
         private MaterialButton btnDeleteBook;
-        private MaterialButton readBook;
+        private MaterialButton btnFavorite;
+
         public BookViewHolder(@NonNull View itemView) {
             super(itemView);
             ivBookCover = itemView.findViewById(R.id.ivBookCover);
             tvBookTitle = itemView.findViewById(R.id.tvBookTitle);
-            tvBookSize = itemView.findViewById(R.id.chipSize);
-            tvBookDate = itemView.findViewById(R.id.chipDate);
+            chipSize = itemView.findViewById(R.id.chipSize);
+            chipDate = itemView.findViewById(R.id.chipDate);
+            btnOpenBook = itemView.findViewById(R.id.btnOpenBook);
             btnDeleteBook = itemView.findViewById(R.id.btnDeleteBook);
-            readBook = itemView.findViewById(R.id.btnOpenBook);
+            btnFavorite = itemView.findViewById(R.id.btnFavorite);
         }
 
-        public void bind(BookItem book, OnBookClickListener listener) {
+        public void bind(BookItem book, OnBookClickListener listener, Context context) {
             tvBookTitle.setText(book.getTitle());
-            tvBookSize.setText(book.getSize());
-            tvBookDate.setText(book.getDate());
+            chipSize.setText(book.getSize());
+            chipDate.setText(book.getDate());
+
+            // Check if book is favorite and update button
+            boolean isFavorite = FavoritesFragment.isFavorite(context, book.getFilePath());
+            updateFavoriteButton(isFavorite);
 
             // Load cover image using Glide
             if (book.getCoverImagePath() != null && !book.getCoverImagePath().isEmpty()) {
@@ -89,35 +98,57 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
                             .centerCrop()
                             .into(ivBookCover);
                 } else {
-                    // Fallback to default image
                     Glide.with(itemView.getContext())
                             .load(R.drawable.ic_launcher_background)
                             .into(ivBookCover);
                 }
             } else {
-                // No cover image, use default
                 Glide.with(itemView.getContext())
                         .load(R.drawable.ic_launcher_background)
                         .into(ivBookCover);
             }
 
-            itemView.setOnClickListener(v -> {
+            // Open book button
+            btnOpenBook.setOnClickListener(v -> {
                 if (listener != null) {
                     listener.onBookClick(book);
                 }
             });
 
+            // Delete button
             btnDeleteBook.setOnClickListener(v -> {
                 if (listener != null) {
                     listener.onDeleteClick(book);
                 }
             });
 
-            readBook.setOnClickListener(v -> {
+            // Favorite button
+            btnFavorite.setOnClickListener(v -> {
+                FavoritesFragment.toggleFavorite(context, book.getFilePath());
+                boolean newFavoriteState = FavoritesFragment.isFavorite(context, book.getFilePath());
+                updateFavoriteButton(newFavoriteState);
+            });
+
+            // Card click listener
+            itemView.setOnClickListener(v -> {
                 if (listener != null) {
                     listener.onBookClick(book);
                 }
             });
+        }
+
+        private void updateFavoriteButton(boolean isFavorite) {
+            if (isFavorite) {
+                btnFavorite.setIcon(itemView.getContext().getDrawable(R.drawable.ic_favorite));
+                btnFavorite.setIconTint(android.content.res.ColorStateList.valueOf(
+                        itemView.getContext().getResources().getColor(android.R.color.holo_red_dark)
+                ));
+            } else {
+                btnFavorite.setIcon(itemView.getContext().getDrawable(R.drawable.ic_favorite_border));
+                btnFavorite.setIconTint(android.content.res.ColorStateList.valueOf(
+                        itemView.getContext().getResources().getColor(android.R.color.darker_gray)
+                ));
+            }
         }
     }
 }

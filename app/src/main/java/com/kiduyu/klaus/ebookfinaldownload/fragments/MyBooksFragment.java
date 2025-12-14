@@ -105,7 +105,7 @@ public class MyBooksFragment extends Fragment {
                     for (File file : files) {
                         BookItem bookItem = new BookItem();
                         bookItem.setFilePath(file.getAbsolutePath());
-                        bookItem.setTitle(file.getName().replace(".epub", ""));
+                        bookItem.setTitle(EpubCoverExtractor.extractBookTitle(file.getAbsolutePath()));
                         bookItem.setSize(formatFileSize(file.length()));
                         bookItem.setDate(formatDate(file.lastModified()));
 

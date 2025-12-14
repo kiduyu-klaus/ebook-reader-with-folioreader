@@ -89,6 +89,240 @@ public class EpubCoverExtractor {
     }
 
     /**
+     * Extracts the book title from an EPUB file
+     * @param epubPath Path to the EPUB file
+     * @return Book title, or filename if extraction failed
+     */
+    public static String extractBookTitle(String epubPath) {
+        try {
+            File epubFile = new File(epubPath);
+            if (!epubFile.exists()) {
+                Log.e(TAG, "EPUB file does not exist: " + epubPath);
+                return getFileNameWithoutExtension(epubPath);
+            }
+
+            ZipFile zipFile = new ZipFile(epubFile);
+            String opfPath = findOpfFile(zipFile);
+
+            if (opfPath != null) {
+                String title = extractTitleFromOpf(zipFile, opfPath);
+                zipFile.close();
+
+                if (title != null && !title.trim().isEmpty()) {
+                    return title.trim();
+                }
+            }
+
+            zipFile.close();
+            // Fallback to filename without extension
+            return getFileNameWithoutExtension(epubPath);
+
+        } catch (Exception e) {
+            Log.e(TAG, "Error extracting book title", e);
+            return getFileNameWithoutExtension(epubPath);
+        }
+    }
+
+    /**
+     * Extracts the book author from an EPUB file
+     * @param epubPath Path to the EPUB file
+     * @return Book author, or "Unknown" if extraction failed
+     */
+    public static String extractBookAuthor(String epubPath) {
+        try {
+            File epubFile = new File(epubPath);
+            if (!epubFile.exists()) {
+                Log.e(TAG, "EPUB file does not exist: " + epubPath);
+                return "Unknown";
+            }
+
+            ZipFile zipFile = new ZipFile(epubFile);
+            String opfPath = findOpfFile(zipFile);
+
+            if (opfPath != null) {
+                String author = extractAuthorFromOpf(zipFile, opfPath);
+                zipFile.close();
+
+                if (author != null && !author.trim().isEmpty()) {
+                    return author.trim();
+                }
+            }
+
+            zipFile.close();
+            return "Unknown";
+
+        } catch (Exception e) {
+            Log.e(TAG, "Error extracting book author", e);
+            return "Unknown";
+        }
+    }
+
+    /**
+     * Extracts complete book metadata from an EPUB file
+     * @param epubPath Path to the EPUB file
+     * @return EpubMetadata object containing title, author, etc.
+     */
+    public static EpubMetadata extractMetadata(String epubPath) {
+        EpubMetadata metadata = new EpubMetadata();
+
+        try {
+            File epubFile = new File(epubPath);
+            if (!epubFile.exists()) {
+                metadata.title = getFileNameWithoutExtension(epubPath);
+                return metadata;
+            }
+
+            ZipFile zipFile = new ZipFile(epubFile);
+            String opfPath = findOpfFile(zipFile);
+
+            if (opfPath != null) {
+                extractAllMetadataFromOpf(zipFile, opfPath, metadata);
+            }
+
+            zipFile.close();
+
+            // Set defaults if not found
+            if (metadata.title == null || metadata.title.trim().isEmpty()) {
+                metadata.title = getFileNameWithoutExtension(epubPath);
+            }
+            if (metadata.author == null || metadata.author.trim().isEmpty()) {
+                metadata.author = "Unknown";
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, "Error extracting metadata", e);
+            metadata.title = getFileNameWithoutExtension(epubPath);
+            metadata.author = "Unknown";
+        }
+
+        return metadata;
+    }
+
+    /**
+     * Helper method to get filename without extension
+     */
+    private static String getFileNameWithoutExtension(String filePath) {
+        File file = new File(filePath);
+        String name = file.getName();
+        int lastDot = name.lastIndexOf('.');
+        if (lastDot > 0) {
+            return name.substring(0, lastDot);
+        }
+        return name;
+    }
+
+    /**
+     * Extracts title from OPF file
+     */
+    private static String extractTitleFromOpf(ZipFile zipFile, String opfPath) {
+        try {
+            ZipEntry opfEntry = zipFile.getEntry(opfPath);
+            if (opfEntry == null) return null;
+
+            InputStream inputStream = zipFile.getInputStream(opfEntry);
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(inputStream);
+
+            // Look for title in metadata
+            NodeList titleNodes = doc.getElementsByTagName("dc:title");
+            if (titleNodes.getLength() > 0) {
+                String title = titleNodes.item(0).getTextContent();
+                inputStream.close();
+                return title;
+            }
+
+            inputStream.close();
+        } catch (Exception e) {
+            Log.e(TAG, "Error extracting title from OPF", e);
+        }
+        return null;
+    }
+
+    /**
+     * Extracts author from OPF file
+     */
+    private static String extractAuthorFromOpf(ZipFile zipFile, String opfPath) {
+        try {
+            ZipEntry opfEntry = zipFile.getEntry(opfPath);
+            if (opfEntry == null) return null;
+
+            InputStream inputStream = zipFile.getInputStream(opfEntry);
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(inputStream);
+
+            // Look for creator/author in metadata
+            NodeList creatorNodes = doc.getElementsByTagName("dc:creator");
+            if (creatorNodes.getLength() > 0) {
+                String author = creatorNodes.item(0).getTextContent();
+                inputStream.close();
+                return author;
+            }
+
+            inputStream.close();
+        } catch (Exception e) {
+            Log.e(TAG, "Error extracting author from OPF", e);
+        }
+        return null;
+    }
+
+    /**
+     * Extracts all metadata from OPF file
+     */
+    private static void extractAllMetadataFromOpf(ZipFile zipFile, String opfPath, EpubMetadata metadata) {
+        try {
+            ZipEntry opfEntry = zipFile.getEntry(opfPath);
+            if (opfEntry == null) return;
+
+            InputStream inputStream = zipFile.getInputStream(opfEntry);
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(inputStream);
+
+            // Extract title
+            NodeList titleNodes = doc.getElementsByTagName("dc:title");
+            if (titleNodes.getLength() > 0) {
+                metadata.title = titleNodes.item(0).getTextContent();
+            }
+
+            // Extract author/creator
+            NodeList creatorNodes = doc.getElementsByTagName("dc:creator");
+            if (creatorNodes.getLength() > 0) {
+                metadata.author = creatorNodes.item(0).getTextContent();
+            }
+
+            // Extract publisher
+            NodeList publisherNodes = doc.getElementsByTagName("dc:publisher");
+            if (publisherNodes.getLength() > 0) {
+                metadata.publisher = publisherNodes.item(0).getTextContent();
+            }
+
+            // Extract language
+            NodeList languageNodes = doc.getElementsByTagName("dc:language");
+            if (languageNodes.getLength() > 0) {
+                metadata.language = languageNodes.item(0).getTextContent();
+            }
+
+            // Extract description
+            NodeList descriptionNodes = doc.getElementsByTagName("dc:description");
+            if (descriptionNodes.getLength() > 0) {
+                metadata.description = descriptionNodes.item(0).getTextContent();
+            }
+
+            // Extract date
+            NodeList dateNodes = doc.getElementsByTagName("dc:date");
+            if (dateNodes.getLength() > 0) {
+                metadata.publishDate = dateNodes.item(0).getTextContent();
+            }
+
+            inputStream.close();
+        } catch (Exception e) {
+            Log.e(TAG, "Error extracting all metadata from OPF", e);
+        }
+    }
+
+    /**
      * Finds the cover image path within the EPUB (ZIP) file
      */
     private static String findCoverImagePath(ZipFile zipFile) {
@@ -262,6 +496,37 @@ public class EpubCoverExtractor {
             }
         } catch (Exception e) {
             Log.e(TAG, "Error deleting cached cover", e);
+        }
+    }
+
+    /**
+     * Data class to hold EPUB metadata
+     */
+    public static class EpubMetadata {
+        public String title;
+        public String author;
+        public String publisher;
+        public String language;
+        public String description;
+        public String publishDate;
+
+        public EpubMetadata() {
+            this.title = "";
+            this.author = "Unknown";
+            this.publisher = "";
+            this.language = "";
+            this.description = "";
+            this.publishDate = "";
+        }
+
+        @Override
+        public String toString() {
+            return "EpubMetadata{" +
+                    "title='" + title + '\'' +
+                    ", author='" + author + '\'' +
+                    ", publisher='" + publisher + '\'' +
+                    ", language='" + language + '\'' +
+                    '}';
         }
     }
 }

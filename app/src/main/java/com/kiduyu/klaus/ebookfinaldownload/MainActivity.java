@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity
                 for (File file : files) {
                     if (!file.isFile()) continue;
 
-                    String name = file.getName();
+                    String name = EpubCoverExtractor.extractBookTitle(file.getAbsolutePath());
                     String path = file.getAbsolutePath();
                     String size = formatSize(file.length());
                     String date = String.valueOf(file.lastModified());
@@ -311,27 +311,35 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             selectedFragment = new HomeFragment();
+            navigationView.setCheckedItem(R.id.nav_home);
             toolbar.setTitle("EBook Reader");
         } else if (id == R.id.nav_search) {
             selectedFragment = new SearchFragment();
+            navigationView.setCheckedItem(R.id.nav_search);
             toolbar.setTitle("Search Books");
         } else if (id == R.id.nav_my_books) {
             selectedFragment = new MyBooksFragment();
+            navigationView.setCheckedItem(R.id.nav_my_books);
             toolbar.setTitle("My Books");
         } else if (id == R.id.nav_downloads) {
             selectedFragment = new MyBooksFragment();
+            navigationView.setCheckedItem(R.id.nav_my_books);
             toolbar.setTitle("Downloads");
         } else if (id == R.id.nav_favorites) {
             selectedFragment = new FavoritesFragment();
+            navigationView.setCheckedItem(R.id.nav_favorites);
             toolbar.setTitle("Favorites");
         } else if (id == R.id.nav_recent) {
             selectedFragment = new RecentFragment();
+            navigationView.setCheckedItem(R.id.nav_recent);
             toolbar.setTitle("Recently Read");
         } else if (id == R.id.nav_categories) {
             selectedFragment = new CategoriesFragment();
+            navigationView.setCheckedItem(R.id.nav_categories);
             toolbar.setTitle("Categories");
         } else if (id == R.id.nav_settings) {
             selectedFragment = new SettingsFragment();
+            navigationView.setCheckedItem(R.id.nav_settings);
             toolbar.setTitle("Settings");
         } else if (id == R.id.nav_storage) {
             showStorageInfo();
