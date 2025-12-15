@@ -40,8 +40,27 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.util.Log;
+import android.widget.Toast;
+import java.io.IOException;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    // Add this constant in MainActivity
+    private static final String VERSION_CHECK_URL = "https://raw.githubusercontent.com/kiduyu-klaus/ebook-reader-with-folioreader/refs/heads/main/VERSION";
+    private static final String GITHUB_RELEASE_URL = "https://github.com/kiduyu-klaus/ebook-reader-with-folioreader/releases/latest";
+    private static final String TAG = "MainActivity";
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -63,7 +82,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         fragmentManager = getSupportFragmentManager();
-
+        // Check for updates
+        checkForUpdates();
         initializeViews();
         setupToolbar();
         setupNavigationDrawer();
@@ -370,6 +390,107 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * Check for app updates by comparing local version with GitHub version
+     * Call this method in onCreate()
+     */
+    private void checkForUpdates() {
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(VERSION_CHECK_URL)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e(TAG, "Failed to check for updates: " + e.getMessage());
+                // Silently fail - don't bother user with update check failures
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    Log.e(TAG, "Update check failed with code: " + response.code());
+                    return;
+                }
+
+                String githubVersion = response.body().string().trim();
+                String currentVersion = getCurrentAppVersion();
+
+                Log.d(TAG, "Current version: " + currentVersion);
+                Log.d(TAG, "GitHub version: " + githubVersion);
+
+                if (isNewerVersion(githubVersion, currentVersion)) {
+                    runOnUiThread(() -> showUpdateDialog(githubVersion));
+                }
+            }
+        });
+    }
+
+    /**
+     * Show update dialog to user
+     */
+    private void showUpdateDialog(String newVersion) {
+        new AlertDialog.Builder(this)
+                .setTitle("Update Available")
+                .setMessage("A new version (" + newVersion + ") is available!\n\n" +
+                        "Current version: " + getCurrentAppVersion() + "\n\n" +
+                        "Would you like to download the latest version?")
+                .setPositiveButton("Download", (dialog, which) -> {
+                    // Open GitHub releases page
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse(GITHUB_RELEASE_URL));
+                    startActivity(browserIntent);
+                })
+                .setNegativeButton("Later", (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .setCancelable(true)
+                .show();
+    }
+
+    /**
+     * Compare two version strings (e.g., "1.2.3" vs "1.3.0")
+     * Returns true if githubVersion is newer than currentVersion
+     */
+    private boolean isNewerVersion(String githubVersion, String currentVersion) {
+        try {
+            String[] githubParts = githubVersion.split("\\.");
+            String[] currentParts = currentVersion.split("\\.");
+
+            int maxLength = Math.max(githubParts.length, currentParts.length);
+
+            for (int i = 0; i < maxLength; i++) {
+                int githubNum = i < githubParts.length ? Integer.parseInt(githubParts[i]) : 0;
+                int currentNum = i < currentParts.length ? Integer.parseInt(currentParts[i]) : 0;
+
+                if (githubNum > currentNum) {
+                    return true;
+                } else if (githubNum < currentNum) {
+                    return false;
+                }
+            }
+
+            return false; // Versions are equal
+        } catch (Exception e) {
+            Log.e(TAG, "Error comparing versions: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Get the current app version from BuildConfig or PackageManager
+     */
+    private String getCurrentAppVersion() {
+        try {
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            return packageInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e(TAG, "Error getting app version: " + e.getMessage());
+            return "0.0";
+        }
+    }
     private void showStorageInfo() {
         File booksDir = getExternalFilesDir(null);
         long totalSize = 0;
