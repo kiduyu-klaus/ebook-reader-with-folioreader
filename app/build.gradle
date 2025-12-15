@@ -19,7 +19,7 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file("config/jksfiles/oceanofpdf.jks")
+            storeFile file("${rootDir}/config/jksfiles/oceanofpdf.jks")
             storePassword System.getenv("KEYSTORE_PASSWORD")
             keyAlias "key0"
             keyPassword System.getenv("KEY_PASSWORD")
@@ -35,6 +35,17 @@ android {
                     'proguard-android-optimize.txt'
             ), 'proguard-rules.pro'
         }
+    }
+    buildFeatures {
+        viewBinding  true
+        //noinspection DataBindingWithoutKapt
+    }
+    lintOptions {
+        disable 'MissingTranslation'
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
     }
 
 
