@@ -61,7 +61,7 @@
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Author Name (First and Last)"
+                            android:hint="Author Name e.g., Bella Forrest"
                             app:boxBackgroundMode="none"
                             app:hintTextColor="@color/purple_500"
                             app:startIconDrawable="@drawable/ic_person"
@@ -74,7 +74,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="textCapWords"
-                                android:hint="e.g., Bella Forrest"
                                 android:maxLines="1"
                                 android:textColor="@color/black"
                                 android:textSize="16sp" />
@@ -86,7 +85,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:hint="Number of Books (optional)"
+                            android:hint="Number of Books (optional) Leave empty for all books"
                             app:boxBackgroundMode="none"
                             app:hintTextColor="@color/purple_500"
                             app:startIconDrawable="@drawable/ic_book_open"
@@ -97,7 +96,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="number"
-                                android:hint="Leave empty for all books"
                                 android:textColor="@color/black"
                                 android:textSize="16sp" />
 
