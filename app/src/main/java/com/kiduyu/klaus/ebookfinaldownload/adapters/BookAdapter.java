@@ -86,6 +86,12 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         // Set basic info
 
         String title = book.getTitle();
+        if (book.getLanguage() != null && !book.getLanguage().isEmpty() && !book.getLanguage().equals("Unknown")) {
+            holder.bookLanguage.setText("Language: " + book.getLanguage());
+        } else {
+            // Clear the text view or set a default if the language is unknown/missing
+            holder.bookLanguage.setText("Language: English");
+        }
 
 
         String bookTitleForDisplay = title;
@@ -104,7 +110,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
 
                     // Set the extracted series information to bookLanguage
                     // The existing language data will be overwritten/ignored if a series is found
-                    holder.bookLanguage.setText(seriesInfo);
+                    holder.bookseries.setText(seriesInfo);
                     bookTitleForDisplay = title.substring(0, startIndex).trim();
 
                 } else {
@@ -143,8 +149,8 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
             }
 
             if (hasPdf) {
-                holder.pdfSizeLayout.setVisibility(View.GONE);
-                //holder.pdfSize.setText(book.getPdfSize());
+                holder.pdfSizeLayout.setVisibility(View.VISIBLE);
+                holder.pdfSize.setText(book.getPdfSize());
             } else {
                 holder.pdfSizeLayout.setVisibility(View.GONE);
             }
@@ -154,15 +160,15 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
 
         // Handle download links
         if (book.getDownloadLinks() != null && !book.getDownloadLinks().isEmpty()) {
-            /**holder.downloadLinksHeader.setVisibility(View.VISIBLE);
+            holder.downloadLinksHeader.setVisibility(View.VISIBLE);
             holder.downloadLinksRecycler.setVisibility(View.VISIBLE);
 
             DownloadLinkAdapter linkAdapter = new DownloadLinkAdapter(context, book.getDownloadLinks());
             holder.downloadLinksRecycler.setLayoutManager(new LinearLayoutManager(context));
-            holder.downloadLinksRecycler.setAdapter(linkAdapter);**/
+            holder.downloadLinksRecycler.setAdapter(linkAdapter);
 
-            holder.downloadLinksHeader.setVisibility(View.GONE);
-            holder.downloadLinksRecycler.setVisibility(View.GONE);
+             /**holder.downloadLinksHeader.setVisibility(View.GONE);
+            holder.downloadLinksRecycler.setVisibility(View.GONE);**/
         } else {
             holder.downloadLinksHeader.setVisibility(View.GONE);
             holder.downloadLinksRecycler.setVisibility(View.GONE);
@@ -228,6 +234,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         TextView bookTitle;
         TextView bookAuthor;
         TextView bookLanguage;
+        TextView bookseries;
         LinearLayout fileSizesContainer;
         LinearLayout epubSizeLayout;
         LinearLayout pdfSizeLayout;
@@ -244,6 +251,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
             bookTitle = itemView.findViewById(R.id.bookTitle);
             bookAuthor = itemView.findViewById(R.id.bookAuthor);
             bookLanguage = itemView.findViewById(R.id.bookLanguage);
+            bookseries = itemView.findViewById(R.id.bookseries);
             fileSizesContainer = itemView.findViewById(R.id.fileSizesContainer);
             epubSizeLayout = itemView.findViewById(R.id.epubSizeLayout);
             pdfSizeLayout = itemView.findViewById(R.id.pdfSizeLayout);

@@ -128,9 +128,9 @@ public class SearchFragment extends Fragment {
     private void setupRecyclerView() {
         booksList = new ArrayList<>();
         bookAdapter = new BookAdapter(getContext(), booksList);
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
-        booksRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        //booksRecyclerView.setLayoutManager(layoutManager);
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 1);
+        //booksRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        booksRecyclerView.setLayoutManager(layoutManager);
         booksRecyclerView.setAdapter(bookAdapter);
     }
 
