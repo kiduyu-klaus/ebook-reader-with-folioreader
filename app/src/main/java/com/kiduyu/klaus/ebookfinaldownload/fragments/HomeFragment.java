@@ -77,7 +77,10 @@ public class HomeFragment extends Fragment {
         });
 
         cardRaw.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Opening from raw folder", Toast.LENGTH_SHORT).show();
+            if (getActivity() != null) {
+                ((MainActivity) getActivity()).loadFragment(new SearchAuthorFragment());
+                //navigationView.setCheckedItem(R.id.nav_my_books);
+            }
         });
 
         cardAssets.setOnClickListener(v -> {
