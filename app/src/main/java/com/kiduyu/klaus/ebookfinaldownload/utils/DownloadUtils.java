@@ -10,6 +10,7 @@ import android.util.Log;
 import com.kiduyu.klaus.ebookfinaldownload.MainActivity;
 import com.kiduyu.klaus.ebookfinaldownload.models.BookInfo;
 import com.kiduyu.klaus.ebookfinaldownload.models.DownloadLink;
+import com.kiduyu.klaus.ebookfinaldownload.models.Listopia;
 
 import java.io.*;
 import java.util.*;
@@ -629,5 +630,247 @@ public class DownloadUtils {
         String fullBookName = "Unknown";
         double pdfSizeMB = 0;
         double epubSizeMB = 0;
+    }
+
+    // Add these methods to your DownloadUtils class
+
+    /**
+     * Fetch all Listopia categories from the main Listopia page
+     * @param client OkHttpClient instance
+     * @return List of Listopia objects containing category information
+     */
+    public List<Listopia> getAllListopia(OkHttpClient client) {
+        List<Listopia> listopiaList = new ArrayList<>();
+        String listopiaUrl = "https://oceanofpdf.com/listopia/";
+
+        try {
+            Log.d(TAG, "Fetching Listopia categories from: " + listopiaUrl);
+            Document doc = fetchPage(listopiaUrl, client);
+
+            if (doc == null) {
+                Log.e(TAG, "Failed to fetch Listopia page");
+                return listopiaList;
+            }
+
+            // Select all subcategory sections
+            Elements subcategorySections = doc.select("div.subcategory-section");
+            Log.d(TAG, "Found " + subcategorySections.size() + " Listopia categories");
+
+            for (Element section : subcategorySections) {
+                try {
+                    // Get the category link and title
+                    Element linkElement = section.selectFirst("div.subcategory-link a");
+                    if (linkElement == null) continue;
+
+                    String url = linkElement.attr("href");
+                    String fullTitle = linkElement.text().trim();
+
+                    // Extract book count from title (e.g., "Category Name (553)")
+                    int bookCount = 0;
+                    String title = fullTitle;
+
+                    if (fullTitle.contains("(") && fullTitle.contains(")")) {
+                        int startIdx = fullTitle.lastIndexOf("(");
+                        int endIdx = fullTitle.lastIndexOf(")");
+                        if (startIdx > 0 && endIdx > startIdx) {
+                            title = fullTitle.substring(0, startIdx).trim();
+                            String countStr = fullTitle.substring(startIdx + 1, endIdx).trim();
+                            try {
+                                bookCount = Integer.parseInt(countStr);
+                            } catch (NumberFormatException e) {
+                                Log.w(TAG, "Could not parse book count: " + countStr);
+                            }
+                        }
+                    }
+
+                    // Get thumbnail from first book in the list
+                    String thumbnailUrl = null;
+                    Element bookList = section.selectFirst("div.book-list");
+                    if (bookList != null) {
+                        Element firstBook = bookList.selectFirst("div.book");
+                        if (firstBook != null) {
+                            Element imgElement = firstBook.selectFirst("img");
+                            if (imgElement != null) {
+                                thumbnailUrl = imgElement.attr("data-src");
+                                if (thumbnailUrl == null || thumbnailUrl.isEmpty()) {
+                                    thumbnailUrl = imgElement.attr("src");
+                                }
+                            }
+                        }
+                    }
+
+                    Listopia listopia = new Listopia(title, url, bookCount, thumbnailUrl);
+                    listopiaList.add(listopia);
+
+                    Log.d(TAG, "Added Listopia: " + title + " (" + bookCount + " books)");
+
+                } catch (Exception e) {
+                    Log.e(TAG, "Error parsing Listopia category", e);
+                }
+            }
+
+            Log.d(TAG, "Total Listopia categories found: " + listopiaList.size());
+            Thread.sleep(2000); // Rate limiting
+
+        } catch (Exception e) {
+            Log.e(TAG, "Error fetching Listopia categories", e);
+        }
+
+        return listopiaList;
+    }
+
+    /**
+     * Fetch books from a specific Listopia category
+     * @param listopiaUrl URL of the Listopia category
+     * @param client OkHttpClient instance
+     * @return List of BookInfo objects
+     */
+    public List<BookInfo> getBooksFromListopia(String listopiaUrl, OkHttpClient client) {
+        List<BookInfo> books = new ArrayList<>();
+
+        try {
+            Log.d(TAG, "Fetching books from Listopia: " + listopiaUrl);
+
+            // Get the last page number
+            int lastPage = getLastPage(listopiaUrl, client);
+            Log.d(TAG, "Total pages in Listopia: " + lastPage);
+
+            // Fetch books from all pages
+            for (int page = 1; page <= lastPage; page++) {
+                String pageUrl = page == 1 ? listopiaUrl : listopiaUrl + "page/" + page + "/";
+
+                Document doc = fetchPage(pageUrl, client);
+                if (doc == null) continue;
+
+                // Select book elements
+                Elements bookElements = doc.select("div.subcategory-section div.book-list div.book");
+                Log.d(TAG, "Found " + bookElements.size() + " books on page " + page);
+
+                for (Element bookElement : bookElements) {
+                    try {
+                        Element bookCover = bookElement.selectFirst("div.book-cover a");
+                        if (bookCover == null) continue;
+
+                        String bookUrl = bookCover.attr("href");
+                        if (bookUrl == null || bookUrl.isEmpty()) continue;
+
+                        // Get book image
+                        String imageUrl = null;
+                        Element imgElement = bookCover.selectFirst("img");
+                        if (imgElement != null) {
+                            imageUrl = imgElement.attr("data-src");
+                            if (imageUrl == null || imageUrl.isEmpty()) {
+                                imageUrl = imgElement.attr("src");
+                            }
+                        }
+
+                        // Fetch full book info
+                        BookInfo bookInfo = getBookInfo(bookUrl, client);
+                        if (bookInfo != null) {
+                            // Use the image from Listopia if book info doesn't have one
+                            if ((bookInfo.getBookimg() == null || bookInfo.getBookimg().isEmpty())
+                                    && imageUrl != null && !imageUrl.isEmpty()) {
+                                bookInfo.setBookimg(imageUrl);
+                            }
+                            books.add(bookInfo);
+                            Log.d(TAG, "Added book: " + bookInfo.getTitle());
+                        }
+
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error parsing book element", e);
+                    }
+                }
+
+                Thread.sleep(2000); // Rate limiting between pages
+            }
+
+            Log.d(TAG, "Total books fetched from Listopia: " + books.size());
+
+        } catch (Exception e) {
+            Log.e(TAG, "Error fetching books from Listopia", e);
+        }
+
+        return books;
+    }
+
+    /**
+     * Fetch books from a specific Listopia with a limit
+     * @param listopiaUrl URL of the Listopia category
+     * @param client OkHttpClient instance
+     * @param maxBooks Maximum number of books to fetch (null for all)
+     * @return List of BookInfo objects
+     */
+    public List<BookInfo> getBooksFromListopia(String listopiaUrl, OkHttpClient client, Integer maxBooks) {
+        List<BookInfo> books = new ArrayList<>();
+
+        try {
+            Log.d(TAG, "Fetching books from Listopia: " + listopiaUrl);
+
+            // Get the last page number
+            int lastPage = getLastPage(listopiaUrl, client);
+            Log.d(TAG, "Total pages in Listopia: " + lastPage);
+
+            // Fetch books from pages until we reach the limit
+            outerLoop:
+            for (int page = 1; page <= lastPage; page++) {
+                String pageUrl = page == 1 ? listopiaUrl : listopiaUrl + "page/" + page + "/";
+
+                Document doc = fetchPage(pageUrl, client);
+                if (doc == null) continue;
+
+                // Select book elements
+                Elements bookElements = doc.select("div.subcategory-section div.book-list div.book");
+                Log.d(TAG, "Found " + bookElements.size() + " books on page " + page);
+
+                for (Element bookElement : bookElements) {
+                    // Check if we've reached the limit
+                    if (maxBooks != null && books.size() >= maxBooks) {
+                        break outerLoop;
+                    }
+
+                    try {
+                        Element bookCover = bookElement.selectFirst("div.book-cover a");
+                        if (bookCover == null) continue;
+
+                        String bookUrl = bookCover.attr("href");
+                        if (bookUrl == null || bookUrl.isEmpty()) continue;
+
+                        // Get book image
+                        String imageUrl = null;
+                        Element imgElement = bookCover.selectFirst("img");
+                        if (imgElement != null) {
+                            imageUrl = imgElement.attr("data-src");
+                            if (imageUrl == null || imageUrl.isEmpty()) {
+                                imageUrl = imgElement.attr("src");
+                            }
+                        }
+
+                        // Fetch full book info
+                        BookInfo bookInfo = getBookInfo(bookUrl, client);
+                        if (bookInfo != null) {
+                            // Use the image from Listopia if book info doesn't have one
+                            if ((bookInfo.getBookimg() == null || bookInfo.getBookimg().isEmpty())
+                                    && imageUrl != null && !imageUrl.isEmpty()) {
+                                bookInfo.setBookimg(imageUrl);
+                            }
+                            books.add(bookInfo);
+                            Log.d(TAG, "Added book: " + bookInfo.getTitle());
+                        }
+
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error parsing book element", e);
+                    }
+                }
+
+                Thread.sleep(2000); // Rate limiting between pages
+            }
+
+            Log.d(TAG, "Total books fetched from Listopia: " + books.size());
+
+        } catch (Exception e) {
+            Log.e(TAG, "Error fetching books from Listopia", e);
+        }
+
+        return books;
     }
 }

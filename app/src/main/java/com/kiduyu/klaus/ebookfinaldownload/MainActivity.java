@@ -19,9 +19,13 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
 import com.kiduyu.klaus.ebookfinaldownload.fragments.CategoriesFragment;
 import com.kiduyu.klaus.ebookfinaldownload.fragments.FavoritesFragment;
+import com.kiduyu.klaus.ebookfinaldownload.fragments.GenreBooksFragment;
 import com.kiduyu.klaus.ebookfinaldownload.fragments.HomeFragment;
+import com.kiduyu.klaus.ebookfinaldownload.fragments.ListopiaFragment;
 import com.kiduyu.klaus.ebookfinaldownload.fragments.MyBooksFragment;
+import com.kiduyu.klaus.ebookfinaldownload.fragments.NewReleasesFragment;
 import com.kiduyu.klaus.ebookfinaldownload.fragments.RecentFragment;
+import com.kiduyu.klaus.ebookfinaldownload.fragments.SearchAuthorFragment;
 import com.kiduyu.klaus.ebookfinaldownload.fragments.SearchFragment;
 import com.kiduyu.klaus.ebookfinaldownload.fragments.SettingsFragment;
 import com.kiduyu.klaus.ebookfinaldownload.models.BookItem;
@@ -303,49 +307,56 @@ public class MainActivity extends AppCompatActivity
             transaction.commit();
         }
     }
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
         Fragment selectedFragment = null;
+        int itemId = item.getItemId();
 
-        if (id == R.id.nav_home) {
+        if (itemId == R.id.nav_home) {
             selectedFragment = new HomeFragment();
-            navigationView.setCheckedItem(R.id.nav_home);
-            toolbar.setTitle("EBook Reader");
-        } else if (id == R.id.nav_search) {
+            toolbar.setTitle(R.string.app_name);
+
+        } else if (itemId == R.id.nav_search) {
             selectedFragment = new SearchFragment();
-            navigationView.setCheckedItem(R.id.nav_search);
             toolbar.setTitle("Search Books");
-        } else if (id == R.id.nav_my_books) {
+        } else if (itemId == R.id.nav_search_author) {
+            selectedFragment = new SearchAuthorFragment();
+            toolbar.setTitle("Search Authors");
+        } else if (itemId == R.id.nav_new_releases) {
+            selectedFragment = new NewReleasesFragment();
+            toolbar.setTitle("New Releases");
+        } else if (itemId == R.id.nav_listopia) {
+            selectedFragment = new ListopiaFragment();
+            toolbar.setTitle("Listopia Books");
+        } else if (itemId == R.id.nav_my_books) {
             selectedFragment = new MyBooksFragment();
-            navigationView.setCheckedItem(R.id.nav_my_books);
             toolbar.setTitle("My Books");
-        } else if (id == R.id.nav_downloads) {
+        } else if (itemId == R.id.nav_downloads) {
+            // Handle downloads
             selectedFragment = new MyBooksFragment();
-            navigationView.setCheckedItem(R.id.nav_my_books);
-            toolbar.setTitle("Downloads");
-        } else if (id == R.id.nav_favorites) {
+            toolbar.setTitle("My Books");
+        } else if (itemId == R.id.nav_favorites) {
             selectedFragment = new FavoritesFragment();
-            navigationView.setCheckedItem(R.id.nav_favorites);
-            toolbar.setTitle("Favorites");
-        } else if (id == R.id.nav_recent) {
+            toolbar.setTitle("My Favorites");
+        } else if (itemId == R.id.nav_recent) {
             selectedFragment = new RecentFragment();
-            navigationView.setCheckedItem(R.id.nav_recent);
-            toolbar.setTitle("Recently Read");
-        } else if (id == R.id.nav_categories) {
+            toolbar.setTitle("Recent Books");
+        } else if (itemId == R.id.nav_categories) {
             selectedFragment = new CategoriesFragment();
-            navigationView.setCheckedItem(R.id.nav_categories);
-            toolbar.setTitle("Categories");
-        } else if (id == R.id.nav_settings) {
+            toolbar.setTitle("Browse Genres");
+        } else if (itemId == R.id.nav_genre_books) {
+            selectedFragment = new GenreBooksFragment();
+            toolbar.setTitle("Selected Genre");
+        } else if (itemId == R.id.nav_settings) {
             selectedFragment = new SettingsFragment();
-            navigationView.setCheckedItem(R.id.nav_settings);
-            toolbar.setTitle("Settings");
-        } else if (id == R.id.nav_storage) {
+            toolbar.setTitle("My Settings");
+        } else if (itemId == R.id.nav_storage) {
+            // Handle storage management
             showStorageInfo();
             drawerLayout.closeDrawer(GravityCompat.START);
             return true;
-        } else if (id == R.id.nav_about) {
+        } else if (itemId == R.id.nav_about) {
+            // Handle about
             showAboutDialog();
             drawerLayout.closeDrawer(GravityCompat.START);
             return true;

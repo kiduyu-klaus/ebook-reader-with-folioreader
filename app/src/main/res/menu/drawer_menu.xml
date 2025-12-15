@@ -16,6 +16,21 @@
             android:title="Search Books" />
 
         <item
+            android:id="@+id/nav_search_author"
+            android:icon="@drawable/ic_menu_search"
+            android:title="Search by Author" />
+
+        <item
+            android:id="@+id/nav_new_releases"
+            android:icon="@drawable/ic_menu_recent_history"
+            android:title="New Releases" />
+
+        <item
+            android:id="@+id/nav_listopia"
+            android:icon="@drawable/ic_menu_sort_by_size"
+            android:title="Listopia" />
+
+        <item
             android:id="@+id/nav_my_books"
             android:icon="@drawable/ic_menu_myplaces"
             android:title="My Books" />
@@ -43,6 +58,11 @@
                 android:id="@+id/nav_categories"
                 android:icon="@drawable/ic_menu_sort_by_size"
                 android:title="Categories" />
+
+            <item
+                android:id="@+id/nav_genre_books"
+                android:icon="@drawable/ic_menu_sort_by_size"
+                android:title="Browse Genres" />
         </menu>
     </item>
 

@@ -78,7 +78,7 @@ public class HomeFragment extends Fragment {
 
         cardRaw.setOnClickListener(v -> {
             if (getActivity() != null) {
-                ((MainActivity) getActivity()).loadFragment(new SearchAuthorFragment());
+                ((MainActivity) getActivity()).loadFragment(new ListopiaFragment());
                 //navigationView.setCheckedItem(R.id.nav_my_books);
             }
         });
