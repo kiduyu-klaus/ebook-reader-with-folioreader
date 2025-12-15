@@ -206,7 +206,11 @@ public class MainActivity extends AppCompatActivity
             navigationView.setCheckedItem(R.id.nav_search);
             toolbar.setTitle("Search Books");
             return true;
-        } else if (id == R.id.action_refresh) {
+        } else if (id == R.id.action_home) {
+            loadFragment(new HomeFragment());
+            navigationView.setCheckedItem(R.id.nav_home);
+            toolbar.setTitle(R.string.app_name);
+        }else if (id == R.id.action_refresh) {
             refreshCurrentFragment();
             Toast.makeText(this, "Refreshed", Toast.LENGTH_SHORT).show();
             return true;
