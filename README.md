@@ -1,4 +1,4 @@
-# EBook Reader - Android Application
+# EBook Reader - [![Build APK](https://github.com/kiduyu-klaus/ebook-reader-with-folioreader/actions/workflows/gradle-release.yml/badge.svg)](https://github.com/kiduyu-klaus/ebook-reader-with-folioreader/actions/workflows/gradle-release.yml)
 
 A modern, feature-rich ebook reader application for Android that allows users to search, download, and read EPUB books with an intuitive Material Design interface.
 
