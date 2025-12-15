@@ -53,4 +53,7 @@ dependencies {
 
     implementation libs.glide
     annotationProcessor libs.compiler
+
+    // https://mvnrepository.com/artifact/androidx.swiperefreshlayout/swiperefreshlayout
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.2.0'
 }

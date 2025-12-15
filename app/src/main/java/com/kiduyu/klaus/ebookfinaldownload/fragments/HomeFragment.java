@@ -84,7 +84,7 @@ public class HomeFragment extends Fragment {
         });
 
         cardAssets.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Opening from assets folder", Toast.LENGTH_SHORT).show();
+            ((MainActivity) getActivity()).loadFragment(new NewReleasesFragment());
         });
 
         fabAdd.setOnClickListener(v -> {
