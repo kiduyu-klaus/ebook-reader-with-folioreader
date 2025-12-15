@@ -216,7 +216,7 @@ public class ListopiaFragment extends Fragment implements ListopiaAdapter.OnList
                 List<BookInfo> books = downloadUtils.getBooksFromListopia(
                         listopia.getUrl(),
                         client,
-                        50  // Limit to 50 books
+                        10  // Limit to 50 books
                 );
 
                 // Process each book to get download links

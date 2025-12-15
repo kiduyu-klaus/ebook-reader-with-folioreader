@@ -802,73 +802,119 @@ public class DownloadUtils {
      */
     public List<BookInfo> getBooksFromListopia(String listopiaUrl, OkHttpClient client, Integer maxBooks) {
         List<BookInfo> books = new ArrayList<>();
+        ExecutorService bookExecutor = Executors.newFixedThreadPool(4); // For parallel book fetching
 
         try {
-            Log.d(TAG, "Fetching books from Listopia: " + listopiaUrl);
-
-            // Get the last page number
             int lastPage = getLastPage(listopiaUrl, client);
             Log.d(TAG, "Total pages in Listopia: " + lastPage);
 
             // Fetch books from pages until we reach the limit
             outerLoop:
             for (int page = 1; page <= lastPage; page++) {
-                String pageUrl = page == 1 ? listopiaUrl : listopiaUrl + "page/" + page + "/";
+                Log.d(TAG, "Fetching books from Listopia: " + listopiaUrl + "page/" + page);
 
-                Document doc = fetchPage(pageUrl, client);
+                Document doc = fetchPage(listopiaUrl + "page/" + page, client);
                 if (doc == null) continue;
 
                 // Select book elements
-                Elements bookElements = doc.select("div.subcategory-section div.book-list div.book");
+                Elements bookElements = doc.select("article");
                 Log.d(TAG, "Found " + bookElements.size() + " books on page " + page);
+                List<String> bookUrls = new ArrayList<>();
 
-                for (Element bookElement : bookElements) {
+                for (Element article : bookElements) {
                     // Check if we've reached the limit
                     if (maxBooks != null && books.size() >= maxBooks) {
                         break outerLoop;
                     }
 
+                    Element header = article.selectFirst("header.entry-header");
+                    if (header == null) continue;
+
+                    Element aTag = header.selectFirst("a.entry-title-link[href]");
+                    if (aTag == null) continue;
+
+                    Element postmetainfo = article.selectFirst("div.postmetainfo");
+                    if (postmetainfo == null) continue;
+
+                    if (!isEnglish(postmetainfo)) {
+                        continue;
+                    }
+
+                    bookUrls.add(aTag.attr("href"));
+                }
+
+                // Fetch book info in parallel
+                List<Future<BookInfo>> futures = new ArrayList<>();
+                for (String bookUrl : bookUrls) {
+                    // Check again if we've reached the limit before submitting more tasks
+                    if (maxBooks != null && books.size() >= maxBooks) {
+                        break;
+                    }
+
+                    Future<BookInfo> future = bookExecutor.submit(() -> {
+                        try {
+                            BookInfo bookInfo = getBookInfo(bookUrl, client);
+
+                            if (bookInfo != null) {
+                                List<DownloadLink> downloadLink = bookInfo.getDownloadLinks();
+
+                                if (downloadLink != null && !downloadLink.isEmpty()) {
+                                    String result = fetchAndDownload(downloadLink, client, bookInfo, 3);
+                                    if (result != null) {
+                                        Log.d(TAG, "downloadLink: " + downloadLink);
+                                        Log.d(TAG, "processBookInfo: " + result);
+                                        bookInfo.setDownlink(result);
+                                        downloadLink.get(0).setDownlink(result);
+                                    }
+                                }
+                            }
+
+                            return bookInfo;
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error fetching book info for: " + bookUrl, e);
+                            return null;
+                        }
+                    });
+
+                    futures.add(future);
+                }
+
+                // Collect results
+                for (Future<BookInfo> future : futures) {
                     try {
-                        Element bookCover = bookElement.selectFirst("div.book-cover a");
-                        if (bookCover == null) continue;
-
-                        String bookUrl = bookCover.attr("href");
-                        if (bookUrl == null || bookUrl.isEmpty()) continue;
-
-                        // Get book image
-                        String imageUrl = null;
-                        Element imgElement = bookCover.selectFirst("img");
-                        if (imgElement != null) {
-                            imageUrl = imgElement.attr("data-src");
-                            if (imageUrl == null || imageUrl.isEmpty()) {
-                                imageUrl = imgElement.attr("src");
-                            }
-                        }
-
-                        // Fetch full book info
-                        BookInfo bookInfo = getBookInfo(bookUrl, client);
+                        BookInfo bookInfo = future.get(15, TimeUnit.SECONDS);
                         if (bookInfo != null) {
-                            // Use the image from Listopia if book info doesn't have one
-                            if ((bookInfo.getBookimg() == null || bookInfo.getBookimg().isEmpty())
-                                    && imageUrl != null && !imageUrl.isEmpty()) {
-                                bookInfo.setBookimg(imageUrl);
-                            }
                             books.add(bookInfo);
-                            Log.d(TAG, "Added book: " + bookInfo.getTitle());
-                        }
 
+                            // Check if we've reached the limit after adding
+                            if (maxBooks != null && books.size() >= maxBooks) {
+                                break outerLoop;
+                            }
+                        }
+                    } catch (TimeoutException e) {
+                        Log.e(TAG, "Timeout getting book info from future", e);
+                        future.cancel(true);
                     } catch (Exception e) {
-                        Log.e(TAG, "Error parsing book element", e);
+                        Log.e(TAG, "Error getting book info from future", e);
                     }
                 }
 
                 Thread.sleep(2000); // Rate limiting between pages
             }
 
-            Log.d(TAG, "Total books fetched from Listopia: " + books.size());
-
         } catch (Exception e) {
             Log.e(TAG, "Error fetching books from Listopia", e);
+        } finally {
+            // Clean up executor
+            bookExecutor.shutdown();
+            try {
+                if (!bookExecutor.awaitTermination(30, TimeUnit.SECONDS)) {
+                    bookExecutor.shutdownNow();
+                }
+            } catch (InterruptedException e) {
+                bookExecutor.shutdownNow();
+                Thread.currentThread().interrupt();
+            }
         }
 
         return books;
