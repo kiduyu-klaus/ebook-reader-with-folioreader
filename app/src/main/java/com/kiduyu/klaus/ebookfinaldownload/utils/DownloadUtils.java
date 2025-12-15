@@ -236,7 +236,7 @@ public class DownloadUtils {
     }
 
 
-    public BookInfo getBookInfo(String bookUrl,OkHttpClient client) {
+    public BookInfo getBookInfo(String bookUrl, OkHttpClient client) {
         try {
             Request request = new Request.Builder()
                     .url(bookUrl)
@@ -258,9 +258,45 @@ public class DownloadUtils {
             info.setBookUrl(bookUrl);
             info.setDownlink(bookUrl);
 
-            // Extract book details
+            // Extract book cover image
             Element entryContent = doc.selectFirst("div.entry-content");
             if (entryContent != null) {
+                // Try to find the book cover image
+                Element imgTag = entryContent.selectFirst("img.aligncenter");
+                if (imgTag != null) {
+                    String imgUrl = imgTag.attr("src");
+                    if (imgUrl == null || imgUrl.isEmpty()) {
+                        // Try data-src for lazy loaded images
+                        imgUrl = imgTag.attr("data-src");
+                    }
+                    if (imgUrl != null && !imgUrl.isEmpty()) {
+                        info.setBookimg(imgUrl);
+                        Log.d(TAG, "Found book cover: " + imgUrl);
+                    }
+                }
+
+                // If no image found with aligncenter, try any img in entry-content
+                if (info.getBookimg() == null) {
+                    Elements allImages = entryContent.select("img");
+                    for (Element img : allImages) {
+                        String src = img.attr("src");
+                        if (src == null || src.isEmpty()) {
+                            src = img.attr("data-src");
+                        }
+                        // Check if it's a book cover (usually contains PDF-EPUB or book title)
+                        if (src != null && !src.isEmpty() &&
+                                (src.contains("media.oceanofpdf.com") &&
+                                        !src.contains("button") &&
+                                        !src.contains("donate") &&
+                                        !src.contains("sharing"))) {
+                            info.setBookimg(src);
+                            Log.d(TAG, "Found book cover (alternative): " + src);
+                            break;
+                        }
+                    }
+                }
+
+                // Extract book details from ul tag
                 Element ulTag = entryContent.selectFirst("ul");
                 if (ulTag != null) {
                     Elements liElements = ulTag.select("li");
@@ -296,8 +332,7 @@ public class DownloadUtils {
                     String filename = filenameInput.attr("value");
                     String fileExt = filename.substring(filename.lastIndexOf(".") + 1).toLowerCase();
 
-                    if (fileExt.equals("epub")){
-
+                    if (fileExt.equals("epub")) {
                         DownloadLink link = new DownloadLink();
                         link.setId(idInput.attr("value"));
                         link.setFilename(filename);

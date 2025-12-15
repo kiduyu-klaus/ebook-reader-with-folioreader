@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -127,7 +128,9 @@ public class SearchFragment extends Fragment {
     private void setupRecyclerView() {
         booksList = new ArrayList<>();
         bookAdapter = new BookAdapter(getContext(), booksList);
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         booksRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        //booksRecyclerView.setLayoutManager(layoutManager);
         booksRecyclerView.setAdapter(bookAdapter);
     }
 
