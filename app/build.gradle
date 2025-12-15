@@ -17,14 +17,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-    signingConfigs {
-        release {
-            storeFile file("${rootDir}/config/jksfile/oceanofpdf.jks")
-            storePassword System.getenv("KEYSTORE_PASSWORD")
-            keyAlias "key0"
-            keyPassword System.getenv("KEY_PASSWORD")
-        }
-    }
+
 
     buildTypes {
         release {

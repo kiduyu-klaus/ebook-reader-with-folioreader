@@ -1,4 +1,4 @@
-name: Build Signed APK
+name: Build APK
 
 on:
   push:
@@ -9,9 +9,9 @@ on:
       - main
   workflow_dispatch:
 
-# Add permissions for the GITHUB_TOKEN
-permissions:
-  contents: write  # Required to create releases and upload assets
+
+
+
 
 jobs:
   build:
@@ -40,152 +40,75 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "App Version: $VERSION"
 
-      - name: Update versionName and versionCode in build.gradle
+      - name: Update versionName in build.gradle
         run: |
-          # Update versionName
           sed -i "s/versionName \".*\"/versionName \"${{ env.VERSION }}\"/" app/build.gradle
-          
-          # Calculate versionCode from version (1.1 -> 11, 1.2 -> 12, etc.)
-          VERSION_CODE=$(echo "${{ env.VERSION }}" | tr -d '.' | sed 's/^0*//')
-          if [ -z "$VERSION_CODE" ]; then VERSION_CODE=1; fi
-          sed -i "s/versionCode .*/versionCode $VERSION_CODE/" app/build.gradle
-          
-          echo "Updated to versionCode: $VERSION_CODE, versionName: ${{ env.VERSION }}"
 
       - name: Build Debug APK
         run: ./gradlew assembleDebug --stacktrace
 
-      - name: Build Release APK (Signed)
-        env:
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+      - name: Build Release APK (unsigned)
         run: ./gradlew assembleRelease --stacktrace
 
-
-      - name: List build outputs
-        run: |
-          echo "=== Debug APK ==="
-          ls -lh app/build/outputs/apk/debug/ || echo "No debug APK found"
-          echo ""
-          echo "=== Release APK ==="
-          ls -lh app/build/outputs/apk/release/ || echo "No release APK found"
-
-      - name: Rename and organize APK files
+      - name: Rename APK files
         run: |
           mkdir -p release-apks
-          
-          # Copy debug APK
-          if [ -f app/build/outputs/apk/debug/app-debug.apk ]; then
-            cp app/build/outputs/apk/debug/app-debug.apk release-apks/ebook-reader-v${{ env.VERSION }}-debug.apk
-            echo "✅ Debug APK copied"
-          fi
-          
-          # Copy release APK (signed)
-          if [ -f app/build/outputs/apk/release/app-release.apk ]; then
-            cp app/build/outputs/apk/release/app-release.apk release-apks/ebook-reader-v${{ env.VERSION }}-release-signed.apk
-            echo "✅ Release APK copied (signed)"
-          elif [ -f app/build/outputs/apk/release/app-release-unsigned.apk ]; then
-            cp app/build/outputs/apk/release/app-release-unsigned.apk release-apks/ebook-reader-v${{ env.VERSION }}-release-unsigned.apk
-            echo "⚠️  Release APK copied (unsigned - signing may have failed)"
-          fi
-          
-          echo ""
-          echo "=== Final APKs ==="
-          ls -lh release-apks/
-
-      - name: Get APK info
-        run: |
-          if [ -f release-apks/ebook-reader-v${{ env.VERSION }}-release-signed.apk ]; then
-            SIZE=$(du -h release-apks/ebook-reader-v${{ env.VERSION }}-release-signed.apk | cut -f1)
-            echo "📦 Release APK Size: $SIZE"
-            echo "APK_SIZE=$SIZE" >> $GITHUB_ENV
-          fi
-          if [ -f release-apks/ebook-reader-v${{ env.VERSION }}-debug.apk ]; then
-            DEBUG_SIZE=$(du -h release-apks/ebook-reader-v${{ env.VERSION }}-debug.apk | cut -f1)
-            echo "🐛 Debug APK Size: $DEBUG_SIZE"
-          fi
+          cp app/build/outputs/apk/debug/app-debug.apk release-apks/ebook-reader-v${{ env.VERSION }}-debug.apk
+          cp app/build/outputs/apk/release/app-release-unsigned.apk release-apks/ebook-reader-v${{ env.VERSION }}-release-unsigned.apk || \
+          cp app/build/outputs/apk/release/app-release.apk release-apks/ebook-reader-v${{ env.VERSION }}-release.apk
 
       - name: Upload Debug APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: debug-apk-v${{ env.VERSION }}
+          name: debug-apk
           path: release-apks/*-debug.apk
           retention-days: 30
 
       - name: Upload Release APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: release-apk-v${{ env.VERSION }}
+          name: release-apk
           path: release-apks/*-release*.apk
           retention-days: 30
 
-      - name: Get commit info
+      - name: Get commit message
         id: commit
         run: |
-          COMMIT_MSG=$(git log -1 --pretty=%B | head -n 1)
-          echo "MESSAGE=$COMMIT_MSG" >> $GITHUB_ENV
-          COMMIT_AUTHOR=$(git log -1 --pretty=format:'%an')
-          echo "AUTHOR=$COMMIT_AUTHOR" >> $GITHUB_ENV
+          echo "MESSAGE=$(git log -1 --pretty=%B | head -n 1)" >> $GITHUB_ENV
 
-      - name: Create/Update GitHub Release
+      - name: Create/Update Latest Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: v${{ env.VERSION }}
-          name: 📱 Ebook Reader v${{ env.VERSION }}
+          name: Ebook Reader v${{ env.VERSION }}
           files: release-apks/*.apk
           body: |
             ## 📱 Ebook Reader App v${{ env.VERSION }}
             
-            ### 📥 Downloads Available
+            ### 📥 Download
+            Choose the APK that suits your needs:
+            - **Debug APK**: For testing and development
+            - **Release APK**: Optimized build for production use
             
-            | Build Type | File Size | Description | Best For |
-            |------------|-----------|-------------|----------|
-            | 🟢 **Release (Signed)** | ${{ env.APK_SIZE }} | Production build, optimized & signed | **Everyone - Install this!** |
-            | 🔵 **Debug** | - | Development build with logging | Developers & testers |
+            ### 📦 Installation
+            1. Download the APK file to your Android device
+            2. Go to Settings → Security → Enable "Install from Unknown Sources"
+            3. Open the downloaded APK and install
             
-            ### 📦 Installation Instructions
-            
-            1. **Download** the `ebook-reader-v${{ env.VERSION }}-release-signed.apk` file below
-            2. **Transfer** to your Android device (if downloaded on PC)
-            3. **Enable** "Install from Unknown Sources":
-               - Go to Settings → Security → Unknown Sources → Enable
-               - Or Settings → Apps → Special Access → Install Unknown Apps
-            4. **Open** the APK file and tap Install
-            5. **Launch** the app and enjoy! 📚
-            
-            ### ✨ Features
-            
-            - 📚 **Search & Download** ebooks from OceanOfPDF
-            - 🗂️ **Browse by Genre** - Easy category navigation  
-            - 🔍 **Smart Filters** - Language and format filtering
-            - 💾 **Auto Management** - Automatic download handling
-            - 📖 **Built-in Reader** - Read books directly in the app
-            - 🎨 **Material Design** - Modern, beautiful UI
-            - 🔄 **Auto Updates** - Get notified of new versions
-            
-            ### 📝 Changes in v${{ env.VERSION }}
-            
-            ```
+            ### 📝 Latest Changes
             ${{ env.MESSAGE }}
-            ```
             
-            **Author**: ${{ env.AUTHOR }}  
-            **Build Date**: ${{ github.event.head_commit.timestamp }}  
+            **Build Date**: ${{ github.event.head_commit.timestamp }}
             **Commit**: [`${{ github.sha }}`](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
             
             ---
             
-            ### 🐛 Issues or Feedback?
-            
-            Found a bug or have a suggestion? [Open an issue](https://github.com/${{ github.repository }}/issues/new)
-            
-            ### ⭐ Support This Project
-            
-            If you find this app useful, please consider:
-            - ⭐ Starring the repository
-            - 🐛 Reporting bugs
-            - 💡 Suggesting features  
-            - 📢 Sharing with friends
+            ### ✨ Features
+            - 📚 Search and download ebooks from OceanOfPDF
+            - 📖 Browse books by genre
+            - 💾 Automatic download management
+            - 🔍 Smart search filters
+            - 📱 Material Design UI
           draft: false
           prerelease: false
         env:
