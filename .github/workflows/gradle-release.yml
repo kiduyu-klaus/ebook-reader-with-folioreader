@@ -57,9 +57,10 @@ jobs:
 
       - name: Build Release APK (Signed)
         env:
-          KEYSTORE_PASSWORD: klausK2801
-          KEY_PASSWORD: klausK2801
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: ./gradlew assembleRelease --stacktrace
+
 
       - name: List build outputs
         run: |
