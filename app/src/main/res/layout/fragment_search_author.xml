@@ -85,7 +85,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:hint="Number of Books (optional) Leave empty for all books"
+                            android:hint="No of Books Leave empty for all books"
                             app:boxBackgroundMode="none"
                             app:hintTextColor="@color/purple_500"
                             app:startIconDrawable="@drawable/ic_book_open"
