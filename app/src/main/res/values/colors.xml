@@ -12,4 +12,71 @@
     <color name="text_secondary">#FF6200EE</color>
     <color name="primary_color">#FF03DAC5</color>
     <color name="background_color">#FFFFFFFF</color>
+
+    <!-- New extracted colors -->
+    <color name="input_background">#F5F5F5</color>
+    <color name="input_stroke">#E0E0E0</color>
+
+    <color name="nav_header_start">#8E24AA</color>
+    <color name="nav_header_center">#6A1B9A</color>
+    <color name="nav_header_end">#4A148C</color>
+
+    <color name="toolbar_start">#7E57C2</color>
+    <color name="toolbar_end">#5E35B1</color>
+
+    <color name="star_fill">#000000</color>
+
+    <color name="setting_icon_bg">#F3E5F5</color>
+
+    <color name="download_icon_fill">#000000</color>
+
+    <!-- Icon colors -->
+    <color name="icon_fill">#000000</color>
+
+    <!-- Empty state icon colors -->
+    <color name="empty_state_bg">#F5F5F5</color>
+    <color name="empty_state_shelf_base">#BDBDBD</color>
+    <color name="empty_state_shelf_support">#9E9E9E</color>
+    <color name="empty_state_book_outline">#E0E0E0</color>
+    <color name="empty_state_magnifier_stroke">#9E9E9E</color>
+    <color name="empty_state_magnifier_fill">#BDBDBD</color>
+    <color name="empty_state_transparent">#00000000</color>
+
+    <!-- Launcher background colors -->
+    <color name="launcher_bg">#3DDC84</color>
+    <color name="launcher_grid_line">#33FFFFFF</color>
+
+    <!-- Chip and format colors -->
+    <color name="chip_epub_bg">#E8F5E9</color>
+    <color name="chip_epub_stroke">#4CAF50</color>
+    <color name="chip_pdf_bg">#FFEBEE</color>
+    <color name="chip_pdf_stroke">#FF5722</color>
+
+    <!-- Arrow and icon colors -->
+    <color name="arrow_forward_fill">#000000</color>
+    <color name="arrow_right_fill">#757575</color>
+    <color name="arrow_back_fill">#000000</color>
+
+    <!-- Book icon colors -->
+    <color name="book_placeholder_bg">#E0E0E0</color>
+    <color name="book_placeholder_main">#9E9E9E</color>
+    <color name="book_placeholder_spine">#BDBDBD</color>
+    <color name="book_placeholder_page1">#EEEEEE</color>
+    <color name="book_placeholder_page2">#E0E0E0</color>
+
+    <!-- Add icon color -->
+    <color name="add_icon_fill">#FFFFFF</color>
+
+    <!-- Button colors -->
+    <color name="button_read_bg">#667eea</color>
+
+    <!-- Category icon color -->
+    <color name="category_icon_fill">#FF6B6B</color>
+
+    <!-- File icon tint -->
+    <color name="file_icon_tint">#2F2828</color>
+
+    <!-- Card gradient colors -->
+    <color name="card_gradient_start">#AB47BC</color>
+    <color name="card_gradient_end">#5E35B1</color>
 </resources>
