@@ -34,7 +34,6 @@ import com.kiduyu.klaus.ebookfinaldownload.utils.EpubCoverExtractor;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -46,7 +45,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 import java.io.IOException;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -431,26 +429,22 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
-
-    /**
-     * Show update dialog to user
-     */
+    /** * Show update dialog to user */
     private void showUpdateDialog(String newVersion) {
         new AlertDialog.Builder(this)
                 .setTitle("Update Available")
-                .setMessage("A new version (" + newVersion + ") is available!\n\n" +
-                        "Current version: " + getCurrentAppVersion() + "\n\n" +
-                        "Would you like to download the latest version?")
+                .setMessage("A new version (" + newVersion + ") is available!\n\n"
+                        + "Current version: " + getCurrentAppVersion() + "\n\n"
+                        + "Would you like to download the latest version?")
                 .setPositiveButton("Download", (dialog, which) -> {
                     // Open GitHub releases page
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(GITHUB_RELEASE_URL));
-                    startActivity(browserIntent);
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(GITHUB_RELEASE_URL));
+                    startActivity(browserIntent); })
+                .setNegativeButton("Exit", (dialog, which) -> {
+                    // exit app
+                    finish();
                 })
-                .setNegativeButton("Later", (dialog, which) -> {
-                    dialog.dismiss();
-                })
-                .setCancelable(true)
+                .setCancelable(false)
                 .show();
     }
 
