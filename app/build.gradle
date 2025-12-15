@@ -19,7 +19,7 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file("${rootDir}/config/jksfiles/oceanofpdf.jks")
+            storeFile file("${rootDir}/config/jksfile/oceanofpdf.jks")
             storePassword System.getenv("KEYSTORE_PASSWORD")
             keyAlias "key0"
             keyPassword System.getenv("KEY_PASSWORD")
