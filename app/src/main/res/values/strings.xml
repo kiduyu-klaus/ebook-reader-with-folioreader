@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">OceanOfPdf App</string>
-
-    <!-- Navigation Drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <!-- Menu Items -->
     <string name="menu_home">Home</string>
     <string name="menu_search">Search Books</string>
     <string name="menu_my_books">My Books</string>
@@ -17,23 +13,143 @@
     <string name="menu_settings">Settings</string>
     <string name="menu_storage">Storage Management</string>
     <string name="menu_about">About</string>
-
-    <!-- Actions -->
     <string name="action_search">Search</string>
     <string name="action_filter">Filter</string>
     <string name="action_sort">Sort By</string>
     <string name="action_refresh">Refresh</string>
     <string name="action_settings">Settings</string>
-
-    <!-- Filter Options -->
     <string name="filter_all">All Books</string>
     <string name="filter_epub">EPUB Only</string>
     <string name="filter_pdf">PDF Only</string>
-
-    <!-- Sort Options -->
     <string name="sort_name">Name</string>
     <string name="sort_date">Date Added</string>
     <string name="sort_size">Size</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="0">0</string>
+    <string name="0_books">0 books</string>
+    <string name="0_favorites">0 favorites</string>
+    <string name="0_mb">0 MB</string>
+    <string name="1">1</string>
+    <string name="1234_books">1,234 books</string>
+    <string name="12_mb">1.2 MB</string>
+    <string name="25_mb">2.5 MB</string>
+    <string name="3">3</string>
+    <string name="5">5</string>
+    <string name="add_book">Add Book</string>
+    <string name="appearance">Appearance</string>
+    <string name="author_paulo_coelho">Author: Paulo Coelho</string>
+    <string name="auto_download">Auto Download</string>
+    <string name="back_to_categories">← Back to Categories</string>
+    <string name="book_title">Book Title</string>
+    <string name="books_found_0">Books Found: 0</string>
+    <string name="books_loaded_0">Books Loaded: 0</string>
+    <string name="browse_curated_book_collection">Browse curated book collections</string>
+    <string name="category_title">Category Title</string>
+    <string name="clear_cache">Clear Cache</string>
+    <string name="clear_history">Clear History</string>
+    <string name="clear_search_reading_history">Clear search &amp; reading history</string>
+    <string name="completed">Completed</string>
+    <string name="customize_your_reading_experie">Customize your reading experience</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="data_storage">Data &amp; Storage</string>
+    <string name="discover_your_next_favorite_re">Discover your next favorite read</string>
+    <string name="download_links">Download Links:</string>
+    <string name="download_only_on_wifi">Download only on WiFi</string>
+    <string name="download_settings">Download Settings</string>
+    <string name="enable_dark_theme">Enable dark theme</string>
+    <string name="enable_push_notifications">Enable push notifications</string>
+    <string name="enter_a_search_query_and_tap_s">Enter a search query and tap Search Books</string>
+    <string name="enter_an_authors_namenfirst_an">Enter an author's name\n(first and last name required)</string>
+    <string name="epub">EPUB </string>
+    <string name="epub_1">EPUB</string>
+    <string name="favorites">❤️ Favorites</string>
+    <string name="find_books_by_your_favorite_au">Find books by your favorite authors</string>
+    <string name="find_your_next_read">Find your next read</string>
+    <string name="free_up_storage_space">Free up storage space</string>
+    <string name="from_assets">From Assets</string>
+    <string name="from_raw">From Raw</string>
+    <string name="general">General</string>
+    <string name="help_support">Help &amp; Support</string>
+    <string name="hint_author_name_eg_bella_forrest">Author Name e.g., Bella Forrest</string>
+    <string name="hint_no_of_books_leave_empty_for_al">No of Books Leave empty for all books</string>
+    <string name="hint_number_of_books_optional">Number of Books (optional)</string>
+    <string name="hint_search_query">Search Query</string>
+    <string name="hint_type_to_filter_genres">Type to filter genres...</string>
+    <string name="id_12345">ID: 12345</string>
+    <string name="jan_1_2024">Jan 1, 2024</string>
+    <string name="language_english">Language: English</string>
+    <string name="latest_books_added_to_the_coll">Latest books added to the collection</string>
+    <string name="library_stats">Library Stats</string>
+    <string name="listopia">📚 Listopia</string>
+    <string name="load_more_books">Load More Books</string>
+    <string name="loading_books">Loading books...</string>
+    <string name="loading_categories">Loading categories...</string>
+    <string name="loading_genres">Loading genres...</string>
+    <string name="mark_books_as_favorites_to_see">Mark books as favorites to see them here</string>
+    <string name="meg_xuemei_x">meg xuemei x</string>
+    <string name="new_releases">🆕 New Releases</string>
+    <string name="next">Next</string>
+    <string name="no_books_found">No books found</string>
+    <string name="no_books_found_yet">No books found yet</string>
+    <string name="no_books_yet">No books yet</string>
+    <string name="no_categories_found">No categories found</string>
+    <string name="no_english_books_available_in_">No English books available in this genre</string>
+    <string name="no_favorites_yet">No favorites yet</string>
+    <string name="no_genres_found">No genres found</string>
+    <string name="no_new_releases_found">No new releases found</string>
+    <string name="notifications">Notifications</string>
+    <string name="page_1_of_1">Page 1 of 1</string>
+    <string name="pdf">PDF </string>
+    <string name="previous">Previous</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="pull_down_to_refresh">Pull down to refresh...</string>
+    <string name="pull_down_to_refresh_and_check">Pull down to refresh and check for new books</string>
+    <string name="quick_actions">Quick Actions</string>
+    <string name="read">Read</string>
+    <string name="reading">Reading</string>
+    <string name="ready_to_search">Ready to search...</string>
+    <string name="ready_to_search_by_author">Ready to search by author...</string>
+    <string name="refresh_categories">Refresh Categories</string>
+    <string name="save_books_automatically">Save books automatically</string>
+    <string name="science_fiction">Science Fiction</string>
+    <string name="search_authors_books">Search Author's Books</string>
+    <string name="search_books">🔍 Search Books</string>
+    <string name="search_by_author">✍️ Search by Author</string>
+    <string name="search_genres">Search Genres</string>
+    <string name="settings">⚙️ Settings</string>
+    <string name="show_only_epub_format">Show only EPUB format</string>
+    <string name="sisters_of_the_moon_by_nina_cr">Sisters of the moon by nina croft</string>
+    <string name="start_adding_books_to_build_yo">Start adding books to build your library</string>
+    <string name="tap_refresh_to_load_categories">Tap refresh to load categories</string>
+    <string name="text">📚</string>
+    <string name="text_1">📖</string>
+    <string name="text_10">⬇️</string>
+    <string name="text_11">📶</string>
+    <string name="text_12">🔔</string>
+    <string name="text_13">🗑️</string>
+    <string name="text_14">›</string>
+    <string name="text_15">🔄</string>
+    <string name="text_16">🔒</string>
+    <string name="text_17">❓</string>
+    <string name="text_2">⭐</string>
+    <string name="text_3">💔</string>
+    <string name="text_4">🔍</string>
+    <string name="text_5">📁</string>
+    <string name="text_6">💾</string>
+    <string name="text_7">🆕</string>
+    <string name="text_8">✍️</string>
+    <string name="text_9">🌙</string>
+    <string name="the_alchemist">The Alchemist</string>
+    <string name="thealchemistepub">the-alchemist.epub</string>
+    <string name="this_category_appears_to_be_em">This category appears to be empty</string>
+    <string name="total_books">Total Books</string>
+    <string name="try_a_different_search_term">Try a different search term</string>
+    <string name="v10">v1.0</string>
+    <string name="view_your_library">View your library</string>
+    <string name="welcome">📚 Welcome</string>
+    <string name="wifi_only">WiFi Only</string>
+    <string name="your_digital_library">Your Digital Library</string>
+    <string name="your_digital_library_awaits">Your digital library awaits</string>
+    <string name="your_library">Your Library</string>
+    <string name="ℹ">ℹ️</string>
 </resources>

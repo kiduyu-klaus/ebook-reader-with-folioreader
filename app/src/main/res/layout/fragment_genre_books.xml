@@ -1,127 +1,38 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/background_color"
-    android:padding="16dp"
-    tools:context=".fragments.GenreBooksFragment">
+<?xml version='1.0' encoding='utf-8'?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:background="@color/background_color" android:padding="16dp" tools:context=".fragments.GenreBooksFragment">
 
-    <!-- Status Text -->
-    <TextView
-        android:id="@+id/genreBookStatusText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Loading books..."
-        android:textColor="@color/text_secondary"
-        android:textSize="14sp"
-        android:layout_marginBottom="12dp" />
+    
+    <TextView android:id="@+id/genreBookStatusText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/loading_books" android:textColor="@color/text_secondary" android:textSize="14sp" android:layout_marginBottom="12dp" />
 
-    <!-- Progress Bar -->
-    <ProgressBar
-        android:id="@+id/genreBookProgressBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:indeterminate="true" />
+    
+    <ProgressBar android:id="@+id/genreBookProgressBar" android:layout_width="match_parent" android:layout_height="wrap_content" android:visibility="visible" style="?android:attr/progressBarStyleHorizontal" android:indeterminate="true" />
 
-    <!-- Books RecyclerView -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/genreBooksRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:visibility="gone"
-        android:clipToPadding="false"
-        android:paddingBottom="16dp" />
+    
+    <androidx.recyclerview.widget.RecyclerView android:id="@+id/genreBooksRecyclerView" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:visibility="gone" android:clipToPadding="false" android:paddingBottom="16dp" />
 
-    <!-- Empty State -->
-    <LinearLayout
-        android:id="@+id/genreBookEmptyStateLayout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:visibility="gone">
+    
+    <LinearLayout android:id="@+id/genreBookEmptyStateLayout" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:visibility="gone">
 
-        <ImageView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@drawable/ic_empty_state"
-            android:alpha="0.5"
-            android:layout_marginBottom="16dp" />
+        <ImageView android:layout_width="120dp" android:layout_height="120dp" android:src="@drawable/ic_empty_state" android:alpha="0.5" android:layout_marginBottom="16dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="No books found"
-            android:textSize="18sp"
-            android:textColor="@color/text_primary"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/no_books_found" android:textSize="18sp" android:textColor="@color/text_primary" android:textStyle="bold" android:layout_marginBottom="8dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="No English books available in this genre"
-            android:textSize="14sp"
-            android:textColor="@color/text_secondary"
-            android:gravity="center" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/no_english_books_available_in_" android:textSize="14sp" android:textColor="@color/text_secondary" android:gravity="center" />
 
     </LinearLayout>
 
-    <!-- Pagination Controls -->
-    <LinearLayout
-        android:id="@+id/paginationLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:visibility="gone">
+    
+    <LinearLayout android:id="@+id/paginationLayout" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp" android:visibility="gone">
 
-        <!-- Page Info -->
-        <TextView
-            android:id="@+id/pageInfoText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Page 1 of 1"
-            android:textSize="14sp"
-            android:textColor="@color/text_secondary"
-            android:layout_gravity="center"
-            android:layout_marginBottom="12dp" />
+        
+        <TextView android:id="@+id/pageInfoText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/page_1_of_1" android:textSize="14sp" android:textColor="@color/text_secondary" android:layout_gravity="center" android:layout_marginBottom="12dp" />
 
-        <!-- Navigation Buttons -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+        
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/previousButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Previous"
-                android:layout_marginEnd="8dp"
-                app:cornerRadius="8dp"
-                app:icon="@android:drawable/ic_media_previous"
-                app:iconGravity="start" />
+            <com.google.android.material.button.MaterialButton android:id="@+id/previousButton" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/previous" android:layout_marginEnd="8dp" app:cornerRadius="8dp" app:icon="@android:drawable/ic_media_previous" app:iconGravity="start" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/nextButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Next"
-                android:layout_marginStart="8dp"
-                app:cornerRadius="8dp"
-                app:icon="@android:drawable/ic_media_next"
-                app:iconGravity="end" />
+            <com.google.android.material.button.MaterialButton android:id="@+id/nextButton" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/next" android:layout_marginStart="8dp" app:cornerRadius="8dp" app:icon="@android:drawable/ic_media_next" app:iconGravity="end" />
 
         </LinearLayout>
 

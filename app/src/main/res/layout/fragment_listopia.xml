@@ -1,311 +1,101 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FAFAFA"
-    tools:context=".fragments.ListopiaFragment">
+<?xml version='1.0' encoding='utf-8'?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#FAFAFA" tools:context=".fragments.ListopiaFragment">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
 
-        <!-- Header Card -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:shapeAppearanceOverlay="@style/Shape_No_Corners"
-            android:background="@drawable/card_gradient">
+        
+        <com.google.android.material.card.MaterialCardView android:layout_width="match_parent" android:layout_height="wrap_content" app:shapeAppearanceOverlay="@style/Shape_No_Corners" android:background="@drawable/card_gradient">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/card_gradient"
-                android:orientation="vertical"
-                android:padding="20dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:background="@drawable/card_gradient" android:orientation="vertical" android:padding="20dp">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="📚 Listopia"
-                    android:textColor="@android:color/white"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/listopia" android:textColor="@android:color/white" android:textSize="24sp" android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:alpha="0.9"
-                    android:text="Browse curated book collections"
-                    android:textColor="@android:color/white"
-                    android:textSize="14sp" />
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:alpha="0.9" android:text="@string/browse_curated_book_collection" android:textColor="@android:color/white" android:textSize="14sp" />
 
-                <!-- Refresh Button -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/refreshCategoriesButton"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_marginTop="16dp"
-                    android:text="Refresh Categories"
-                    android:textColor="@android:color/white"
-                    android:textSize="14sp"
-                    app:cornerRadius="12dp"
-                    app:icon="@drawable/ic_refresh"
-                    app:iconTint="@android:color/white"
-                    app:strokeColor="@android:color/white"
-                    app:strokeWidth="2dp" />
+                
+                <com.google.android.material.button.MaterialButton android:id="@+id/refreshCategoriesButton" style="@style/Widget.MaterialComponents.Button.OutlinedButton" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginTop="16dp" android:text="@string/refresh_categories" android:textColor="@android:color/white" android:textSize="14sp" app:cornerRadius="12dp" app:icon="@drawable/ic_refresh" app:iconTint="@android:color/white" app:strokeColor="@android:color/white" app:strokeWidth="2dp" />
 
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Category Status Card -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp">
+        
+        <com.google.android.material.card.MaterialCardView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_marginEnd="16dp" android:layout_marginTop="16dp" app:cardCornerRadius="12dp" app:cardElevation="2dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="16dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="16dp">
 
-                <TextView
-                    android:id="@+id/categoryStatusText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Loading categories..."
-                    android:textColor="#757575"
-                    android:textSize="14sp" />
+                <TextView android:id="@+id/categoryStatusText" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/loading_categories" android:textColor="#757575" android:textSize="14sp" />
 
-                <ProgressBar
-                    android:id="@+id/categoryProgressBar"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:indeterminateTint="@color/purple_500"
-                    android:visibility="gone"
-                    style="@style/Widget.AppCompat.ProgressBar" />
+                <ProgressBar android:id="@+id/categoryProgressBar" android:layout_width="24dp" android:layout_height="24dp" android:indeterminateTint="@color/purple_500" android:visibility="gone" style="@style/Widget.AppCompat.ProgressBar" />
 
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Categories RecyclerView -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/categoryRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:clipToPadding="false"
-            android:nestedScrollingEnabled="false"
-            android:paddingBottom="16dp" />
+        
+        <androidx.recyclerview.widget.RecyclerView android:id="@+id/categoryRecyclerView" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:clipToPadding="false" android:nestedScrollingEnabled="false" android:paddingBottom="16dp" />
 
-        <!-- Category Empty State -->
-        <LinearLayout
-            android:id="@+id/categoryEmptyState"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="32dp"
-            android:visibility="gone">
+        
+        <LinearLayout android:id="@+id/categoryEmptyState" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="48dp" android:gravity="center" android:orientation="vertical" android:padding="32dp" android:visibility="gone">
 
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                app:cardBackgroundColor="#F3E5F5"
-                app:cardCornerRadius="60dp"
-                app:cardElevation="0dp">
+            <com.google.android.material.card.MaterialCardView android:layout_width="120dp" android:layout_height="120dp" app:cardBackgroundColor="#F3E5F5" app:cardCornerRadius="60dp" app:cardElevation="0dp">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="📚"
-                    android:textSize="64sp" />
+                <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:text="@string/text" android:textSize="64sp" />
 
             </com.google.android.material.card.MaterialCardView>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="No categories found"
-                android:textColor="#212121"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="24dp" android:text="@string/no_categories_found" android:textColor="#212121" android:textSize="20sp" android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
-                android:text="Tap refresh to load categories"
-                android:textColor="#757575"
-                android:textSize="14sp" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:gravity="center" android:text="@string/tap_refresh_to_load_categories" android:textColor="#757575" android:textSize="14sp" />
 
         </LinearLayout>
 
-        <!-- Books View Layout (Initially Hidden) -->
-        <LinearLayout
-            android:id="@+id/booksViewLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone">
+        
+        <LinearLayout android:id="@+id/booksViewLayout" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:visibility="gone">
 
-            <!-- Back Button and Category Title -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:orientation="vertical">
+            
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="16dp" android:orientation="vertical">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/backToCategoriesButton"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="← Back to Categories"
-                    android:textColor="@color/purple_500"
-                    app:icon="@drawable/ic_arrow_back"
-                    app:iconTint="@color/purple_500" />
+                <com.google.android.material.button.MaterialButton android:id="@+id/backToCategoriesButton" style="@style/Widget.MaterialComponents.Button.TextButton" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/back_to_categories" android:textColor="@color/purple_500" app:icon="@drawable/ic_arrow_back" app:iconTint="@color/purple_500" />
 
-                <TextView
-                    android:id="@+id/selectedCategoryTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Category Title"
-                    android:textColor="#212121"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                <TextView android:id="@+id/selectedCategoryTitle" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/category_title" android:textColor="#212121" android:textSize="20sp" android:textStyle="bold" />
 
             </LinearLayout>
 
-            <!-- Books Status Card -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+            
+            <com.google.android.material.card.MaterialCardView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_marginEnd="16dp" android:layout_marginBottom="16dp" app:cardCornerRadius="12dp" app:cardElevation="2dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="16dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="16dp">
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/booksCountText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Books Loaded: 0"
-                            android:textColor="#212121"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                        <TextView android:id="@+id/booksCountText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/books_loaded_0" android:textColor="#212121" android:textSize="16sp" android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/booksStatusText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:ellipsize="end"
-                            android:maxLines="2"
-                            android:text="Loading books..."
-                            android:textColor="#757575"
-                            android:textSize="13sp" />
+                        <TextView android:id="@+id/booksStatusText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:ellipsize="end" android:maxLines="2" android:text="@string/loading_books" android:textColor="#757575" android:textSize="13sp" />
 
                     </LinearLayout>
 
-                    <ProgressBar
-                        android:id="@+id/booksProgressBar"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:indeterminateTint="@color/purple_500"
-                        android:visibility="gone"
-                        style="@style/Widget.AppCompat.ProgressBar" />
+                    <ProgressBar android:id="@+id/booksProgressBar" android:layout_width="32dp" android:layout_height="32dp" android:indeterminateTint="@color/purple_500" android:visibility="gone" style="@style/Widget.AppCompat.ProgressBar" />
 
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Books RecyclerView -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/booksRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:nestedScrollingEnabled="false"
-                android:paddingBottom="16dp" />
+            
+            <androidx.recyclerview.widget.RecyclerView android:id="@+id/booksRecyclerView" android:layout_width="match_parent" android:layout_height="wrap_content" android:clipToPadding="false" android:nestedScrollingEnabled="false" android:paddingBottom="16dp" />
 
-            <!-- Books Empty State -->
-            <LinearLayout
-                android:id="@+id/booksEmptyState"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="32dp"
-                android:visibility="gone">
+            
+            <LinearLayout android:id="@+id/booksEmptyState" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="48dp" android:gravity="center" android:orientation="vertical" android:padding="32dp" android:visibility="gone">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    app:cardBackgroundColor="#F3E5F5"
-                    app:cardCornerRadius="60dp"
-                    app:cardElevation="0dp">
+                <com.google.android.material.card.MaterialCardView android:layout_width="120dp" android:layout_height="120dp" app:cardBackgroundColor="#F3E5F5" app:cardCornerRadius="60dp" app:cardElevation="0dp">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:text="📖"
-                        android:textSize="64sp" />
+                    <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:text="@string/text_1" android:textSize="64sp" />
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:text="No books found"
-                    android:textColor="#212121"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="24dp" android:text="@string/no_books_found" android:textColor="#212121" android:textSize="20sp" android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center"
-                    android:text="This category appears to be empty"
-                    android:textColor="#757575"
-                    android:textSize="14sp" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:gravity="center" android:text="@string/this_category_appears_to_be_em" android:textColor="#757575" android:textSize="14sp" />
 
             </LinearLayout>
 

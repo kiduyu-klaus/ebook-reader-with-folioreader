@@ -1,50 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FAFAFA">
+<?xml version='1.0' encoding='utf-8'?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#FAFAFA">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
 
-        <!-- Header Card -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardElevation="0dp">
+        
+        <com.google.android.material.card.MaterialCardView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp" app:cardElevation="0dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/card_gradient"
-                android:orientation="horizontal"
-                android:padding="35dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/card_gradient" android:orientation="horizontal" android:padding="35dp">
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="⚙️ Settings"
-                        android:textColor="@android:color/white"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/settings" android:textColor="@android:color/white" android:textSize="24sp" android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Customize your reading experience"
-                        android:textColor="#E0E0E0"
-                        android:textSize="14sp" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="@string/customize_your_reading_experie" android:textColor="#E0E0E0" android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -52,210 +20,76 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Appearance Section -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="12dp"
-            android:text="Appearance"
-            android:textColor="#212121"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+        
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:layout_marginBottom="12dp" android:text="@string/appearance" android:textColor="#212121" android:textSize="16sp" android:textStyle="bold" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp">
+        <com.google.android.material.card.MaterialCardView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp" app:cardCornerRadius="12dp" app:cardElevation="2dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="4dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="4dp">
 
-                <!-- Dark Mode -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="16dp">
+                
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="16dp">
 
-                    <TextView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@drawable/setting_icon_bg"
-                        android:gravity="center"
-                        android:text="🌙"
-                        android:textSize="24sp" />
+                    <TextView android:layout_width="48dp" android:layout_height="48dp" android:background="@drawable/setting_icon_bg" android:gravity="center" android:text="@string/text_9" android:textSize="24sp" />
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_weight="1" android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Dark Mode"
-                            android:textColor="#212121"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/dark_mode" android:textColor="#212121" android:textSize="16sp" android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Enable dark theme"
-                            android:textColor="#757575"
-                            android:textSize="13sp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="@string/enable_dark_theme" android:textColor="#757575" android:textSize="13sp" />
 
                     </LinearLayout>
 
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/switchDarkMode"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                    <com.google.android.material.switchmaterial.SwitchMaterial android:id="@+id/switchDarkMode" android:layout_width="wrap_content" android:layout_height="wrap_content" />
 
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="80dp"
-                    android:background="#F0F0F0" />
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="80dp" android:background="#F0F0F0" />
 
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Download Settings Section -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:text="Download Settings"
-            android:textColor="#212121"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+        
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:text="@string/download_settings" android:textColor="#212121" android:textSize="16sp" android:textStyle="bold" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp">
+        <com.google.android.material.card.MaterialCardView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp" app:cardCornerRadius="12dp" app:cardElevation="2dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="4dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="4dp">
 
-                <!-- Auto Download -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="16dp">
+                
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="16dp">
 
-                    <TextView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@drawable/setting_icon_bg"
-                        android:gravity="center"
-                        android:text="⬇️"
-                        android:textSize="24sp" />
+                    <TextView android:layout_width="48dp" android:layout_height="48dp" android:background="@drawable/setting_icon_bg" android:gravity="center" android:text="@string/text_10" android:textSize="24sp" />
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_weight="1" android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Auto Download"
-                            android:textColor="#212121"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/auto_download" android:textColor="#212121" android:textSize="16sp" android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Save books automatically"
-                            android:textColor="#757575"
-                            android:textSize="13sp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="@string/save_books_automatically" android:textColor="#757575" android:textSize="13sp" />
 
                     </LinearLayout>
 
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/switchAutoDownload"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                    <com.google.android.material.switchmaterial.SwitchMaterial android:id="@+id/switchAutoDownload" android:layout_width="wrap_content" android:layout_height="wrap_content" />
 
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="80dp"
-                    android:background="#F0F0F0" />
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="80dp" android:background="#F0F0F0" />
 
-                <!-- WiFi Only -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="16dp">
+                
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="16dp">
 
-                    <TextView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@drawable/setting_icon_bg"
-                        android:gravity="center"
-                        android:text="📶"
-                        android:textSize="24sp" />
+                    <TextView android:layout_width="48dp" android:layout_height="48dp" android:background="@drawable/setting_icon_bg" android:gravity="center" android:text="@string/text_11" android:textSize="24sp" />
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_weight="1" android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="WiFi Only"
-                            android:textColor="#212121"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/wifi_only" android:textColor="#212121" android:textSize="16sp" android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Download only on WiFi"
-                            android:textColor="#757575"
-                            android:textSize="13sp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="@string/download_only_on_wifi" android:textColor="#757575" android:textSize="13sp" />
 
                     </LinearLayout>
 
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/switchWifiOnly"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                    <com.google.android.material.switchmaterial.SwitchMaterial android:id="@+id/switchWifiOnly" android:layout_width="wrap_content" android:layout_height="wrap_content" />
 
                 </LinearLayout>
 
@@ -263,128 +97,46 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- General Settings Section -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:text="General"
-            android:textColor="#212121"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+        
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:text="@string/general" android:textColor="#212121" android:textSize="16sp" android:textStyle="bold" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp">
+        <com.google.android.material.card.MaterialCardView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp" app:cardCornerRadius="12dp" app:cardElevation="2dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="4dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="4dp">
 
-                <!-- Notifications -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="16dp">
+                
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="16dp">
 
-                    <TextView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@drawable/setting_icon_bg"
-                        android:gravity="center"
-                        android:text="🔔"
-                        android:textSize="24sp" />
+                    <TextView android:layout_width="48dp" android:layout_height="48dp" android:background="@drawable/setting_icon_bg" android:gravity="center" android:text="@string/text_12" android:textSize="24sp" />
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_weight="1" android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Notifications"
-                            android:textColor="#212121"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/notifications" android:textColor="#212121" android:textSize="16sp" android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Enable push notifications"
-                            android:textColor="#757575"
-                            android:textSize="13sp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="@string/enable_push_notifications" android:textColor="#757575" android:textSize="13sp" />
 
                     </LinearLayout>
 
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/switchNotifications"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                    <com.google.android.material.switchmaterial.SwitchMaterial android:id="@+id/switchNotifications" android:layout_width="wrap_content" android:layout_height="wrap_content" />
 
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="80dp"
-                    android:background="#F0F0F0" />
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="80dp" android:background="#F0F0F0" />
 
-                <!-- EPUB Only -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="16dp">
+                
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="16dp">
 
-                    <TextView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@drawable/setting_icon_bg"
-                        android:gravity="center"
-                        android:text="📖"
-                        android:textSize="24sp" />
+                    <TextView android:layout_width="48dp" android:layout_height="48dp" android:background="@drawable/setting_icon_bg" android:gravity="center" android:text="@string/text_1" android:textSize="24sp" />
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_weight="1" android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="EPUB Only"
-                            android:textColor="#212121"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/filter_epub" android:textColor="#212121" android:textSize="16sp" android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Show only EPUB format"
-                            android:textColor="#757575"
-                            android:textSize="13sp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="@string/show_only_epub_format" android:textColor="#757575" android:textSize="13sp" />
 
                     </LinearLayout>
 
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/switchEpubOnly"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                    <com.google.android.material.switchmaterial.SwitchMaterial android:id="@+id/switchEpubOnly" android:layout_width="wrap_content" android:layout_height="wrap_content" />
 
                 </LinearLayout>
 
@@ -392,154 +144,52 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Data & Storage Section -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:text="Data &amp; Storage"
-            android:textColor="#212121"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+        
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:text="@string/data_storage" android:textColor="#212121" android:textSize="16sp" android:textStyle="bold" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp">
+        <com.google.android.material.card.MaterialCardView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp" app:cardCornerRadius="12dp" app:cardElevation="2dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="4dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="4dp">
 
-                <!-- Clear Cache -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardClearCache"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="0dp"
-                    app:rippleColor="#E0E0E0">
+                
+                <com.google.android.material.card.MaterialCardView android:id="@+id/cardClearCache" android:layout_width="match_parent" android:layout_height="wrap_content" android:clickable="true" android:focusable="true" app:cardCornerRadius="8dp" app:cardElevation="0dp" app:rippleColor="#E0E0E0">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:padding="16dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="16dp">
 
-                        <TextView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:background="@drawable/setting_icon_bg"
-                            android:gravity="center"
-                            android:text="🗑️"
-                            android:textSize="24sp" />
+                        <TextView android:layout_width="48dp" android:layout_height="48dp" android:background="@drawable/setting_icon_bg" android:gravity="center" android:text="@string/text_13" android:textSize="24sp" />
 
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_weight="1" android:orientation="vertical">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Clear Cache"
-                                android:textColor="#212121"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/clear_cache" android:textColor="#212121" android:textSize="16sp" android:textStyle="bold" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:text="Free up storage space"
-                                android:textColor="#757575"
-                                android:textSize="13sp" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="@string/free_up_storage_space" android:textColor="#757575" android:textSize="13sp" />
 
                         </LinearLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="›"
-                            android:textColor="#BDBDBD"
-                            android:textSize="24sp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/text_14" android:textColor="#BDBDBD" android:textSize="24sp" />
 
                     </LinearLayout>
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="80dp"
-                    android:background="#F0F0F0" />
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="80dp" android:background="#F0F0F0" />
 
-                <!-- Clear History -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardClearHistory"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="0dp"
-                    app:rippleColor="#E0E0E0">
+                
+                <com.google.android.material.card.MaterialCardView android:id="@+id/cardClearHistory" android:layout_width="match_parent" android:layout_height="wrap_content" android:clickable="true" android:focusable="true" app:cardCornerRadius="8dp" app:cardElevation="0dp" app:rippleColor="#E0E0E0">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:padding="16dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="16dp">
 
-                        <TextView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:background="@drawable/setting_icon_bg"
-                            android:gravity="center"
-                            android:text="🔄"
-                            android:textSize="24sp" />
+                        <TextView android:layout_width="48dp" android:layout_height="48dp" android:background="@drawable/setting_icon_bg" android:gravity="center" android:text="@string/text_15" android:textSize="24sp" />
 
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_weight="1" android:orientation="vertical">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Clear History"
-                                android:textColor="#212121"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/clear_history" android:textColor="#212121" android:textSize="16sp" android:textStyle="bold" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:text="Clear search &amp; reading history"
-                                android:textColor="#757575"
-                                android:textSize="13sp" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="2dp" android:text="@string/clear_search_reading_history" android:textColor="#757575" android:textSize="13sp" />
 
                         </LinearLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="›"
-                            android:textColor="#BDBDBD"
-                            android:textSize="24sp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/text_14" android:textColor="#BDBDBD" android:textSize="24sp" />
 
                     </LinearLayout>
 
@@ -549,177 +199,57 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- About Section -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:text="About"
-            android:textColor="#212121"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+        
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:text="@string/menu_about" android:textColor="#212121" android:textSize="16sp" android:textStyle="bold" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp">
+        <com.google.android.material.card.MaterialCardView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="24dp" app:cardCornerRadius="12dp" app:cardElevation="2dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="4dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="4dp">
 
-                <!-- About -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardAbout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="0dp"
-                    app:rippleColor="#E0E0E0">
+                
+                <com.google.android.material.card.MaterialCardView android:id="@+id/cardAbout" android:layout_width="match_parent" android:layout_height="wrap_content" android:clickable="true" android:focusable="true" app:cardCornerRadius="8dp" app:cardElevation="0dp" app:rippleColor="#E0E0E0">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:padding="16dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="16dp">
 
-                        <TextView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:background="@drawable/setting_icon_bg"
-                            android:gravity="center"
-                            android:text="ℹ️"
-                            android:textSize="24sp" />
+                        <TextView android:layout_width="48dp" android:layout_height="48dp" android:background="@drawable/setting_icon_bg" android:gravity="center" android:text="@string/ℹ" android:textSize="24sp" />
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_weight="1"
-                            android:text="About"
-                            android:textColor="#212121"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_weight="1" android:text="@string/menu_about" android:textColor="#212121" android:textSize="16sp" android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="›"
-                            android:textColor="#BDBDBD"
-                            android:textSize="24sp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/text_14" android:textColor="#BDBDBD" android:textSize="24sp" />
 
                     </LinearLayout>
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="80dp"
-                    android:background="#F0F0F0" />
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="80dp" android:background="#F0F0F0" />
 
-                <!-- Privacy -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardPrivacy"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="0dp"
-                    app:rippleColor="#E0E0E0">
+                
+                <com.google.android.material.card.MaterialCardView android:id="@+id/cardPrivacy" android:layout_width="match_parent" android:layout_height="wrap_content" android:clickable="true" android:focusable="true" app:cardCornerRadius="8dp" app:cardElevation="0dp" app:rippleColor="#E0E0E0">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:padding="16dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="16dp">
 
-                        <TextView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:background="@drawable/setting_icon_bg"
-                            android:gravity="center"
-                            android:text="🔒"
-                            android:textSize="24sp" />
+                        <TextView android:layout_width="48dp" android:layout_height="48dp" android:background="@drawable/setting_icon_bg" android:gravity="center" android:text="@string/text_16" android:textSize="24sp" />
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_weight="1"
-                            android:text="Privacy Policy"
-                            android:textColor="#212121"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_weight="1" android:text="@string/privacy_policy" android:textColor="#212121" android:textSize="16sp" android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="›"
-                            android:textColor="#BDBDBD"
-                            android:textSize="24sp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/text_14" android:textColor="#BDBDBD" android:textSize="24sp" />
 
                     </LinearLayout>
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="80dp"
-                    android:background="#F0F0F0" />
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginStart="80dp" android:background="#F0F0F0" />
 
-                <!-- Help -->
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardHelp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="0dp"
-                    app:rippleColor="#E0E0E0">
+                
+                <com.google.android.material.card.MaterialCardView android:id="@+id/cardHelp" android:layout_width="match_parent" android:layout_height="wrap_content" android:clickable="true" android:focusable="true" app:cardCornerRadius="8dp" app:cardElevation="0dp" app:rippleColor="#E0E0E0">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:padding="16dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="16dp">
 
-                        <TextView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:background="@drawable/setting_icon_bg"
-                            android:gravity="center"
-                            android:text="❓"
-                            android:textSize="24sp" />
+                        <TextView android:layout_width="48dp" android:layout_height="48dp" android:background="@drawable/setting_icon_bg" android:gravity="center" android:text="@string/text_17" android:textSize="24sp" />
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_weight="1"
-                            android:text="Help &amp; Support"
-                            android:textColor="#212121"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_weight="1" android:text="@string/help_support" android:textColor="#212121" android:textSize="16sp" android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="›"
-                            android:textColor="#BDBDBD"
-                            android:textSize="24sp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/text_14" android:textColor="#BDBDBD" android:textSize="24sp" />
 
                     </LinearLayout>
 

@@ -1,207 +1,64 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp"
-    app:cardUseCompatPadding="true">
+<?xml version='1.0' encoding='utf-8'?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="8dp" app:cardCornerRadius="12dp" app:cardElevation="4dp" app:cardUseCompatPadding="true">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
 
-        <!-- Book Number Badge - Positioned at top -->
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        
+        <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/bookNumber"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="12dp"
-                android:background="@drawable/circle_background"
-                android:gravity="center"
-                android:text="1"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:elevation="4dp" />
+            <TextView android:id="@+id/bookNumber" android:layout_width="40dp" android:layout_height="40dp" android:layout_margin="12dp" android:background="@drawable/circle_background" android:gravity="center" android:text="@string/1" android:textColor="@android:color/white" android:textSize="16sp" android:textStyle="bold" android:elevation="4dp" />
 
         </FrameLayout>
 
-        <!-- Book Cover Image -->
-        <ImageView
-            android:id="@+id/bookCoverImage"
-            android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:scaleType="fitXY"
-            android:background="#F5F5F5"
-            android:src="@drawable/ic_book_placeholder"
-            android:contentDescription="Book Cover" />
+        
+        <ImageView android:id="@+id/bookCoverImage" android:layout_width="match_parent" android:layout_height="400dp" android:scaleType="fitXY" android:background="#F5F5F5" android:src="@drawable/ic_book_placeholder" android:contentDescription="Book Cover" />
 
-        <!-- Book Info Container with curved bottom -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:background="@android:color/white">
+        
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp" android:background="@android:color/white">
 
-            <!-- Title -->
-            <TextView
-                android:id="@+id/bookTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="The Alchemist"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#212121"
-                android:maxLines="2"
-                android:ellipsize="end"
-                android:layout_marginBottom="4dp" />
+            
+            <TextView android:id="@+id/bookTitle" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/the_alchemist" android:textSize="18sp" android:textStyle="bold" android:textColor="#212121" android:maxLines="2" android:ellipsize="end" android:layout_marginBottom="4dp" />
 
-            <!-- Author -->
-            <TextView
-                android:id="@+id/bookAuthor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Author: Paulo Coelho"
-                android:textSize="14sp"
-                android:textColor="#616161"
-                android:layout_marginBottom="4dp" />
+            
+            <TextView android:id="@+id/bookAuthor" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/author_paulo_coelho" android:textSize="14sp" android:textColor="#616161" android:layout_marginBottom="4dp" />
 
-            <!-- Language -->
-            <TextView
-                android:id="@+id/bookLanguage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Language: English"
-                android:textSize="14sp"
-                android:textColor="#616161"
-                android:layout_marginBottom="12dp" />
-            <TextView
-                android:id="@+id/bookseries"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Language: English"
-                android:textSize="14sp"
-                android:textColor="#616161"
-                android:layout_marginBottom="12dp" />
+            
+            <TextView android:id="@+id/bookLanguage" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/language_english" android:textSize="14sp" android:textColor="#616161" android:layout_marginBottom="12dp" />
+            <TextView android:id="@+id/bookseries" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/language_english" android:textSize="14sp" android:textColor="#616161" android:layout_marginBottom="12dp" />
 
-            <!-- File Sizes Container (Horizontal chips) -->
-            <LinearLayout
-                android:id="@+id/fileSizesContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="12dp"
-                android:visibility="gone">
+            
+            <LinearLayout android:id="@+id/fileSizesContainer" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp" android:visibility="gone">
 
-                <!-- EPUB Size Chip -->
-                <LinearLayout
-                    android:id="@+id/epubSizeLayout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="@drawable/chip_background_epub"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:layout_marginEnd="8dp"
-                    android:visibility="gone">
+                
+                <LinearLayout android:id="@+id/epubSizeLayout" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:background="@drawable/chip_background_epub" android:paddingStart="12dp" android:paddingEnd="12dp" android:paddingTop="6dp" android:paddingBottom="6dp" android:layout_marginEnd="8dp" android:visibility="gone">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="EPUB "
-                        android:textStyle="bold"
-                        android:textSize="12sp"
-                        android:textColor="#4CAF50" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/epub" android:textStyle="bold" android:textSize="12sp" android:textColor="#4CAF50" />
 
-                    <TextView
-                        android:id="@+id/epubSize"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="1.2 MB"
-                        android:textSize="12sp"
-                        android:textColor="#4CAF50" />
+                    <TextView android:id="@+id/epubSize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/12_mb" android:textSize="12sp" android:textColor="#4CAF50" />
 
                 </LinearLayout>
 
-                <!-- PDF Size Chip -->
-                <LinearLayout
-                    android:id="@+id/pdfSizeLayout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="@drawable/chip_background_pdf"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:visibility="gone">
+                
+                <LinearLayout android:id="@+id/pdfSizeLayout" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:background="@drawable/chip_background_pdf" android:paddingStart="12dp" android:paddingEnd="12dp" android:paddingTop="6dp" android:paddingBottom="6dp" android:visibility="gone">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="PDF "
-                        android:textStyle="bold"
-                        android:textSize="12sp"
-                        android:textColor="#FF5722" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/pdf" android:textStyle="bold" android:textSize="12sp" android:textColor="#FF5722" />
 
-                    <TextView
-                        android:id="@+id/pdfSize"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="2.5 MB"
-                        android:textSize="12sp"
-                        android:textColor="#FF5722" />
+                    <TextView android:id="@+id/pdfSize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/25_mb" android:textSize="12sp" android:textColor="#FF5722" />
 
                 </LinearLayout>
 
             </LinearLayout>
 
-            <!-- Download Links Header -->
-            <TextView
-                android:id="@+id/downloadLinksHeader"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Download Links:"
-                android:textStyle="bold"
-                android:textSize="13sp"
-                android:textColor="#424242"
-                android:layout_marginBottom="8dp"
-                android:visibility="gone" />
+            
+            <TextView android:id="@+id/downloadLinksHeader" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/download_links" android:textStyle="bold" android:textSize="13sp" android:textColor="#424242" android:layout_marginBottom="8dp" android:visibility="gone" />
 
-            <!-- Download Links RecyclerView -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/downloadLinksRecycler"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                android:visibility="gone" />
+            
+            <androidx.recyclerview.widget.RecyclerView android:id="@+id/downloadLinksRecycler" android:layout_width="match_parent" android:layout_height="wrap_content" android:nestedScrollingEnabled="false" android:visibility="gone" />
 
         </LinearLayout>
 
-        <!-- Read Button at Bottom -->
-        <Button
-            android:id="@+id/viewBookButton"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:text="Read"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/white"
-            android:background="@drawable/button_read_background"
-            app:backgroundTint="@null"
-            android:elevation="0dp"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_marginBottom="0dp" />
+        
+        <Button android:id="@+id/viewBookButton" android:layout_width="match_parent" android:layout_height="56dp" android:text="@string/read" android:textSize="16sp" android:textStyle="bold" android:textColor="@android:color/white" android:background="@drawable/button_read_background" app:backgroundTint="@null" android:elevation="0dp" style="@style/Widget.MaterialComponents.Button" android:layout_marginBottom="0dp" />
 
     </LinearLayout>
 
