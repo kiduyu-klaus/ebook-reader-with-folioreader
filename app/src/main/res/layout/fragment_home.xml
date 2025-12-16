@@ -93,7 +93,7 @@
 
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
 
-                        <TextView android:id="@+id/tv_total_books" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/0" android:textColor="#2196F3" android:textSize="28sp" android:textStyle="bold" />
+                        <TextView android:id="@+id/tv_total_books" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/a0" android:textColor="#2196F3" android:textSize="28sp" android:textStyle="bold" />
 
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="@string/total_books" android:textColor="#757575" android:textSize="12sp" />
 
@@ -103,7 +103,7 @@
 
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
 
-                        <TextView android:id="@+id/tv_reading_now" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/0" android:textColor="#9C27B0" android:textSize="28sp" android:textStyle="bold" />
+                        <TextView android:id="@+id/tv_reading_now" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/a0" android:textColor="#9C27B0" android:textSize="28sp" android:textStyle="bold" />
 
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="@string/reading" android:textColor="#757575" android:textSize="12sp" />
 
@@ -113,7 +113,7 @@
 
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
 
-                        <TextView android:id="@+id/tv_completed" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/0" android:textColor="#4CAF50" android:textSize="28sp" android:textStyle="bold" />
+                        <TextView android:id="@+id/tv_completed" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/a0" android:textColor="#4CAF50" android:textSize="28sp" android:textStyle="bold" />
 
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="@string/completed" android:textColor="#757575" android:textSize="12sp" />
 

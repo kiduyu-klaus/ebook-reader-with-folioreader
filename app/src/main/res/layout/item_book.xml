@@ -6,7 +6,7 @@
         
         <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content">
 
-            <TextView android:id="@+id/bookNumber" android:layout_width="40dp" android:layout_height="40dp" android:layout_margin="12dp" android:background="@drawable/circle_background" android:gravity="center" android:text="@string/1" android:textColor="@android:color/white" android:textSize="16sp" android:textStyle="bold" android:elevation="4dp" />
+            <TextView android:id="@+id/bookNumber" android:layout_width="40dp" android:layout_height="40dp" android:layout_margin="12dp" android:background="@drawable/circle_background" android:gravity="center" android:text="@string/a1" android:textColor="@android:color/white" android:textSize="16sp" android:textStyle="bold" android:elevation="4dp" />
 
         </FrameLayout>
 
@@ -34,7 +34,7 @@
 
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/epub" android:textStyle="bold" android:textSize="12sp" android:textColor="#4CAF50" />
 
-                    <TextView android:id="@+id/epubSize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/12_mb" android:textSize="12sp" android:textColor="#4CAF50" />
+                    <TextView android:id="@+id/epubSize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/a12_mb" android:textSize="12sp" android:textColor="#4CAF50" />
 
                 </LinearLayout>
 
@@ -43,7 +43,7 @@
 
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/pdf" android:textStyle="bold" android:textSize="12sp" android:textColor="#FF5722" />
 
-                    <TextView android:id="@+id/pdfSize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/25_mb" android:textSize="12sp" android:textColor="#FF5722" />
+                    <TextView android:id="@+id/pdfSize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/a25_mb" android:textSize="12sp" android:textColor="#FF5722" />
 
                 </LinearLayout>
 

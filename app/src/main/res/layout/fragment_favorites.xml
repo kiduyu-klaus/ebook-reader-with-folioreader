@@ -16,7 +16,7 @@
 
                             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/favorites" android:textColor="@android:color/white" android:textSize="20sp" android:textStyle="bold" />
 
-                            <TextView android:id="@+id/tvFavoriteCount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="@string/0_favorites" android:textColor="#E0E0E0" android:textSize="14sp" />
+                            <TextView android:id="@+id/tvFavoriteCount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="@string/a0_favorites" android:textColor="#E0E0E0" android:textSize="14sp" />
 
                         </LinearLayout>
 

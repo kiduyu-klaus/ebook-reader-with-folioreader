@@ -27,7 +27,7 @@
 
                         <com.google.android.material.textfield.TextInputLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:hint="@string/hint_number_of_books_optional" app:boxBackgroundMode="none" app:hintTextColor="@color/purple_500" app:startIconDrawable="@android:drawable/ic_menu_sort_by_size" app:startIconTint="@color/purple_500" style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-                            <com.google.android.material.textfield.TextInputEditText android:id="@+id/numBooksInput" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="number" android:text="@string/3" android:textSize="16sp" />
+                            <com.google.android.material.textfield.TextInputEditText android:id="@+id/numBooksInput" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="number" android:text="@string/a3" android:textSize="16sp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 

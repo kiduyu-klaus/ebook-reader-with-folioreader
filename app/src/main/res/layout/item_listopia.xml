@@ -15,12 +15,14 @@
 
             <TextView android:id="@+id/categoryTitle" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/category_title" android:textColor="#212121" android:textSize="16sp" android:textStyle="bold" android:maxLines="3" android:ellipsize="end" />
 
-            <TextView android:id="@+id/bookCount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/0_books" android:textColor="#757575" android:textSize="14sp" android:drawableStart="@drawable/ic_book_open" android:drawablePadding="4dp" android:drawableTint="@color/purple_500" />
+            <TextView android:id="@+id/bookCount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/a0_books" android:textColor="#757575" android:textSize="14sp" android:drawableStart="@drawable/ic_book_open" android:drawablePadding="4dp" android:drawableTint="@color/purple_500" />
 
         </LinearLayout>
 
         
-        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:layout_gravity="center_vertical" android:layout_marginStart="8dp" android:src="@drawable/ic_arrow_forward" android:tint="#757575" android:contentDescription="View category" />
+        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:layout_gravity="center_vertical" android:layout_marginStart="8dp" android:src="@drawable/ic_arrow_forward"
+            android:contentDescription="View category"
+            app:tint="#757575" />
 
     </LinearLayout>
 

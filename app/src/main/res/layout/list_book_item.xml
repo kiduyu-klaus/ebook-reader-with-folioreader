@@ -18,7 +18,7 @@
             
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:orientation="horizontal">
 
-                <com.google.android.material.chip.Chip android:id="@+id/chipSize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="8dp" android:text="@string/0_mb" android:textSize="11sp" app:chipBackgroundColor="#E3F2FD" app:chipCornerRadius="8dp" app:chipIcon="@drawable/stat_sys_download" app:chipIconSize="14dp" app:chipIconTint="#2196F3" app:chipMinHeight="28dp" app:chipStrokeWidth="0dp" app:textEndPadding="8dp" app:textStartPadding="4dp" />
+                <com.google.android.material.chip.Chip android:id="@+id/chipSize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="8dp" android:text="@string/a0_mb" android:textSize="11sp" app:chipBackgroundColor="#E3F2FD" app:chipCornerRadius="8dp" app:chipIcon="@drawable/stat_sys_download" app:chipIconSize="14dp" app:chipIconTint="#2196F3" app:chipMinHeight="28dp" app:chipStrokeWidth="0dp" app:textEndPadding="8dp" app:textStartPadding="4dp" />
 
                 <com.google.android.material.chip.Chip android:id="@+id/chipDate" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/jan_1_2024" android:textSize="11sp" app:chipBackgroundColor="#F3E5F5" app:chipCornerRadius="8dp" app:chipIcon="@drawable/ic_menu_recent_history" app:chipIconSize="14dp" app:chipIconTint="#9C27B0" app:chipMinHeight="28dp" app:chipStrokeWidth="0dp" app:textEndPadding="8dp" app:textStartPadding="4dp" />
 
