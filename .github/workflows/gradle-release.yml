@@ -9,13 +9,11 @@ on:
       - main
   workflow_dispatch:
 
-
-
-
-
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Required to create releases and upload assets
 
     steps:
       - name: Checkout code
@@ -78,6 +76,7 @@ jobs:
 
       - name: Create/Update Latest Release
         uses: softprops/action-gh-release@v1
+        if: github.ref == 'refs/heads/main'  # Only create releases on main branch
         with:
           tag_name: v${{ env.VERSION }}
           name: Ebook Reader v${{ env.VERSION }}
