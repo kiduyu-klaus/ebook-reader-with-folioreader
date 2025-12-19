@@ -314,11 +314,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void updateCurrentFragmentList(List<BookItem> files) {
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
-
-        if (fragment instanceof MyBooksFragment) {
-            ((MyBooksFragment) fragment).updateFileList(files);
-        }
+        // The MyBooksFragment now loads its data from the database and handles its own updates.
+        // We no longer need to pass the list to it.
+        // The filter/sort logic in MainActivity was for a previous implementation.
+        // For MyBooksFragment, the loadBooksFromDatabase() and syncLocalBooks() methods
+        // handle the display logic.
     }
 
     private void refreshCurrentFragment() {
