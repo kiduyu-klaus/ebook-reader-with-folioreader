@@ -176,30 +176,28 @@ public class BookSyncService extends Service {
                 });
             }
 
-            // Process books as they come in
-            List<BookInfo> booksToSave = new ArrayList<>();
-            boolean processingComplete = false;
-
-            while (!processingComplete || !bookQueue.isEmpty()) {
-                BookTask task = bookQueue.poll(1, TimeUnit.SECONDS);
-
-                if (task != null) {
-                    BookInfo bookInfo = processBookInfo(task);
-                    if (bookInfo != null) {
-                        booksToSave.add(bookInfo);
-                    }
-                }
-
-                // Check if all books have been processed
-                processingComplete = latch.getCount() == 0;
-            }
-
-            // Save all books to database
-            if (!booksToSave.isEmpty()) {
-                notifyProgress("Saving " + booksToSave.size() + " books to database...");
-                int savedCount = bookRepository.saveBooks(booksToSave);
-                notifyProgress("Saved " + savedCount + " books to database");
-            }
+	            // Process books as they come in and save them immediately
+	            boolean processingComplete = false;
+	            int savedCount = 0;
+	
+	            while (!processingComplete || !bookQueue.isEmpty()) {
+	                BookTask task = bookQueue.poll(1, TimeUnit.SECONDS);
+	
+	                if (task != null) {
+	                    BookInfo bookInfo = processBookInfo(task);
+	                    if (bookInfo != null) {
+	                        // Save book immediately
+	                        bookRepository.saveBook(bookInfo);
+	                        savedCount++;
+	                        notifyProgress("Saved book: " + bookInfo.getTitle() + " (Total: " + savedCount + ")");
+	                    }
+	                }
+	
+	                // Check if all books have been processed
+	                processingComplete = latch.getCount() == 0;
+	            }
+	
+	            notifyCompleted(booksFound.get());
 
             notifyCompleted(booksFound.get());
 
