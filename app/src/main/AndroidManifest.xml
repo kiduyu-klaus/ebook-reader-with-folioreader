@@ -45,6 +45,12 @@
             </intent-filter>
 
         </activity>
+
+        <!-- Background sync service for new releases -->
+        <service
+            android:name=".services.BookSyncService"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 
 </manifest>
