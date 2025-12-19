@@ -1,5 +1,4 @@
 name: Build APK
-
 on:
   push:
     branches:
@@ -14,7 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write  # Required to create releases and upload assets
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -38,22 +36,100 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "App Version: $VERSION"
 
-      - name: Update versionName in build.gradle
+      - name: Calculate version code
+        id: version_code
+        run: |
+          VERSION_CODE=$(git rev-list --count HEAD)
+          echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_ENV
+          echo "Version Code: $VERSION_CODE"
+
+      - name: Update version in build.gradle
         run: |
           sed -i "s/versionName \".*\"/versionName \"${{ env.VERSION }}\"/" app/build.gradle
+          sed -i "s/versionCode .*/versionCode ${{ env.VERSION_CODE }}/" app/build.gradle
 
       - name: Build Debug APK
         run: ./gradlew assembleDebug --stacktrace
 
-      - name: Build Release APK (unsigned)
+      # Generate keystore if secrets are provided
+      - name: Generate Release Keystore
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: |
+          # Decode base64 keystore from secrets or generate new one
+          if [ -n "${{ secrets.RELEASE_KEYSTORE }}" ]; then
+            echo "Using existing keystore from secrets"
+            echo "${{ secrets.RELEASE_KEYSTORE }}" | base64 -d > release.keystore
+          else
+            echo "Generating new keystore"
+            keytool -genkeypair \
+              -alias ${{ secrets.KEY_ALIAS || 'release-key' }} \
+              -keyalg RSA \
+              -keysize 2048 \
+              -validity 10000 \
+              -keystore release.keystore \
+              -storepass ${{ secrets.KEYSTORE_PASSWORD || 'android' }} \
+              -keypass ${{ secrets.KEY_PASSWORD || 'android' }} \
+              -dname "CN=GitHub Actions, OU=Mobile, O=EbookReader, L=Unknown, ST=Unknown, C=US"
+            
+            # Output base64 encoded keystore for saving to secrets
+            echo "================================================"
+            echo "SAVE THIS TO GITHUB SECRETS AS 'RELEASE_KEYSTORE':"
+            echo "================================================"
+            base64 -w 0 release.keystore
+            echo ""
+            echo "================================================"
+          fi
+
+      - name: Create keystore.properties
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: |
+          cat > keystore.properties << EOF
+          storeFile=../release.keystore
+          storePassword=${{ secrets.KEYSTORE_PASSWORD || 'android' }}
+          keyAlias=${{ secrets.KEY_ALIAS || 'release-key' }}
+          keyPassword=${{ secrets.KEY_PASSWORD || 'android' }}
+          EOF
+
+      - name: Build Signed Release APK
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: |
+          ./gradlew assembleRelease \
+            -Pandroid.injected.signing.store.file=$(pwd)/release.keystore \
+            -Pandroid.injected.signing.store.password="${{ secrets.KEYSTORE_PASSWORD || 'android' }}" \
+            -Pandroid.injected.signing.key.alias="${{ secrets.KEY_ALIAS || 'release-key' }}" \
+            -Pandroid.injected.signing.key.password="${{ secrets.KEY_PASSWORD || 'android' }}" \
+            --stacktrace
+
+      - name: Build Unsigned Release APK (for PRs)
+        if: github.event_name == 'pull_request'
         run: ./gradlew assembleRelease --stacktrace
 
       - name: Rename APK files
         run: |
           mkdir -p release-apks
           cp app/build/outputs/apk/debug/app-debug.apk release-apks/ebook-reader-v${{ env.VERSION }}-debug.apk
-          cp app/build/outputs/apk/release/app-release-unsigned.apk release-apks/ebook-reader-v${{ env.VERSION }}-release-unsigned.apk || \
-          cp app/build/outputs/apk/release/app-release.apk release-apks/ebook-reader-v${{ env.VERSION }}-release.apk
+          
+          # Check for signed or unsigned release APK
+          if [ -f "app/build/outputs/apk/release/app-release.apk" ]; then
+            cp app/build/outputs/apk/release/app-release.apk release-apks/ebook-reader-v${{ env.VERSION }}-release.apk
+          elif [ -f "app/build/outputs/apk/release/app-release-unsigned.apk" ]; then
+            cp app/build/outputs/apk/release/app-release-unsigned.apk release-apks/ebook-reader-v${{ env.VERSION }}-release-unsigned.apk
+          fi
+
+      - name: Get APK sizes
+        run: |
+          DEBUG_SIZE=$(du -h release-apks/*-debug.apk | cut -f1)
+          echo "DEBUG_SIZE=$DEBUG_SIZE" >> $GITHUB_ENV
+          
+          if [ -f release-apks/*-release.apk ]; then
+            RELEASE_SIZE=$(du -h release-apks/*-release.apk | cut -f1)
+            echo "RELEASE_SIZE=$RELEASE_SIZE" >> $GITHUB_ENV
+            echo "SIGNED=true" >> $GITHUB_ENV
+          else
+            RELEASE_SIZE=$(du -h release-apks/*-release-unsigned.apk | cut -f1)
+            echo "RELEASE_SIZE=$RELEASE_SIZE" >> $GITHUB_ENV
+            echo "SIGNED=false" >> $GITHUB_ENV
+          fi
 
       - name: Upload Debug APK Artifact
         uses: actions/upload-artifact@v4
@@ -69,14 +145,26 @@ jobs:
           path: release-apks/*-release*.apk
           retention-days: 30
 
-      - name: Get commit message
-        id: commit
+      - name: Generate Changelog
+        id: changelog
         run: |
-          echo "MESSAGE=$(git log -1 --pretty=%B | head -n 1)" >> $GITHUB_ENV
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          if [ -z "$PREVIOUS_TAG" ]; then
+            CHANGELOG=$(git log --pretty=format:"- %s (%an)" | head -n 10)
+          else
+            CHANGELOG=$(git log $PREVIOUS_TAG..HEAD --pretty=format:"- %s (%an)")
+          fi
+          
+          # Escape special characters for GitHub Actions
+          CHANGELOG="${CHANGELOG//'%'/'%25'}"
+          CHANGELOG="${CHANGELOG//$'\n'/'%0A'}"
+          CHANGELOG="${CHANGELOG//$'\r'/'%0D'}"
+          
+          echo "CHANGELOG=$CHANGELOG" >> $GITHUB_ENV
 
       - name: Create/Update Latest Release
         uses: softprops/action-gh-release@v1
-        if: github.ref == 'refs/heads/main'  # Only create releases on main branch
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         with:
           tag_name: v${{ env.VERSION }}
           name: Ebook Reader v${{ env.VERSION }}
@@ -86,19 +174,25 @@ jobs:
             
             ### 📥 Download
             Choose the APK that suits your needs:
-            - **Debug APK**: For testing and development
-            - **Release APK**: Optimized build for production use
+            - **Debug APK** (${{ env.DEBUG_SIZE }}): For testing and development
+            - **Release APK** (${{ env.RELEASE_SIZE }}): ${{ env.SIGNED == 'true' && '✅ Signed and' || '⚠️ Unsigned' }} optimized build for production use
             
             ### 📦 Installation
             1. Download the APK file to your Android device
             2. Go to Settings → Security → Enable "Install from Unknown Sources"
             3. Open the downloaded APK and install
             
-            ### 📝 Latest Changes
-            ${{ env.MESSAGE }}
+            ${{ env.SIGNED == 'false' && '⚠️ **Note**: This release APK is unsigned. For production use, configure signing keys in repository secrets.' || '' }}
             
-            **Build Date**: ${{ github.event.head_commit.timestamp }}
-            **Commit**: [`${{ github.sha }}`](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
+            ### 📝 Changes in this Release
+            ${{ env.CHANGELOG }}
+            
+            ### ℹ️ Build Information
+            - **Version**: ${{ env.VERSION }}
+            - **Version Code**: ${{ env.VERSION_CODE }}
+            - **Build Date**: ${{ github.event.head_commit.timestamp }}
+            - **Commit**: [${{ github.sha }}](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
+            - **Signed**: ${{ env.SIGNED == 'true' && '✅ Yes' || '❌ No' }}
             
             ---
             
@@ -108,6 +202,13 @@ jobs:
             - 💾 Automatic download management
             - 🔍 Smart search filters
             - 📱 Material Design UI
+            
+            ### 🔐 For Developers
+            To enable APK signing, add these secrets to your repository:
+            - `RELEASE_KEYSTORE`: Base64-encoded .jks keystore file
+            - `KEYSTORE_PASSWORD`: Keystore password
+            - `KEY_ALIAS`: Key alias name
+            - `KEY_PASSWORD`: Key password
           draft: false
           prerelease: false
         env:
