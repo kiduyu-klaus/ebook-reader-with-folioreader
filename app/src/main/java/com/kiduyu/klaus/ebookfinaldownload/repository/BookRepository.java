@@ -6,6 +6,7 @@ import android.util.Log;
 import com.kiduyu.klaus.ebookfinaldownload.database.AppDatabase;
 import com.kiduyu.klaus.ebookfinaldownload.database.BookDao;
 import com.kiduyu.klaus.ebookfinaldownload.models.BookInfo;
+import com.kiduyu.klaus.ebookfinaldownload.models.BookItem;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -117,6 +118,29 @@ public class BookRepository {
     public void clearAndRefresh() {
         Log.d(TAG, "Clearing all books from database");
         deleteAllBooks();
+    }
+
+    // ==================== My Books Methods ====================
+
+    /**
+     * Get all books from the my_books table
+     */
+    public List<BookItem> getAllMyBooks() {
+        return bookDao.getAllMyBooks();
+    }
+
+    /**
+     * Insert or update a book in the my_books table
+     */
+    public long saveMyBook(BookItem book) {
+        return bookDao.insertOrUpdateMyBook(book);
+    }
+
+    /**
+     * Delete a book by file path from the my_books table
+     */
+    public int deleteMyBook(String filePath) {
+        return bookDao.deleteMyBook(filePath);
     }
 
     /**

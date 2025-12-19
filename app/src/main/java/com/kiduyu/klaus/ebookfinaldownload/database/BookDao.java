@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.kiduyu.klaus.ebookfinaldownload.models.BookInfo;
+import com.kiduyu.klaus.ebookfinaldownload.models.BookItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -274,6 +275,113 @@ public class BookDao {
 
         } catch (Exception e) {
             Log.e(TAG, "Error updating download link", e);
+            return 0;
+        }
+    }
+
+    /**
+     * Convert cursor to BookInfo object
+     */
+    /**
+     * Convert cursor to BookItem object
+     */
+    private BookItem cursorToMyBook(Cursor cursor) {
+        try {
+            BookItem book = new BookItem();
+
+            book.setFilePath(cursor.getString(cursor.getColumnIndexOrThrow(AppDatabase.COLUMN_FILE_PATH)));
+            book.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(AppDatabase.COLUMN_TITLE)));
+            book.setSize(cursor.getString(cursor.getColumnIndexOrThrow(AppDatabase.COLUMN_SIZE)));
+            book.setDate(cursor.getString(cursor.getColumnIndexOrThrow(AppDatabase.COLUMN_DATE)));
+            book.setCoverImagePath(cursor.getString(cursor.getColumnIndexOrThrow(AppDatabase.COLUMN_COVER_PATH)));
+
+            return book;
+
+        } catch (Exception e) {
+            Log.e(TAG, "Error converting cursor to my book", e);
+            return null;
+        }
+    }
+
+    /**
+     * Insert or update a book in the my_books table
+     */
+    public long insertOrUpdateMyBook(BookItem book) {
+        try {
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+            ContentValues values = new ContentValues();
+
+            values.put(AppDatabase.COLUMN_FILE_PATH, book.getFilePath());
+            values.put(AppDatabase.COLUMN_TITLE, book.getTitle());
+            values.put(AppDatabase.COLUMN_SIZE, book.getSize());
+            values.put(AppDatabase.COLUMN_DATE, book.getDate());
+            values.put(AppDatabase.COLUMN_COVER_PATH, book.getCoverImagePath());
+
+            // Use CONFLICT_REPLACE since file_path is the primary key
+            long result = db.insertWithOnConflict(
+                    AppDatabase.TABLE_MY_BOOKS,
+                    null,
+                    values,
+                    SQLiteDatabase.CONFLICT_REPLACE
+            );
+
+            Log.d(TAG, "My Book inserted/updated: " + book.getTitle() + " (ID: " + result + ")");
+            return result;
+
+        } catch (Exception e) {
+            Log.e(TAG, "Error inserting/updating my book", e);
+            return -1;
+        }
+    }
+
+    /**
+     * Get all books from the my_books table
+     */
+    public List<BookItem> getAllMyBooks() {
+        List<BookItem> books = new ArrayList<>();
+
+        try {
+            SQLiteDatabase db = dbHelper.getReadableDatabase();
+            String query = "SELECT * FROM " + AppDatabase.TABLE_MY_BOOKS +
+                    " ORDER BY " + AppDatabase.COLUMN_DATE + " DESC"; // Order by date (last modified/added)
+
+            Cursor cursor = db.rawQuery(query, null);
+
+            if (cursor.moveToFirst()) {
+                do {
+                    BookItem book = cursorToMyBook(cursor);
+                    if (book != null) {
+                        books.add(book);
+                    }
+                } while (cursor.moveToNext());
+            }
+
+            cursor.close();
+            Log.d(TAG, "Retrieved " + books.size() + " books from my_books table");
+
+        } catch (Exception e) {
+            Log.e(TAG, "Error retrieving all my books", e);
+        }
+
+        return books;
+    }
+
+    /**
+     * Delete a book by file path from the my_books table
+     */
+    public int deleteMyBook(String filePath) {
+        try {
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+            int deletedRows = db.delete(
+                    AppDatabase.TABLE_MY_BOOKS,
+                    AppDatabase.COLUMN_FILE_PATH + " = ?",
+                    new String[]{filePath}
+            );
+            Log.d(TAG, "Deleted my book: " + filePath);
+            return deletedRows;
+
+        } catch (Exception e) {
+            Log.e(TAG, "Error deleting my book by file path", e);
             return 0;
         }
     }

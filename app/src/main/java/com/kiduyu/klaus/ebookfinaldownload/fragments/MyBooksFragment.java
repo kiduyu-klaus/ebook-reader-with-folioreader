@@ -20,6 +20,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kiduyu.klaus.ebookfinaldownload.MainActivity;
 import com.kiduyu.klaus.ebookfinaldownload.R;
+import com.kiduyu.klaus.ebookfinaldownload.repository.BookRepository;
 import com.kiduyu.klaus.ebookfinaldownload.ReadBook;
 import com.kiduyu.klaus.ebookfinaldownload.adapters.BookListAdapter;
 import com.kiduyu.klaus.ebookfinaldownload.models.BookItem;
@@ -41,6 +42,7 @@ public class MyBooksFragment extends Fragment {
     private MaterialButton btnAddFirst;
     private FloatingActionButton fabSearch;
     BookListAdapter bookAdapter;
+    private BookRepository bookRepository;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,7 +51,11 @@ public class MyBooksFragment extends Fragment {
         initializeViews(view);
         setupRecyclerView();
         setupListeners();
-        loadBooks();
+
+        bookRepository = BookRepository.getInstance(requireContext());
+
+        loadBooksFromDatabase();
+        syncLocalBooks(); // Start background sync of local files
 
         return view;
     }
@@ -57,7 +63,7 @@ public class MyBooksFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        loadBooks();
+        loadBooksFromDatabase();
     }
 
     private void initializeViews(View view) {
@@ -87,21 +93,39 @@ public class MyBooksFragment extends Fragment {
         });
     }
 
-    private void loadBooks() {
+    private void loadBooksFromDatabase() {
         if (getContext() == null) return;
 
-        bookList = new ArrayList<>();
-        File booksDir = getContext().getExternalFilesDir(null);
+        showLoadingState();
 
-        if (booksDir != null && booksDir.exists()) {
-            File[] files = booksDir.listFiles((dir, name) -> name.toLowerCase().endsWith(".epub"));
+        bookRepository.executeAsync(() -> {
+            List<BookItem> books = bookRepository.getAllMyBooks();
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
+                    bookList.clear();
+                    bookList.addAll(books);
+                    if (books.isEmpty()) {
+                        showEmptyState();
+                    } else {
+                        showBooksState();
+                    }
+                    updateBookCount(books.size());
+                });
+            }
+            return null;
+        });
+    }
 
-            if (files != null && files.length > 0) {
-                showLoadingState();
+    private void syncLocalBooks() {
+        if (getContext() == null) return;
 
-                new Thread(() -> {
-                    List<BookItem> tempList = new ArrayList<>();
+        bookRepository.executeAsync(() -> {
+            File booksDir = getContext().getExternalFilesDir(null);
+            if (booksDir != null && booksDir.exists()) {
+                File[] files = booksDir.listFiles((dir, name) -> name.toLowerCase().endsWith(".epub"));
 
+                if (files != null) {
+                    List<BookItem> booksFromFiles = new ArrayList<>();
                     for (File file : files) {
                         BookItem bookItem = new BookItem();
                         bookItem.setFilePath(file.getAbsolutePath());
@@ -115,24 +139,31 @@ public class MyBooksFragment extends Fragment {
                         );
                         bookItem.setCoverImagePath(coverPath);
 
-                        tempList.add(bookItem);
+                        booksFromFiles.add(bookItem);
                     }
 
-                    if (getActivity() != null) {
-                        getActivity().runOnUiThread(() -> {
-                            bookList.clear();
-                            bookList.addAll(tempList);
-                            showBooksState();
-                            updateBookCount(tempList.size());
-                        });
+                    // Save all found books to the database (will replace existing ones)
+                    for (BookItem book : booksFromFiles) {
+                        bookRepository.saveMyBook(book);
                     }
-                }).start();
-            } else {
-                showEmptyState();
+
+                    // Check for books in DB that no longer exist on the file system and delete them
+                    List<BookItem> booksInDb = bookRepository.getAllMyBooks();
+                    for (BookItem dbBook : booksInDb) {
+                        File file = new File(dbBook.getFilePath());
+                        if (!file.exists()) {
+                            bookRepository.deleteMyBook(dbBook.getFilePath());
+                        }
+                    }
+
+                    // Reload from database after sync
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(this::loadBooksFromDatabase);
+                    }
+                }
             }
-        } else {
-            showEmptyState();
-        }
+            return null;
+        });
     }
 
     private void showLoadingState() {
@@ -207,13 +238,15 @@ public class MyBooksFragment extends Fragment {
             }
         }
 
-        if (deleted) {
-            Toast.makeText(getContext(), "Book deleted", Toast.LENGTH_SHORT).show();
-            loadBooks();
-        } else {
-            Toast.makeText(getContext(), "Failed to delete book", Toast.LENGTH_SHORT).show();
-        }
-    }
+	        if (deleted) {
+	            // Also delete from database
+	            bookRepository.deleteMyBook(book.getFilePath());
+	            Toast.makeText(getContext(), "Book deleted", Toast.LENGTH_SHORT).show();
+	            loadBooksFromDatabase();
+	        } else {
+	            Toast.makeText(getContext(), "Failed to delete book", Toast.LENGTH_SHORT).show();
+	        }
+	    }
 
     private String formatFileSize(long bytes) {
         if (bytes < 1024) return bytes + " B";
@@ -227,34 +260,38 @@ public class MyBooksFragment extends Fragment {
         return sdf.format(new Date(timestamp));
     }
 
-    public void updateFileList(List<BookItem> newFiles) {
-
-        if (newFiles == null || newFiles.isEmpty()) {
-            showEmptyState();
-            return;
-        }
-
-        // Show RecyclerView if it was hidden
-        recyclerView.setVisibility(View.VISIBLE);
-        emptyStateLayout.setVisibility(View.GONE);
-
-        bookList.clear();
-
-        for (BookItem book : newFiles) {
-            try {
-                long timestamp = Long.parseLong(book.getDate());
-                String formatted = formatDate(timestamp);
-                book.setDate(formatted);
-            } catch (Exception e) {
-                // if parsing fails, keep original
-                book.setDate(book.getDate());
-            }
-
-            bookList.add(book);
-        }
-
-        bookAdapter.notifyDataSetChanged();
-    }
+	    // This method is no longer needed as the fragment now loads directly from the database
+	    // and the sync logic handles file system changes.
+	    /*
+	    public void updateFileList(List<BookItem> newFiles) {
+	
+	        if (newFiles == null || newFiles.isEmpty()) {
+	            showEmptyState();
+	            return;
+	        }
+	
+	        // Show RecyclerView if it was hidden
+	        recyclerView.setVisibility(View.VISIBLE);
+	        emptyStateLayout.setVisibility(View.GONE);
+	
+	        bookList.clear();
+	
+	        for (BookItem book : newFiles) {
+	            try {
+	                long timestamp = Long.parseLong(book.getDate());
+	                String formatted = formatDate(timestamp);
+	                book.setDate(formatted);
+	            } catch (Exception e) {
+	                // if parsing fails, keep original
+	                book.setDate(book.getDate());
+	            }
+	
+	            bookList.add(book);
+	        }
+	
+	        bookAdapter.notifyDataSetChanged();
+	    }
+	    */
 
 
 

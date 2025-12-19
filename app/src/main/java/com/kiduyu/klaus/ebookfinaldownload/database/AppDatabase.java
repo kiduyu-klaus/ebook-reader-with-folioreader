@@ -7,9 +7,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class AppDatabase extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "ebook_reader.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     public static final String TABLE_NEW_RELEASES = "new_releases";
+    public static final String TABLE_MY_BOOKS = "my_books";
     public static final String TABLE_BOOKS = "books";
 
     // New Releases Table Columns
@@ -24,6 +25,12 @@ public class AppDatabase extends SQLiteOpenHelper {
     public static final String COLUMN_DOWNLINK = "downlink";
     public static final String COLUMN_CREATED_AT = "created_at";
     public static final String COLUMN_UPDATED_AT = "updated_at";
+
+    // My Books Table Columns
+    public static final String COLUMN_FILE_PATH = "file_path";
+    public static final String COLUMN_SIZE = "size";
+    public static final String COLUMN_DATE = "date";
+    public static final String COLUMN_COVER_PATH = "cover_image_path";
 
     private static AppDatabase instance;
 
@@ -59,13 +66,32 @@ public class AppDatabase extends SQLiteOpenHelper {
 
         // Create index on book_url for faster lookups
         db.execSQL("CREATE INDEX idx_book_url ON " + TABLE_NEW_RELEASES + "(" + COLUMN_BOOK_URL + ")");
+
+        // Create My Books table
+        String CREATE_MY_BOOKS_TABLE = "CREATE TABLE " + TABLE_MY_BOOKS + " (" +
+                COLUMN_FILE_PATH + " TEXT PRIMARY KEY NOT NULL, " +
+                COLUMN_TITLE + " TEXT NOT NULL, " +
+                COLUMN_SIZE + " TEXT, " +
+                COLUMN_DATE + " TEXT, " +
+                COLUMN_COVER_PATH + " TEXT" +
+                ")";
+
+        db.execSQL(CREATE_MY_BOOKS_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // For future database schema upgrades
-        if (oldVersion < newVersion) {
-            // Handle migration here
+        if (oldVersion < 2) {
+            // Add My Books table
+            String CREATE_MY_BOOKS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_MY_BOOKS + " (" +
+                    COLUMN_FILE_PATH + " TEXT PRIMARY KEY NOT NULL, " +
+                    COLUMN_TITLE + " TEXT NOT NULL, " +
+                    COLUMN_SIZE + " TEXT, " +
+                    COLUMN_DATE + " TEXT, " +
+                    COLUMN_COVER_PATH + " TEXT" +
+                    ")";
+            db.execSQL(CREATE_MY_BOOKS_TABLE);
         }
     }
 

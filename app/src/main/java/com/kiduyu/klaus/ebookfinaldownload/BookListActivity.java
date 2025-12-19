@@ -16,6 +16,7 @@ import com.kiduyu.klaus.ebookfinaldownload.adapters.BookAdapter;
 import com.kiduyu.klaus.ebookfinaldownload.adapters.BookListAdapter;
 import com.kiduyu.klaus.ebookfinaldownload.models.BookItem;
 import com.kiduyu.klaus.ebookfinaldownload.utils.EpubCoverExtractor;
+import com.kiduyu.klaus.ebookfinaldownload.repository.BookRepository;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -28,6 +29,7 @@ public class BookListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private List<BookItem> bookList;
     private TextView tvEmptyState;
+    private BookRepository bookRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class BookListActivity extends AppCompatActivity {
         tvEmptyState = findViewById(R.id.tvEmptyState);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        bookRepository = BookRepository.getInstance(this);
 
         loadBooks();
     }
@@ -135,6 +138,8 @@ public class BookListActivity extends AppCompatActivity {
     private void deleteBook(BookItem book) {
         File file = new File(book.getFilePath());
         if (file.exists() && file.delete()) {
+            // Also delete from database
+            bookRepository.deleteMyBook(book.getFilePath());
             Toast.makeText(this, "Book deleted", Toast.LENGTH_SHORT).show();
             loadBooks(); // Refresh the list
         } else {
