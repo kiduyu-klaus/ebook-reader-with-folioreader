@@ -444,7 +444,8 @@ public class MainActivity extends AppCompatActivity
                 .setPositiveButton("Download", (dialog, which) -> {
                     // Open GitHub releases page
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(GITHUB_RELEASE_URL));
-                    startActivity(browserIntent); })
+                    startActivity(browserIntent);
+                finish();})
                 .setNegativeButton("Exit", (dialog, which) -> {
                     // exit app
                     finish();
