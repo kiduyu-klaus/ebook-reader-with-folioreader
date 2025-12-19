@@ -319,6 +319,11 @@ public class MainActivity extends AppCompatActivity
         // The filter/sort logic in MainActivity was for a previous implementation.
         // For MyBooksFragment, the loadBooksFromDatabase() and syncLocalBooks() methods
         // handle the display logic.
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
+
+        if (fragment instanceof MyBooksFragment) {
+            ((MyBooksFragment) fragment).updateFileList(files);
+        }
     }
 
     private void refreshCurrentFragment() {
