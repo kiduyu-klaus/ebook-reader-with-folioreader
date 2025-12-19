@@ -68,6 +68,13 @@ public class BookRepository {
     }
 
     /**
+     * Check if a book with the given title exists in the database
+     */
+    public boolean isBookTitleExists(String title) {
+        return bookDao.isBookTitleExists(title);
+    }
+
+    /**
      * Insert or update a single book in database
      */
     public long saveBook(BookInfo book) {

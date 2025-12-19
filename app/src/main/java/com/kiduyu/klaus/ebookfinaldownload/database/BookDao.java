@@ -164,6 +164,27 @@ public class BookDao {
 
         return books;
     }
+	
+    /**
+     * Check if a book with the given title exists in the new_releases table
+     */
+    public boolean isBookTitleExists(String title) {
+        try {
+            SQLiteDatabase db = dbHelper.getReadableDatabase();
+            String query = "SELECT 1 FROM " + AppDatabase.TABLE_NEW_RELEASES +
+                    " WHERE " + AppDatabase.COLUMN_TITLE + " = ?";
+
+            Cursor cursor = db.rawQuery(query, new String[]{title});
+
+            boolean exists = cursor.getCount() > 0;
+            cursor.close();
+            return exists;
+
+        } catch (Exception e) {
+            Log.e(TAG, "Error checking book existence by title", e);
+            return false;
+        }
+    }
 
     /**
      * Get a book by URL

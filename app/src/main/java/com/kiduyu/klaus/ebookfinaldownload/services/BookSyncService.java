@@ -189,13 +189,19 @@ public class BookSyncService extends Service {
 	
 	                if (task != null) {
 	                    BookInfo bookInfo = processBookInfo(task);
-	                    if (bookInfo != null) {
-	                        // Save book immediately
-	                        bookRepository.saveBook(bookInfo);
-                        showBookNotification(bookInfo.getTitle());
-	                        savedCount++;
-	                        notifyProgress("Saved book: " + bookInfo.getTitle() + " (Total: " + savedCount + ")");
-	                    }
+if (bookInfo != null) {
+		                        // Check if book already exists by title
+		                        if (bookRepository.isBookTitleExists(bookInfo.getTitle())) {
+		                            Log.d(TAG, "Skipping save: Book already exists with title: " + bookInfo.getTitle());
+		                            notifyProgress("Skipping existing book: " + bookInfo.getTitle());
+		                        } else {
+		                            // Save book immediately
+		                            bookRepository.saveBook(bookInfo);
+		                            showBookNotification(bookInfo.getTitle());
+		                            savedCount++;
+		                            notifyProgress("Saved book: " + bookInfo.getTitle() + " (Total: " + savedCount + ")");
+		                        }
+		                    }
 	                }
 	
 	                // Check if all books have been processed
