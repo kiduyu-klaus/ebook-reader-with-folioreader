@@ -7,6 +7,10 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import androidx.core.app.NotificationCompat;
 
 import androidx.annotation.Nullable;
 
@@ -188,6 +192,7 @@ public class BookSyncService extends Service {
 	                    if (bookInfo != null) {
 	                        // Save book immediately
 	                        bookRepository.saveBook(bookInfo);
+                        showBookNotification(bookInfo.getTitle());
 	                        savedCount++;
 	                        notifyProgress("Saved book: " + bookInfo.getTitle() + " (Total: " + savedCount + ")");
 	                    }
@@ -330,6 +335,24 @@ public class BookSyncService extends Service {
         if (syncCallback != null) {
             mainHandler.post(() -> syncCallback.onSyncError(error));
         }
+    }
+
+    private void showBookNotification(String bookTitle) {
+        String channelId = "book_sync_channel";
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(channelId, "Book Sync", NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId)
+                .setSmallIcon(android.R.drawable.stat_sys_download_done)
+                .setContentTitle("New Book Release")
+                .setContentText(bookTitle + " has been added to your library.")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        notificationManager.notify(1, builder.build());
     }
 
     @Override
