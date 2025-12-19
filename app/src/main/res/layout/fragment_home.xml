@@ -83,6 +83,66 @@
         </LinearLayout>
 
         
+        <!-- New Section: Library Browsing -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:layout_marginBottom="16dp" android:text="Library Browsing" android:layout_margin="10dp" android:textColor="#212121" android:textSize="18sp" android:textStyle="bold" />
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="10dp" android:orientation="horizontal" android:weightSum="2">
+            <!-- card_favorites -->
+            <com.google.android.material.card.MaterialCardView android:id="@+id/card_favorites" android:layout_width="0dp" android:layout_height="140dp" android:layout_marginEnd="8dp" android:layout_weight="1" android:clickable="true" android:focusable="true" app:cardBackgroundColor="#FCE4EC" app:cardCornerRadius="20dp" app:cardElevation="2dp" app:rippleColor="#E91E63">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:orientation="vertical" android:padding="16dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/text_2" android:textSize="40sp" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/menu_favorites" android:textColor="#C2185B" android:textSize="14sp" android:textStyle="bold" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- card_recent -->
+            <com.google.android.material.card.MaterialCardView android:id="@+id/card_recent" android:layout_width="0dp" android:layout_height="140dp" android:layout_marginStart="8dp" android:layout_weight="1" android:clickable="true" android:focusable="true" app:cardBackgroundColor="#E0F7FA" app:cardCornerRadius="20dp" app:cardElevation="2dp" app:rippleColor="#00BCD4">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:orientation="vertical" android:padding="16dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/text_15" android:textSize="40sp" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/menu_recent" android:textColor="#0097A7" android:textSize="14sp" android:textStyle="bold" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:layout_margin="10dp" android:orientation="horizontal" android:weightSum="2">
+            <!-- card_categories -->
+            <com.google.android.material.card.MaterialCardView android:id="@+id/card_categories" android:layout_width="0dp" android:layout_height="140dp" android:layout_marginEnd="8dp" android:layout_weight="1" android:clickable="true" android:focusable="true" app:cardBackgroundColor="#F3E5F5" app:cardCornerRadius="20dp" app:cardElevation="2dp" app:rippleColor="#9C27B0">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:orientation="vertical" android:padding="16dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/text" android:textSize="40sp" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/menu_categories" android:textColor="#7B1FA2" android:textSize="14sp" android:textStyle="bold" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- card_genre_books -->
+            <com.google.android.material.card.MaterialCardView android:id="@+id/card_genre_books" android:layout_width="0dp" android:layout_height="140dp" android:layout_marginStart="8dp" android:layout_weight="1" android:clickable="true" android:focusable="true" app:cardBackgroundColor="#FFFDE7" app:cardCornerRadius="20dp" app:cardElevation="2dp" app:rippleColor="#FFEB3B">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:orientation="vertical" android:padding="16dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/text_8" android:textSize="40sp" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="Browse Genres" android:textColor="#FBC02D" android:textSize="14sp" android:textStyle="bold" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <!-- New Section: Utilities -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:layout_marginBottom="16dp" android:text="Utilities" android:layout_margin="10dp" android:textColor="#212121" android:textSize="18sp" android:textStyle="bold" />
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="10dp" android:orientation="horizontal" android:weightSum="2">
+            <!-- card_search_author -->
+            <com.google.android.material.card.MaterialCardView android:id="@+id/card_search_author" android:layout_width="0dp" android:layout_height="140dp" android:layout_marginEnd="8dp" android:layout_weight="1" android:clickable="true" android:focusable="true" app:cardBackgroundColor="#E8F5E9" app:cardCornerRadius="20dp" app:cardElevation="2dp" app:rippleColor="#4CAF50">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:orientation="vertical" android:padding="16dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/text_8" android:textSize="40sp" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/search_by_author" android:textColor="#388E3C" android:textSize="14sp" android:textStyle="bold" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- card_settings -->
+            <com.google.android.material.card.MaterialCardView android:id="@+id/card_settings" android:layout_width="0dp" android:layout_height="140dp" android:layout_marginStart="8dp" android:layout_weight="1" android:clickable="true" android:focusable="true" app:cardBackgroundColor="#F3E5F5" app:cardCornerRadius="20dp" app:cardElevation="2dp" app:rippleColor="#9C27B0">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:orientation="vertical" android:padding="16dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/text_9" android:textSize="40sp" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/menu_settings" android:textColor="#7B1FA2" android:textSize="14sp" android:textStyle="bold" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="32dp" android:layout_marginBottom="16dp" android:text="@string/library_stats" android:layout_margin="10dp" android:textColor="#212121" android:textSize="18sp" android:textStyle="bold" />
 
         <com.google.android.material.card.MaterialCardView android:layout_width="match_parent" android:layout_height="wrap_content" app:cardCornerRadius="16dp" android:layout_margin="10dp" app:cardElevation="2dp" app:strokeColor="#E0E0E0" app:strokeWidth="1dp">

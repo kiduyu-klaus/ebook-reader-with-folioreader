@@ -24,6 +24,12 @@ public class HomeFragment extends Fragment {
     private MaterialCardView cardSearch;
     private MaterialCardView cardMyBooks;
     private MaterialCardView cardRaw;
+    private MaterialCardView cardFavorites;
+    private MaterialCardView cardRecent;
+    private MaterialCardView cardCategories;
+    private MaterialCardView cardGenreBooks;
+    private MaterialCardView cardSearchAuthor;
+    private MaterialCardView cardSettings;
 
     private NavigationView navigationView;
     private MaterialCardView cardAssets;
@@ -54,6 +60,12 @@ public class HomeFragment extends Fragment {
         cardMyBooks = view.findViewById(R.id.card_my_books);
         cardRaw = view.findViewById(R.id.card_raw);
         cardAssets = view.findViewById(R.id.card_assets);
+        cardFavorites = view.findViewById(R.id.card_favorites);
+        cardRecent = view.findViewById(R.id.card_recent);
+        cardCategories = view.findViewById(R.id.card_categories);
+        cardGenreBooks = view.findViewById(R.id.card_genre_books);
+        cardSearchAuthor = view.findViewById(R.id.card_search_author);
+        cardSettings = view.findViewById(R.id.card_settings);
         tvTotalBooks = view.findViewById(R.id.tv_total_books);
         tvReadingNow = view.findViewById(R.id.tv_reading_now);
         tvCompleted = view.findViewById(R.id.tv_completed);
@@ -79,12 +91,57 @@ public class HomeFragment extends Fragment {
         cardRaw.setOnClickListener(v -> {
             if (getActivity() != null) {
                 ((MainActivity) getActivity()).loadFragment(new ListopiaFragment());
-                //navigationView.setCheckedItem(R.id.nav_my_books);
+                navigationView.setCheckedItem(R.id.nav_listopia);
             }
         });
 
         cardAssets.setOnClickListener(v -> {
-            ((MainActivity) getActivity()).loadFragment(new NewReleasesFragment());
+            if (getActivity() != null) {
+                ((MainActivity) getActivity()).loadFragment(new NewReleasesFragment());
+                navigationView.setCheckedItem(R.id.nav_new_releases);
+            }
+        });
+
+        cardFavorites.setOnClickListener(v -> {
+            if (getActivity() != null) {
+                ((MainActivity) getActivity()).loadFragment(new FavoritesFragment());
+                navigationView.setCheckedItem(R.id.nav_favorites);
+            }
+        });
+
+        cardRecent.setOnClickListener(v -> {
+            if (getActivity() != null) {
+                ((MainActivity) getActivity()).loadFragment(new RecentFragment());
+                navigationView.setCheckedItem(R.id.nav_recent);
+            }
+        });
+
+        cardCategories.setOnClickListener(v -> {
+            if (getActivity() != null) {
+                ((MainActivity) getActivity()).loadFragment(new CategoriesFragment());
+                navigationView.setCheckedItem(R.id.nav_categories);
+            }
+        });
+
+        cardGenreBooks.setOnClickListener(v -> {
+            if (getActivity() != null) {
+                ((MainActivity) getActivity()).loadFragment(new GenreBooksFragment());
+                navigationView.setCheckedItem(R.id.nav_genre_books);
+            }
+        });
+
+        cardSearchAuthor.setOnClickListener(v -> {
+            if (getActivity() != null) {
+                ((MainActivity) getActivity()).loadFragment(new SearchAuthorFragment());
+                navigationView.setCheckedItem(R.id.nav_search_author);
+            }
+        });
+
+        cardSettings.setOnClickListener(v -> {
+            if (getActivity() != null) {
+                ((MainActivity) getActivity()).loadFragment(new SettingsFragment());
+                navigationView.setCheckedItem(R.id.nav_settings);
+            }
         });
 
         fabAdd.setOnClickListener(v -> {
