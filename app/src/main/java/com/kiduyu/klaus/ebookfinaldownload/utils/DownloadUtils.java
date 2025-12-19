@@ -4,7 +4,16 @@ package com.kiduyu.klaus.ebookfinaldownload.utils;
 
 
 
+import static android.content.Context.POWER_SERVICE;
+
+import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.provider.Settings;
+import android.net.Uri;
+import android.os.PowerManager;
 import android.util.Log;
 
 import com.kiduyu.klaus.ebookfinaldownload.MainActivity;
@@ -40,6 +49,47 @@ public class DownloadUtils {
     Context context;
     public DownloadUtils(Context context) {
         this.context=context;
+    }
+
+
+    public boolean isBatteryOptimized(Context context) {
+        PowerManager powerManager = (PowerManager) context.getSystemService(POWER_SERVICE);
+        String packageName = context.getPackageName();
+        // returns true if the app is currently on the exemption (ignore) list
+        return !powerManager.isIgnoringBatteryOptimizations(packageName);
+    }
+
+    public void showBatteryOptimizationDialog() {
+        if (isBatteryOptimized(context)) { // Check if optimized (not ignoring)
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Enable Battery Optimization")
+                    .setMessage("For optimal battery life, we recommend enabling battery optimization for this app. This might restrict background functions.")
+                    .setPositiveButton("Open Settings", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Intent to open the general battery optimization settings list
+                            Intent intent = new Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+                            try {
+                                context.startActivity(intent);
+                            } catch (ActivityNotFoundException e) {
+                                // Handle case where the specific settings activity is not found
+                                // You might want to direct the user to the main settings page instead
+                                Intent generalSettingsIntent = new Intent(Settings.ACTION_SETTINGS);
+                                context.startActivity(generalSettingsIntent);
+                            }
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .setCancelable(false); // User must choose an action
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
     }
 
     /**

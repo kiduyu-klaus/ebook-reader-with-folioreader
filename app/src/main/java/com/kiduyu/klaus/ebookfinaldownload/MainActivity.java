@@ -29,6 +29,7 @@ import com.kiduyu.klaus.ebookfinaldownload.fragments.SearchAuthorFragment;
 import com.kiduyu.klaus.ebookfinaldownload.fragments.SearchFragment;
 import com.kiduyu.klaus.ebookfinaldownload.fragments.SettingsFragment;
 import com.kiduyu.klaus.ebookfinaldownload.models.BookItem;
+import com.kiduyu.klaus.ebookfinaldownload.utils.DownloadUtils;
 import com.kiduyu.klaus.ebookfinaldownload.utils.EpubCoverExtractor;
 
 import java.io.File;
@@ -78,8 +79,9 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        DownloadUtils downloadutils = new DownloadUtils(this);
         fragmentManager = getSupportFragmentManager();
+        downloadutils.showBatteryOptimizationDialog();
         // Check for updates
         checkForUpdates();
         initializeViews();
