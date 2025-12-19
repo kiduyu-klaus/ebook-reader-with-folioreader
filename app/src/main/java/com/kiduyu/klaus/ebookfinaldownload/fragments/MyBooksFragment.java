@@ -260,7 +260,35 @@ public class MyBooksFragment extends Fragment {
         return sdf.format(new Date(timestamp));
     }
 
-	    // This method is no longer needed as the fragment now loads directly from the database
+    public void updateFileList(List<BookItem> newFiles) {
+        if (newFiles == null || newFiles.isEmpty()) {
+            showEmptyState();
+            return;
+        }
+
+        // Show RecyclerView if it was hidden
+        recyclerView.setVisibility(View.VISIBLE);
+        emptyStateLayout.setVisibility(View.GONE);
+
+        bookList.clear();
+
+        for (BookItem book : newFiles) {
+            try {
+                long timestamp = Long.parseLong(book.getDate());
+                String formatted = formatDate(timestamp);
+                book.setDate(formatted);
+            } catch (Exception e) {
+                // if parsing fails, keep original
+                book.setDate(book.getDate());
+            }
+
+            bookList.add(book);
+        }
+
+        bookAdapter.notifyDataSetChanged();
+    }
+
+    // This method is no longer needed as the fragment now loads directly from the database
 	    // and the sync logic handles file system changes.
 	    /*
 	    public void updateFileList(List<BookItem> newFiles) {
