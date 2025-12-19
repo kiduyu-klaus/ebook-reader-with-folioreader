@@ -55,7 +55,7 @@ public class BookSyncService extends Service {
     private AtomicInteger booksFound;
 
     public class LocalBinder extends Binder {
-        BookSyncService getService() {
+        public BookSyncService getService() {
             return BookSyncService.this;
         }
     }
