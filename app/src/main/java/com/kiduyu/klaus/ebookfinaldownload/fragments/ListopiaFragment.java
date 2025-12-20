@@ -323,4 +323,7 @@ public class ListopiaFragment extends Fragment implements ListopiaAdapter.OnList
             executor.shutdown();
         }
     }
+
+    public void syncListopia() {
+    }
 }

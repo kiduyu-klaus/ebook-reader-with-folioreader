@@ -31,6 +31,7 @@ import com.kiduyu.klaus.ebookfinaldownload.repository.BookRepository;
 import com.kiduyu.klaus.ebookfinaldownload.services.BookSyncService;
 import com.kiduyu.klaus.ebookfinaldownload.utils.DownloadEpub;
 import com.kiduyu.klaus.ebookfinaldownload.utils.DownloadUtils;
+import com.kiduyu.klaus.ebookfinaldownload.utils.ProgressDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +58,7 @@ public class NewReleasesFragment extends Fragment implements BookSyncService.Syn
     private BookSyncService syncService;
     private boolean isSyncServiceBound = false;
     private Handler mainHandler;
+    ProgressDialog progressDialog;
 
     // Utilities
     private DownloadEpub downloadEpub;
@@ -89,6 +91,9 @@ public class NewReleasesFragment extends Fragment implements BookSyncService.Syn
         initializeViews(view);
         setupRecyclerView();
         setupListeners();
+        progressDialog = new ProgressDialog(getContext());
+
+        progressDialog.show("Loading...");
 
         this.mainHandler = new Handler(Looper.getMainLooper());
         this.bookRepository = BookRepository.getInstance(requireContext());
@@ -106,7 +111,7 @@ public class NewReleasesFragment extends Fragment implements BookSyncService.Syn
         loadBooksFromDatabase();
 
         // Start background sync
-        startBackgroundSync();
+        //startBackgroundSync();
 
         return view;
     }
@@ -133,11 +138,11 @@ public class NewReleasesFragment extends Fragment implements BookSyncService.Syn
         // Swipe to refresh - triggers background sync
         swipeRefreshLayout.setOnRefreshListener(() -> {
             Log.d(TAG, "Swipe to refresh triggered");
-            if (syncService != null && isSyncServiceBound) {
-                syncService.startSync();
-            } else {
-                startBackgroundSync();
-            }
+//            if (syncService != null && isSyncServiceBound) {
+//                syncService.startSync();
+//            } else {
+//                startBackgroundSync();
+//            }
         });
 
         // Load more button - not used with database, but kept for future pagination
@@ -197,6 +202,7 @@ public class NewReleasesFragment extends Fragment implements BookSyncService.Syn
                 }
             }
         }).start();
+        progressDialog.dismiss();
     }
 
     /**
@@ -309,5 +315,8 @@ public class NewReleasesFragment extends Fragment implements BookSyncService.Syn
         if (bookRepository != null) {
             bookRepository.shutdown();
         }
+    }
+
+    public void syncNewReleases() {
     }
 }

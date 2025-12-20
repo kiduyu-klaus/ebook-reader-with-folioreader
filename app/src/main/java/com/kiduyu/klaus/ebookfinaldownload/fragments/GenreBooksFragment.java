@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -78,7 +79,8 @@ public class GenreBooksFragment extends Fragment {
 
     // Cache for loaded pages
     private Map<Integer, List<BookInfo>> pageCache = new HashMap<>();
-
+    private EditText searchInput;
+    private TextView h1Text;
     // Prefetch state
     private Future<?> prefetchFuture;
 
@@ -135,6 +137,10 @@ public class GenreBooksFragment extends Fragment {
         previousButton = view.findViewById(R.id.previousButton);
         nextButton = view.findViewById(R.id.nextButton);
         pageInfoText = view.findViewById(R.id.pageInfoText);
+        h1Text = view.findViewById(R.id.genreSearch_genre);
+        searchInput = view.findViewById(R.id.genreSearchInput_genre);
+        searchInput.setText("genre > "+genre.getName());
+        h1Text.setText(genre.getName());
     }
 
     private void initializeClient() {

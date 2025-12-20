@@ -1,36 +1,121 @@
 <?xml version='1.0' encoding='utf-8'?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#FAFAFA" tools:context=".fragments.SearchAuthorFragment">
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FAFAFA"
+    tools:context=".fragments.SearchAuthorFragment">
 
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        
-        <com.google.android.material.card.MaterialCardView android:layout_width="match_parent" android:layout_height="wrap_content" app:shapeAppearanceOverlay="@style/Shape_No_Corners" android:background="@drawable/card_gradient">
 
-            <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:background="@drawable/card_gradient" android:orientation="vertical" android:padding="20dp">
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/card_gradient"
+            app:shapeAppearanceOverlay="@style/Shape_No_Corners">
 
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/search_by_author" android:textColor="@android:color/white" android:textSize="24sp" android:textStyle="bold" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/card_gradient"
+                android:orientation="vertical"
+                android:padding="20dp">
 
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:layout_marginBottom="16dp" android:alpha="0.9" android:text="@string/find_books_by_your_favorite_au" android:textColor="@android:color/white" android:textSize="14sp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_by_author"
+                    android:textColor="@android:color/white"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
-                
-                <com.google.android.material.card.MaterialCardView android:layout_width="match_parent" android:layout_height="wrap_content" app:cardCornerRadius="12dp" app:cardElevation="0dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="16dp"
+                    android:alpha="0.9"
+                    android:text="@string/find_books_by_your_favorite_au"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
 
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
 
-                        <com.google.android.material.textfield.TextInputLayout style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="@string/hint_author_name_eg_bella_forrest" app:boxBackgroundMode="none" app:hintTextColor="@color/purple_500" app:startIconDrawable="@drawable/ic_person" app:startIconTint="@color/purple_500" app:helperText="Enter at least 2 words" app:helperTextTextColor="@color/purple_500">
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp">
 
-                            <com.google.android.material.textfield.TextInputEditText android:id="@+id/authorNameInput" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textCapWords" android:maxLines="1" android:textColor="@color/black" android:textSize="16sp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/hint_author_name_eg_bella_forrest"
+                            app:boxBackgroundMode="none"
+                            app:helperText="Enter at least 2 words"
+                            app:helperTextTextColor="@color/purple_500"
+                            app:hintTextColor="@color/purple_500"
+                            app:startIconDrawable="@drawable/ic_person"
+                            app:startIconTint="@color/purple_500">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/authorNameInput"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textCapWords"
+                                android:text="Lee Child"
+                                android:maxLines="1"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        <com.google.android.material.textfield.TextInputLayout style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:hint="@string/hint_no_of_books_leave_empty_for_al" app:boxBackgroundMode="none" app:hintTextColor="@color/purple_500" app:startIconDrawable="@drawable/ic_book_open" app:startIconTint="@color/purple_500">
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:hint="@string/hint_no_of_books_leave_empty_for_al"
+                            app:boxBackgroundMode="none"
+                            app:hintTextColor="@color/purple_500"
+                            app:startIconDrawable="@drawable/ic_book_open"
+                            app:startIconTint="@color/purple_500">
 
-                            <com.google.android.material.textfield.TextInputEditText android:id="@+id/numBooksInput" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="number" android:textColor="@color/black" android:textSize="16sp" />
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/numBooksInput"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:text="10"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        
-                        <com.google.android.material.button.MaterialButton android:id="@+id/searchButton" style="@style/Widget.MaterialComponents.Button" android:layout_width="match_parent" android:layout_height="56dp" android:layout_marginTop="16dp" android:text="@string/search_authors_books" android:textSize="16sp" android:textStyle="bold" app:cornerRadius="12dp" app:icon="@drawable/ic_search" app:iconGravity="textStart" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/searchButton"
+                            style="@style/Widget.MaterialComponents.Button"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:layout_marginTop="16dp"
+                            android:text="@string/search_authors_books"
+                            android:textSize="10sp"
+                            android:textStyle="bold"
+                            app:cornerRadius="12dp"
+                            app:icon="@drawable/ic_search"
+                            app:iconGravity="textStart" />
 
                     </LinearLayout>
 
@@ -40,40 +125,116 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        
-        <com.google.android.material.card.MaterialCardView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_marginEnd="16dp" android:layout_marginTop="16dp" android:layout_marginBottom="16dp" app:cardCornerRadius="12dp" app:cardElevation="2dp">
 
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:orientation="horizontal" android:padding="16dp">
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp">
 
-                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="16dp">
 
-                    <TextView android:id="@+id/downloadCountText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/books_found_0" android:textColor="#212121" android:textSize="16sp" android:textStyle="bold" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                    <TextView android:id="@+id/statusText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:ellipsize="end" android:maxLines="2" android:text="@string/ready_to_search_by_author" android:textColor="#757575" android:textSize="13sp" />
+                    <TextView
+                        android:id="@+id/downloadCountText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/books_found_0"
+                        android:textColor="#212121"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/statusText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="@string/ready_to_search_by_author"
+                        android:textColor="#757575"
+                        android:textSize="13sp" />
 
                 </LinearLayout>
 
-                <ProgressBar android:id="@+id/progressBar" android:layout_width="32dp" android:layout_height="32dp" android:indeterminateTint="@color/purple_500" android:visibility="gone" style="@style/Widget.AppCompat.ProgressBar" />
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="@style/Widget.AppCompat.ProgressBar"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:indeterminateTint="@color/purple_500"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
-        
-        <androidx.recyclerview.widget.RecyclerView android:id="@+id/booksRecyclerView" android:layout_width="match_parent" android:layout_height="500dp" android:clipToPadding="false" android:nestedScrollingEnabled="false" android:paddingBottom="16dp" />
 
-        
-        <LinearLayout android:id="@+id/emptyStateLayout" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="48dp" android:gravity="center" android:orientation="vertical" android:padding="32dp" android:visibility="visible">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/booksRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:clipToPadding="false"
+            android:paddingBottom="16dp" />
 
-            <com.google.android.material.card.MaterialCardView android:layout_width="120dp" android:layout_height="120dp" app:cardBackgroundColor="#F3E5F5" app:cardCornerRadius="60dp" app:cardElevation="0dp">
 
-                <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:text="@string/text_8" android:textSize="64sp" />
+        <LinearLayout
+            android:id="@+id/emptyStateLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="32dp"
+            android:visibility="visible">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                app:cardBackgroundColor="#F3E5F5"
+                app:cardCornerRadius="60dp"
+                app:cardElevation="0dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/text_8"
+                    android:textSize="64sp" />
 
             </com.google.android.material.card.MaterialCardView>
 
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="24dp" android:text="@string/no_books_found_yet" android:textColor="#212121" android:textSize="20sp" android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/no_books_found_yet"
+                android:textColor="#212121"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:gravity="center" android:text="@string/enter_an_authors_namenfirst_an" android:textColor="#757575" android:textSize="14sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="@string/enter_an_authors_namenfirst_an"
+                android:textColor="#757575"
+                android:textSize="14sp" />
 
         </LinearLayout>
 

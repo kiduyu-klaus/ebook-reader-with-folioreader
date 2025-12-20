@@ -1,37 +1,154 @@
 <?xml version='1.0' encoding='utf-8'?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" app:cardCornerRadius="16dp" app:cardElevation="2dp" app:strokeColor="#E0E0E0" app:strokeWidth="1dp">
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp"
+    app:strokeColor="#E0E0E0"
+    app:strokeWidth="1dp">
 
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:padding="16dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp">
 
-        
-        <com.google.android.material.card.MaterialCardView android:layout_width="80dp" android:layout_height="110dp" app:cardCornerRadius="12dp" app:cardElevation="4dp">
 
-            <ImageView android:id="@+id/ivBookCover" android:layout_width="match_parent" android:layout_height="match_parent" android:contentDescription="Book Cover" android:scaleType="centerCrop" android:src="@drawable/ic_launcher_background" />
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="80dp"
+            android:layout_height="110dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp">
+
+            <ImageView
+                android:id="@+id/ivBookCover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="Book Cover"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_launcher_background" />
 
         </com.google.android.material.card.MaterialCardView>
 
-        
-        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_weight="1" android:orientation="vertical">
 
-            <TextView android:id="@+id/tvBookTitle" android:layout_width="match_parent" android:layout_height="wrap_content" android:ellipsize="end" android:fontFamily="sans-serif-medium" android:maxLines="2" android:text="@string/book_title" android:textColor="#212121" android:textSize="16sp" android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tvBookTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-medium"
+                android:maxLines="2"
+                android:text="@string/book_title"
+                android:textColor="#212121"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-                <com.google.android.material.chip.Chip android:id="@+id/chipSize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="8dp" android:text="@string/a0_mb" android:textSize="11sp" app:chipBackgroundColor="#E3F2FD" app:chipCornerRadius="8dp" app:chipIcon="@drawable/stat_sys_download" app:chipIconSize="14dp" app:chipIconTint="#2196F3" app:chipMinHeight="28dp" app:chipStrokeWidth="0dp" app:textEndPadding="8dp" app:textStartPadding="4dp" />
 
-                <com.google.android.material.chip.Chip android:id="@+id/chipDate" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/jan_1_2024" android:textSize="11sp" app:chipBackgroundColor="#F3E5F5" app:chipCornerRadius="8dp" app:chipIcon="@drawable/ic_menu_recent_history" app:chipIconSize="14dp" app:chipIconTint="#9C27B0" app:chipMinHeight="28dp" app:chipStrokeWidth="0dp" app:textEndPadding="8dp" app:textStartPadding="4dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipSize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/a0_mb"
+                    android:textSize="11sp"
+                    app:chipBackgroundColor="#E3F2FD"
+                    app:chipCornerRadius="8dp"
+                    app:chipIcon="@drawable/stat_sys_download"
+                    app:chipIconSize="14dp"
+                    app:chipIconTint="#2196F3"
+                    app:chipMinHeight="28dp"
+                    app:chipStrokeWidth="0dp"
+                    app:textEndPadding="8dp"
+                    app:textStartPadding="4dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/jan_1_2024"
+                    android:textSize="11sp"
+                    app:chipBackgroundColor="#F3E5F5"
+                    app:chipCornerRadius="8dp"
+                    app:chipIcon="@drawable/ic_menu_recent_history"
+                    app:chipIconSize="14dp"
+                    app:chipIconTint="#9C27B0"
+                    app:chipMinHeight="28dp"
+                    app:chipStrokeWidth="0dp"
+                    app:textEndPadding="8dp"
+                    app:textStartPadding="4dp" />
 
             </LinearLayout>
 
-            
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:orientation="horizontal">
 
-                <com.google.android.material.button.MaterialButton android:id="@+id/btnOpenBook" android:layout_width="0dp" android:layout_height="40dp" android:layout_marginEnd="4dp" android:layout_weight="1" android:text="@string/read" android:textSize="13sp" app:cornerRadius="10dp" app:icon="@drawable/ic_book" app:iconSize="16dp" app:iconGravity="textStart" style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
 
-                <com.google.android.material.button.MaterialButton android:id="@+id/btnFavorite" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginEnd="4dp" android:insetLeft="0dp" android:insetTop="0dp" android:insetRight="0dp" android:insetBottom="0dp" android:padding="0dp" app:cornerRadius="10dp" app:icon="@drawable/ic_favorite_border" app:iconGravity="textStart" app:iconPadding="0dp" app:iconSize="20dp" app:iconTint="@android:color/darker_gray" style="@style/Widget.MaterialComponents.Button.TextButton" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnOpenBook"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:text="@string/read"
+                    android:textSize="13sp"
+                    app:cornerRadius="10dp"
+                    app:icon="@drawable/ic_book"
+                    app:iconGravity="textStart"
+                    app:iconSize="16dp" />
 
-                <com.google.android.material.button.MaterialButton android:id="@+id/btnDeleteBook" android:layout_width="40dp" android:layout_height="40dp" android:insetLeft="0dp" android:insetTop="0dp" android:insetRight="0dp" android:insetBottom="0dp" android:padding="0dp" app:cornerRadius="10dp" app:icon="@drawable/ic_delete" app:iconGravity="textStart" app:iconPadding="0dp" app:iconSize="20dp" app:iconTint="#F44336" style="@style/Widget.MaterialComponents.Button.TextButton" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnFavorite"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="4dp"
+                    android:insetLeft="0dp"
+                    android:insetTop="0dp"
+                    android:insetRight="0dp"
+                    android:insetBottom="0dp"
+                    android:padding="0dp"
+                    app:cornerRadius="10dp"
+                    app:icon="@drawable/ic_favorite_border"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconSize="20dp"
+                    app:iconTint="@android:color/darker_gray" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnDeleteBook"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:insetLeft="0dp"
+                    android:insetTop="0dp"
+                    android:insetRight="0dp"
+                    android:insetBottom="0dp"
+                    android:padding="0dp"
+                    app:cornerRadius="10dp"
+                    app:icon="@drawable/ic_delete"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconSize="20dp"
+                    app:iconTint="#F44336" />
 
             </LinearLayout>
 

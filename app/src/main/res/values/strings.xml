@@ -71,8 +71,8 @@
     <string name="find_books_by_your_favorite_au">Find books by your favorite authors</string>
     <string name="find_your_next_read">Find your next read</string>
     <string name="free_up_storage_space">Free up storage space</string>
-    <string name="from_assets">From Assets</string>
-    <string name="from_raw">From Raw</string>
+    <string name="from_assets">New Releases</string>
+    <string name="from_raw">Listopia</string>
     <string name="general">General</string>
     <string name="help_support">Help &amp; Support</string>
     <string name="hint_author_name_eg_bella_forrest">Author Name e.g., Bella Forrest</string>
@@ -157,4 +157,5 @@
     <string name="your_digital_library_awaits">Your digital library awaits</string>
     <string name="your_library">Your Library</string>
     <string name="ℹ">ℹ️</string>
+    <string name="browse_genres">Browse Genres</string>
 </resources>

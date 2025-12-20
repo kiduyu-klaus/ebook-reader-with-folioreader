@@ -52,8 +52,23 @@
         android:id="@+id/action_refresh"
         android:icon="@android:drawable/ic_menu_rotate"
         android:title="Refresh"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/action_sync_new_releases"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="Sync New Releases"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_sync_listopia"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="Sync Listopia"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_sync_categories"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="Sync Categories"
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_settings"
         android:icon="@android:drawable/ic_menu_preferences"

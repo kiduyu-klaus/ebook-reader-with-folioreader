@@ -180,6 +180,44 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
     }
 
+    /**
+     * Update the visibility of sync menu items based on the current fragment
+     */
+    private void updateSyncMenuVisibility(Fragment fragment) {
+        Menu menu = toolbar.getMenu();
+        if (menu != null) {
+            MenuItem syncNewReleases = menu.findItem(R.id.action_sync_new_releases);
+            MenuItem syncListopia = menu.findItem(R.id.action_sync_listopia);
+            MenuItem syncCategories = menu.findItem(R.id.action_sync_categories);
+
+            // Hide all sync items by default
+            if (syncNewReleases != null) {
+                syncNewReleases.setVisible(false);
+                syncNewReleases.setEnabled(false);
+            }
+            if (syncListopia != null) {
+                syncListopia.setVisible(false);
+                syncListopia.setEnabled(false);
+            }
+            if (syncCategories != null) {
+                syncCategories.setVisible(false);
+                syncCategories.setEnabled(false);
+            }
+
+            // Show appropriate sync item based on fragment
+            if (fragment instanceof NewReleasesFragment && syncNewReleases != null) {
+                syncNewReleases.setVisible(true);
+                syncNewReleases.setEnabled(true);
+            } else if (fragment instanceof ListopiaFragment && syncListopia != null) {
+                syncListopia.setVisible(true);
+                syncListopia.setEnabled(true);
+            } else if (fragment instanceof CategoriesFragment && syncCategories != null) {
+                syncCategories.setVisible(true);
+                syncCategories.setEnabled(true);
+            }
+        }
+    }
+
     public void loadFragment(Fragment fragment) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(
@@ -189,6 +227,8 @@ public class MainActivity extends AppCompatActivity
         transaction.replace(R.id.content_frame, fragment);
         transaction.commit();
         currentFragment = fragment;
+        // Update sync menu visibility based on the new fragment
+        updateSyncMenuVisibility(fragment);
     }
 
     @Override
@@ -254,6 +294,30 @@ public class MainActivity extends AppCompatActivity
             applyFilterAndSort();
             Toast.makeText(this, "Sorted by Size", Toast.LENGTH_SHORT).show();
             return true;
+        }else if (id == R.id.action_sync_new_releases) {
+            // Handle sync for New Releases
+            if (currentFragment instanceof NewReleasesFragment) {
+                ((NewReleasesFragment) currentFragment).syncNewReleases();
+                Toast.makeText(this, "Syncing New Releases...", Toast.LENGTH_SHORT).show();
+            }
+            return true;
+
+        } else if (id == R.id.action_sync_listopia) {
+            // Handle sync for Listopia
+            if (currentFragment instanceof ListopiaFragment) {
+                ((ListopiaFragment) currentFragment).syncListopia();
+                Toast.makeText(this, "Syncing Listopia...", Toast.LENGTH_SHORT).show();
+            }
+            return true;
+
+        } else if (id == R.id.action_sync_categories) {
+            // Handle sync for Categories
+            if (currentFragment instanceof CategoriesFragment) {
+                ((CategoriesFragment) currentFragment).syncCategories();
+                Toast.makeText(this, "Syncing Categories...", Toast.LENGTH_SHORT).show();
+            }
+            return true;
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -338,6 +402,12 @@ public class MainActivity extends AppCompatActivity
     }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Menu menu = toolbar.getMenu();
+
+        MenuItem syncNewReleases = menu.findItem(R.id.action_sync_new_releases);
+        MenuItem syncListopia = menu.findItem(R.id.action_sync_listopia);
+        MenuItem syncCategories = menu.findItem(R.id.action_sync_categories);
+
         Fragment selectedFragment = null;
         int itemId = item.getItemId();
 
@@ -354,6 +424,9 @@ public class MainActivity extends AppCompatActivity
         } else if (itemId == R.id.nav_new_releases) {
             selectedFragment = new NewReleasesFragment();
             toolbar.setTitle("New Releases");
+            syncNewReleases.setVisible(true);
+            syncNewReleases.setEnabled(true);
+
         } else if (itemId == R.id.nav_listopia) {
             selectedFragment = new ListopiaFragment();
             toolbar.setTitle("Listopia Books");

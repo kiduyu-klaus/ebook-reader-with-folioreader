@@ -281,4 +281,7 @@ public class CategoriesFragment extends Fragment {
             }).start();
         }
     }
+
+    public void syncCategories() {
+    }
 }

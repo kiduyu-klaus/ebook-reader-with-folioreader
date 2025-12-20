@@ -10,6 +10,7 @@ import android.util.Log;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+
 import androidx.core.app.NotificationCompat;
 
 import androidx.annotation.Nullable;
@@ -66,8 +67,11 @@ public class BookSyncService extends Service {
 
     public interface SyncCallback {
         void onSyncStarted();
+
         void onSyncProgress(String message);
+
         void onSyncCompleted(int booksCount);
+
         void onSyncError(String error);
     }
 
@@ -180,35 +184,35 @@ public class BookSyncService extends Service {
                 });
             }
 
-	            // Process books as they come in and save them immediately
-	            boolean processingComplete = false;
-	            int savedCount = 0;
-	
-	            while (!processingComplete || !bookQueue.isEmpty()) {
-	                BookTask task = bookQueue.poll(1, TimeUnit.SECONDS);
-	
-	                if (task != null) {
-	                    BookInfo bookInfo = processBookInfo(task);
-if (bookInfo != null) {
-		                        // Check if book already exists by title
-		                        if (bookRepository.isBookTitleExists(bookInfo.getTitle())) {
-		                            Log.d(TAG, "Skipping save: Book already exists with title: " + bookInfo.getTitle());
-		                            notifyProgress("Skipping existing book: " + bookInfo.getTitle());
-		                        } else {
-		                            // Save book immediately
-		                            bookRepository.saveBook(bookInfo);
-		                            showBookNotification(bookInfo.getTitle());
-		                            savedCount++;
-		                            notifyProgress("Saved book: " + bookInfo.getTitle() + " (Total: " + savedCount + ")");
-		                        }
-		                    }
-	                }
-	
-	                // Check if all books have been processed
-	                processingComplete = latch.getCount() == 0;
-	            }
-	
-	            notifyCompleted(booksFound.get());
+            // Process books as they come in and save them immediately
+            boolean processingComplete = false;
+            int savedCount = 0;
+
+            while (!processingComplete || !bookQueue.isEmpty()) {
+                BookTask task = bookQueue.poll(1, TimeUnit.SECONDS);
+
+                if (task != null) {
+                    BookInfo bookInfo = processBookInfo(task);
+                    if (bookInfo != null) {
+                        // Check if book already exists by title
+                        if (bookRepository.isBookTitleExists(bookInfo.getTitle())) {
+                            Log.d(TAG, "Skipping save: Book already exists with title: " + bookInfo.getTitle());
+                            notifyProgress("Skipping existing book: " + bookInfo.getTitle());
+                        } else {
+                            // Save book immediately
+                            bookRepository.saveBook(bookInfo);
+                            showBookNotification(bookInfo.getTitle());
+                            savedCount++;
+                            notifyProgress("Saved book: " + bookInfo.getTitle() + " (Total: " + savedCount + ")");
+                        }
+                    }
+                }
+
+                // Check if all books have been processed
+                processingComplete = latch.getCount() == 0;
+            }
+
+            notifyCompleted(booksFound.get());
 
             notifyCompleted(booksFound.get());
 
