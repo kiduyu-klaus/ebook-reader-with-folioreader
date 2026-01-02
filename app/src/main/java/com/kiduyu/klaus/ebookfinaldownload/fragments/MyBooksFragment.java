@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,7 +25,6 @@ import com.kiduyu.klaus.ebookfinaldownload.ReadBook;
 import com.kiduyu.klaus.ebookfinaldownload.adapters.BookListAdapter;
 import com.kiduyu.klaus.ebookfinaldownload.models.BookItem;
 import com.kiduyu.klaus.ebookfinaldownload.utils.EpubCoverExtractor;
-import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -188,11 +186,6 @@ public class MyBooksFragment extends Fragment {
             public void onDeleteClick(BookItem book) {
                 showDeleteConfirmation(book);
             }
-
-            @Override
-            public void onShareClick(BookItem book) {
-                shareBook(book);
-            }
         });
         recyclerView.setAdapter(bookAdapter);
     }
@@ -220,29 +213,7 @@ public class MyBooksFragment extends Fragment {
         startActivity(intent);
     }
 
-	    private void shareBook(BookItem book) {
-	        File file = new File(book.getFilePath());
-	        if (!file.exists()) {
-	            Toast.makeText(getContext(), "File not found", Toast.LENGTH_SHORT).show();
-	            return;
-	        }
-
-	        try {
-	            Intent shareIntent = new Intent(Intent.ACTION_SEND);
-	            shareIntent.setType("application/epub+zip");
-	            shareIntent.putExtra(Intent.EXTRA_STREAM, androidx.core.content.FileProvider.getUriForFile(
-	                    requireContext(),
-	                    requireContext().getApplicationContext().getPackageName() + ".provider",
-	                    file));
-	            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-	            startActivity(Intent.createChooser(shareIntent, "Share " + book.getTitle()));
-	        } catch (Exception e) {
-	            Toast.makeText(getContext(), "Error sharing file: " + e.getMessage(), Toast.LENGTH_LONG).show();
-	            e.printStackTrace();
-	        }
-	    }
-
-	    private void showDeleteConfirmation(BookItem book) {
+    private void showDeleteConfirmation(BookItem book) {
         new AlertDialog.Builder(getContext())
                 .setTitle("Delete Book")
                 .setMessage("Are you sure you want to delete '" + book.getTitle() + "'?\n\nThis action cannot be undone.")
