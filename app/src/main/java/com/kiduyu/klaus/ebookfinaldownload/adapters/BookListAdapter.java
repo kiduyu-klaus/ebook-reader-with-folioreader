@@ -30,6 +30,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
     public interface OnBookClickListener {
         void onBookClick(BookItem book);
         void onDeleteClick(BookItem book);
+        void onShareClick(BookItem book);
     }
 
     public BookListAdapter(List<BookItem> bookList, OnBookClickListener listener) {
@@ -65,6 +66,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
         private MaterialButton btnOpenBook;
         private MaterialButton btnDeleteBook;
         private MaterialButton btnFavorite;
+        private MaterialButton btnShareBook;
 
         public BookViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -75,6 +77,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
             btnOpenBook = itemView.findViewById(R.id.btnOpenBook);
             btnDeleteBook = itemView.findViewById(R.id.btnDeleteBook);
             btnFavorite = itemView.findViewById(R.id.btnFavorite);
+            btnShareBook = itemView.findViewById(R.id.btnShareBook);
         }
 
         public void bind(BookItem book, OnBookClickListener listener, Context context) {
@@ -119,6 +122,13 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
             btnDeleteBook.setOnClickListener(v -> {
                 if (listener != null) {
                     listener.onDeleteClick(book);
+                }
+            });
+
+            // Share button
+            btnShareBook.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onShareClick(book);
                 }
             });
 
